@@ -1,0 +1,1 @@
+# restricciones de casas, etc
