@@ -1,39 +1,44 @@
-# basado en el calendario ponienti
-import re
-def date_validation():
-    fecha_str = []
+day = int(input("Día: "))
+month = int(input("Mes: "))
+year = int(input("Año: "))
 
-    # 1. Validar patrón con regex
-    if not re.match(r'^\d{1,3}-\d{1,2}-\d{1,2}$', fecha_str):
-        return False, "Formato: AÑO-MES-DÍA (ej: 298-3-15)"
-    
-    try:
-        partes = fecha_str.split('-')
-        año = int(partes[0])
-        mes = int(partes[1])
-        dia = int(partes[2])
-        
-        # 2. Validar año (1-400 DC)
-        if año < 1 or año > 400:
-            return False, f"Año debe ser 1-400 DC"
-        
-        # 3. Validar mes
-        if mes < 1 or mes > 12:
-            return False, "Mes debe ser 1-12"
-        
-        # 4. Validar día según mes
-        if mes in [1, 3, 5, 7, 8, 10, 12]:
-            max_dias = 31
-        elif mes in [4, 6, 9, 11]:
-            max_dias = 30
-        else:  # mes 2
-            max_dias = 28  # Sin años bisiestos en Westeros
-        
-        if dia < 1 or dia > max_dias:
-            return False, f"El mes {mes} tiene máximo {max_dias} días"
-        
-        return True, f"Fecha válida: {dia}/{mes}/{año} DC"
-        
-    except ValueError:
-        return False, "La fecha debe contener solo números"
-        
+valid = False
+
+if month == 2:
+    if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0):
+        # Note que aquí igualamos contra la condición directamente
+        valid = day > 0 and day <= 29
+    else:
+        valid = day > 0 and day <= 28
+else:
+    if month <= 7:
+        # Aquí está el truco de la fórmula con el módulo
+        #
+        # Si el mes es par month%2 da 0 -> 30+0=30 debería tener
+        # 30 días
+        #
+        # Si el mes es impar month%2 da 1 -> 30+1=31 debería
+        # tener 31 días
+        if day <= 30 + month % 2 and day > 0:
+            valid = True
+    elif month <= 12:
+        # Aquí de usamos también el truco pero los valores se
+        # invierten, por eso empezamos en 31 y restamos
+        #
+        # Si el mes es par month%2 da 0 -> 31-0=31 debería tener
+        # 31 días
+        #
+        # Si el mes es impar month%2 da 1 -> 31-1=30 debería tener
+        # 30 días
+        if day <= 31 - (month % 2) and day > 0:
+            valid = True
+
+# Aquí sintaxis extra. Además del if-else como instrucción con
+# bloques de código asociados, existe una expresión if.
+#
+# boolean_expression if condition else boolean_expression
+#
+# Esta expresión da como resultado el valor de la izquierda si la
+# condición da True, sino, da como resultado el valor de la
+# derecha
+print(f"La fecha {"" if valid else "no "}es válida")
