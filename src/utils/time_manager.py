@@ -1,1 +1,0 @@
-# gestiona fechas y estaciones
