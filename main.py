@@ -85,9 +85,9 @@ from date_validation import overlap
 # pen.ht()
 # ventana.mainloop()
 
-fecha1 = datetime.datetime(2005, 5, 10)
-fecha2 = datetime.datetime(2000, 2, 10)
-fecha3 = datetime.datetime(2000, 3, 1)
-fecha4 = datetime.datetime(2010, 5, 10)
+fecha1 = datetime.datetime(2000, 2, 10, 12, 00, 00)
+fecha2 = datetime.datetime(2000, 10, 10, 12, 30, 00)
+fecha3 = datetime.datetime(2000, 11, 1, 12, 00, 00)
+fecha4 = datetime.datetime(2010, 5, 10, 12, 00, 00)
 
 print(overlap([fecha1, fecha2], [fecha3, fecha4]))
