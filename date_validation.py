@@ -20,10 +20,10 @@ def valid_date(year, month, day):
 
 def overlap(intervalo_1, intervalo_2): #intervalos son listas con dos elementos (fecha inicio y de fin)
     '''
-    esta funcion devuelve true si se solapan los intervalos de tiempo y False en caso contrario
+    esta funcion devuelve True si se solapan los intervalos de tiempo y False en caso contrario
     '''
-    if intervalo_1[0] < intervalo_2[1] and intervalo_1[0] >= intervalo_2[0]:
+    if intervalo_2[1] > intervalo_1[0] >= intervalo_2[0]:
         return True
-    if intervalo_2[0] >= intervalo_1[0] and intervalo_2[0] < intervalo_1[1]:
+    if intervalo_1[1] > intervalo_2[0] >= intervalo_1[0]:
         return True
     return False
