@@ -1,9 +1,8 @@
 # ToDo:
 - 4.Requisitos Técnicos y Entregables
 - Cada función debería llevar un comentario que explique con concisión lo que hace. El comentario debería aparecer inmediatamente después de la definición de la función y emplear el formato de la cadena de documentación
-
-- 
-
+- Función que compare un evento con una lista de eventos y vea si se interesctan
+- Agregar a Evento el atributo tipo de evento y además agregarle ID para manejar la info más cómodo
 
 # Ideas:
 Idea de Antony:
