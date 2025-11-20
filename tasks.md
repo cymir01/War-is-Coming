@@ -1,16 +1,21 @@
 # ToDo:
 - 4.Requisitos Técnicos y Entregables
 - Cada función debería llevar un comentario que explique con concisión lo que hace. El comentario debería aparecer inmediatamente después de la definición de la función y emplear el formato de la cadena de documentación
+- hacer menus de seleccion siempre que pueda para que el usuario no tenga que ingresar manualmente la informacion y evitar errores y asi tener que gestionar menos errores... si no usar un while True como en main para que itere hasta que se ingrese bien la info, por ejemplo con las fechas
 - Función que compare un evento con una lista de eventos y vea si se interesctan
 - Agregar a Evento el atributo tipo de evento y además agregarle ID para manejar la info más cómodo
+
+## Restricciones
+- poner una restriccion temporal. Como en Google Calendar, cuando el usuario intente crear un evento con una fecha anterior a la fecha actual el programa debe alertar el error y pedi rde nuevo la fecha (esto tiene que ver con lo que escribi en la linea 5 sobre gestioanr el ingreso de fechas con un while true)
+- Restriccion entre casas: Agregar en la logica de validacion una cronologia especifica a partir de la cual se establece una restriccion de exclusion entre las casas
+- agregarle como atributo a Evento la escala de la batalla para luego agregarle como atributo a la clase Resource la cantidad de unidades segun la escala de la batalla... esa informacion la va utilizar el gestor de restricciones para saber que catnidad de unidades asignar al evento segun su escala
+- Otra restrivccion: entre dos eventos proximos debe haber una especie de tiempo de recuperacion, por que un evento belico no puede empezar justo cuando acaba otro, las tropas tienen que desplazarse, hay que reparar las maquinaria, etc.. esa es otra restriccion temporal
 
 # Ideas:
 Idea de Antony:
 Hacer 3 clases basicas que necesites (eventos, recursos y restricciones)
 Sumas cosas
 Ver como unirlas (un game manager)
-## Logic
-- Agregar en la logica de validacion una cronologia especifica a partir de la cual se establece una restriccion de exclusion entre las casas
 
 ## Interface
 - hacer barra de estado o calendario para ver progreso/timeline
