@@ -4,6 +4,9 @@
 - hacer menus de seleccion siempre que pueda para que el usuario no tenga que ingresar manualmente la informacion y evitar errores y asi tener que gestionar menos errores... si no usar un while True como en main para que itere hasta que se ingrese bien la info, por ejemplo con las fechas
 - Función que compare un evento con una lista de eventos y vea si se interesctan
 - Agregar a Evento el atributo tipo de evento y además agregarle ID para manejar la info más cómodo
+- Terminar el capítulo sobre OOP del libro de Python
+- Estudiarme la cp08 de pro
+- Leer el capítulo sobre trabajo con archivos en el libro de Python
 
 ## Restricciones
 - poner una restriccion temporal. Como en Google Calendar, cuando el usuario intente crear un evento con una fecha anterior a la fecha actual el programa debe alertar el error y pedi rde nuevo la fecha (esto tiene que ver con lo que escribi en la linea 5 sobre gestioanr el ingreso de fechas con un while true)
