@@ -17,7 +17,7 @@ Hacer 3 clases basicas que necesites (eventos, recursos y restricciones)
 Sumas cosas
 Ver como unirlas (un game manager)
 
-## Interface
+## Interface (opcionales)
 - hacer barra de estado o calendario para ver progreso/timeline
 - add soundtrack (main theme de GoT, etc)
 - Agregar esta funcionalidad: Eliminar un evento existente, liberando sus recursos para que queden disponibles

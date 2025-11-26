@@ -1,4 +1,6 @@
 ## Estructura
+(estrucutra MVC https://es.wikipedia.org/wiki/Modelo%E2%80%93vista%E2%80%93controlador)
+
 War-is-Coming/
 │
 ├── main.py                    # 🎯 Punto de entrada principal
@@ -27,3 +29,4 @@ War-is-Coming/
     ├── __init__.py
     ├── consola.py             # ⌨️ Menús y entrada de datos
     └── calendario.py          # 🗓️ Visualización de calendarios
+
