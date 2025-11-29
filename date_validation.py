@@ -49,3 +49,7 @@ fecha4 = datetime(2010, 5, 10, 12, 00, 00)
 
 print(is_new_event_overlapping_existing([fecha, otra], [[fecha1, fecha2], [fecha3, fecha4]]))
 
+
+def find_available_time_slot():
+    pass
+
