@@ -1,5 +1,7 @@
 import json 
 import os
+from models.event import Event
+
 FILEPATH = "war_planner.json"
 EVENTS = {}
 RESOURCES = {}
@@ -9,10 +11,10 @@ NEXT_RESOURCE_ID = 1
 def save_data():
     global EVENTS, RESOURCES, NEXT_EVENT_ID, NEXT_RESOURCE_ID
     data = {
-    'events': EVENTS,
-    'resources': RESOURCES,
-    'next_event_id': NEXT_EVENT_ID,
-    'next_resource_id': NEXT_RESOURCE_ID
+        'events': EVENTS,
+        'resources': RESOURCES,
+        'next_event_id': NEXT_EVENT_ID,
+        'next_resource_id': NEXT_RESOURCE_ID
     }
     with open(FILEPATH, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
@@ -33,24 +35,23 @@ def load_data():
             
             EVENTS = {int(k): v for k, v in EVENTS.items()}
             RESOURCES = {int(k): v for k, v in RESOURCES.items()}
-            
     except Exception as e:
         print(f"Error al cargar datos: {e}")
 
-
-def agregar_tarea(descripcion):
-    global NEXT_ID  
-    TAREAS[NEXT_ID] = {'desc': descripcion, 'estado': 'pendiente'} 
-    print(f"Tarea {NEXT_ID} agregada.\n") 
-    NEXT_ID += 1
-
-def add_event(name, start, end, resources_ids=None):
+def add_event(name, description, start, end, resources_ids=None): #instanciar la clase Event aqui
     global NEXT_EVENT_ID
     from datetime import datetime
-    
+    #asegurar que start y end sean objetos datetime
+
+    event = Event(
+
+    )
+    event.to_dcit()
+
     event = {
         'id': NEXT_EVENT_ID,
         'name': name,
+        'description': description,
         'start': start.isoformat() if isinstance(start, datetime) else start,
         'end': end.isoformat() if isinstance(end, datetime) else end,
         'resources_ids': resources_ids or [],
@@ -67,7 +68,7 @@ def add_event(name, start, end, resources_ids=None):
 def list_events():
     return EVENTS.copy()
 
-def list_available_resources():
-    pass
+def list_resources():
+    return RESOURCES.copy()
 
 load_data()

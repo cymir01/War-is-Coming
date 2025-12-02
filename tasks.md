@@ -7,12 +7,17 @@
 - Terminar el capítulo sobre OOP del libro de Python
 - Estudiarme la cp08 de pro
 - Leer el capítulo sobre trabajo con archivos en el libro de Python
+- Hacer que las fechas se ingresen por año, mes y dia... ver como mejorar la visual de esa seccion en main
+- Terminar de hacer el validador de fechas personalizado para el continente de Poniente
 
 ## Restricciones
 - poner una restriccion temporal. Como en Google Calendar, cuando el usuario intente crear un evento con una fecha anterior a la fecha actual el programa debe alertar el error y pedi rde nuevo la fecha (esto tiene que ver con lo que escribi en la linea 5 sobre gestioanr el ingreso de fechas con un while true)
 - Restriccion entre casas: Agregar en la logica de validacion una cronologia especifica a partir de la cual se establece una restriccion de exclusion entre las casas
 - agregarle como atributo a Evento la escala de la batalla para luego agregarle como atributo a la clase Resource la cantidad de unidades segun la escala de la batalla... esa informacion la va utilizar el gestor de restricciones para saber que catnidad de unidades asignar al evento segun su escala
 - Otra restrivccion: entre dos eventos proximos debe haber una especie de tiempo de recuperacion, por que un evento belico no puede empezar justo cuando acaba otro, las tropas tienen que desplazarse, hay que reparar las maquinaria, etc.. esa es otra restriccion temporal
+
+## DUDAS
+- Preguntarle a los profes si hago opcionales descripcion y demas del evento
 
 # Ideas:
 Idea de Antony:

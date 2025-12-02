@@ -4,9 +4,10 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from rich.prompt import Prompt
-from rich.prompt import Confirm
 from rich.text import Text
-from core import agregar_tarea, listar_tareas
+from core import add_event, list_events
+from rich.prompt import Confirm
+from date_validation import valid_date
 
 console = Console()
 
@@ -19,35 +20,49 @@ tabla.add_column("Casa", style="cyan")
 tabla.add_column("Líder", style="magenta")
 tabla.add_column("Tropas", justify="right")
 tabla.add_row("Stark", "Robb Stark", "20,000")
-tabla.add_row("Lannister", "Tywin Lannister", "35,000")
+tabla.add_row("Lannister", "Tywin Lannister", "35,00\0")
 console.print(tabla)
-
-confirmar = Confirm.ask("¿Iniciar la batalla?")
 
 console.print("--- Gestor de Tareas ---")
 
 while True:  
     cmd = console.input("[bold cyan]Acción (agregar, listar, salir): [/bold cyan]\n")
-    if cmd == 'agregar': 
-        desc = console.input("Descripción de la tarea: \n") 
-        agregar_tarea(desc) 
+    if cmd == 'agregar':
+        name = console.input("Nombre del evento: \n")
+        if Confirm.ask("Desea agregar descripción al evento? \n"):
+            desc = console.input("Descripción del evento: \n")
+
+        console.print("[bold cyan]Ingrese la fecha inicial del evento: [/bold cyan]\n")
+        day = int(input("Día: "))
+        month = int(input("Mes: "))
+        year = int(input("Año: "))
+        
+        # if valid_date(year, month, day):
+
+
+        console.print("[bold cyan]Ingrese la fecha final del evento: [/bold cyan]\n")
+        day = int(input("Día: "))
+        month = int(input("Mes: "))
+        year = int(input("Año: "))
+
+        add_event(name=name, description=desc, start=start, end=end)
     elif cmd == 'listar':
-        tareas = listar_tareas() 
-        if not tareas: 
-            console.print("[yellow]No hay tareas.[/yellow]") 
+        events = list_events()
+        if not events: 
+            console.print("[yellow]No hay eventos programados[/yellow]") 
         else:
-            table = Table(title="Lista de Tareas") 
+            table = Table(title="Lista de Eventos") 
             table.add_column("ID", style="cyan") 
             table.add_column("Descripción", style="magenta") 
             table.add_column("Estado", style="green")  
             
-            for id, tarea in tareas.items(): 
-                table.add_row(str(id), tarea['desc'], tarea['estado'])  
+            for id, event in events.items(): 
+                table.add_row(str(id), event['desc'], events['estado'])  
             
             console.print(table)
     elif cmd == 'salir': 
         console.print("Adios") 
-        break 
+        break
     else:
         console.print("Comando no reconocido\n")
 

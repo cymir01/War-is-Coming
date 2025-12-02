@@ -1,4 +1,5 @@
 from datetime import datetime
+
 def valid_date(year, month, day):
     valid = False
 
@@ -16,7 +17,7 @@ def valid_date(year, month, day):
                 valid = True
     return valid
 
-# print(valid_date(2004, 2, 29))
+# print(valid_date(2000, 2, 30))
 
 def overlap(intervalo_1, intervalo_2): #intervalos son listas con dos elementos (fecha inicio y de fin)
     '''
@@ -47,7 +48,7 @@ fecha2 = datetime(400, 3, 4)
 fecha3 = datetime(2000, 11, 1, 12, 00, 00)
 fecha4 = datetime(2010, 5, 10, 12, 00, 00)
 
-print(is_new_event_overlapping_existing([fecha, otra], [[fecha1, fecha2], [fecha3, fecha4]]))
+# print(is_new_event_overlapping_existing([fecha, otra], [[fecha1, fecha2], [fecha3, fecha4]]))
 
 
 def find_available_time_slot():

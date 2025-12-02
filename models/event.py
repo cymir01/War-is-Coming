@@ -2,30 +2,19 @@ from datetime import datetime
 
 class Event:
     def __init__(self, start: datetime, end: datetime, name: str, resources: list = None, description: str = ""):
-        """
-        Constructor corregido - los parámetros deben coincidir con la instanciación
-        """
         self.start = start
         self.end = end
         self.name = name
-        self.resources = resources or []  # Valor por defecto si es None
+        self.resources = resources or []  #valor por defecto si es None
         self.description = description
 
     def get_period(self):
-        """Retorna el período completo del evento"""
-        return [self.start, self.end]  # ✅ CORREGIDO: [start, end]
+        return [self.start, self.end]
 
     def get_duration(self):
-        """Calcula la duración del evento"""
         return self.end - self.start
 
-    def get_duration_hours(self):
-        """Duración en horas"""
-        duration = self.get_duration()
-        return duration.total_seconds() / 3600
-
-    def to_dict(self):
-        """Convierte el evento a diccionario para guardar en JSON"""
+    def to_dict(self): #convierte el evento a diccionario para guardar en JSON
         return {
             'start': self.start.isoformat(),
             'end': self.end.isoformat(),
@@ -34,7 +23,7 @@ class Event:
             'description': self.description
         }
 
-    @classmethod
+    @classmethod # https://www.geeksforgeeks.org/python/classmethod-in-python/ explicacion de los class methods
     def from_dict(cls, data):
         """Crea un Event desde diccionario (para cargar desde JSON)"""
         return cls(
@@ -45,10 +34,8 @@ class Event:
             description=data.get('description', '')
         )
 
-# ✅ INSTANCIACIÓN CORRECTA:
-start = datetime(2025, 11, 15, 10, 30, 0)  # ✅ Sin datetime.datetime
+start = datetime(2025, 11, 15, 10, 30, 0)
 end = datetime(2025, 11, 20, 14, 45, 0)
-evento1 = Event(start, end, 'Battle of Winterfell', ['Stark Army', 'Robb Stark'], 'Important battle')  # ✅ Parámetros correctos
+evento1 = Event(start, end, 'Battle of Winterfell', ['Stark Army', 'Robb Stark'], 'Important battle')
 
-print(evento1.name)  # ✅ Funciona
-print(f"Duración: {evento1.get_duration_hours():.1f} horas")  # ✅ Nuevo método
+print(evento1.name, evento1.end)
