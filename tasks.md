@@ -1,6 +1,5 @@
 # ToDo:
 - 4.Requisitos Técnicos y Entregables
-- Cada función debería llevar un comentario que explique con concisión lo que hace. El comentario debería aparecer inmediatamente después de la definición de la función y emplear el formato de la cadena de documentación
 - hacer menus de seleccion siempre que pueda para que el usuario no tenga que ingresar manualmente la informacion y evitar errores y asi tener que gestionar menos errores... si no usar un while True como en main para que itere hasta que se ingrese bien la info, por ejemplo con las fechas
 - Función que compare un evento con una lista de eventos y vea si se interesctan
 - Agregar a Evento el atributo tipo de evento y además agregarle ID para manejar la info más cómodo
@@ -9,6 +8,7 @@
 - Leer el capítulo sobre trabajo con archivos en el libro de Python
 - Hacer que las fechas se ingresen por año, mes y dia... ver como mejorar la visual de esa seccion en main
 - Terminar de hacer el validador de fechas personalizado para el continente de Poniente
+- agregar estado 
 
 ## Restricciones
 - poner una restriccion temporal. Como en Google Calendar, cuando el usuario intente crear un evento con una fecha anterior a la fecha actual el programa debe alertar el error y pedi rde nuevo la fecha (esto tiene que ver con lo que escribi en la linea 5 sobre gestioanr el ingreso de fechas con un while true)

@@ -39,7 +39,6 @@ while True:
         
         # if valid_date(year, month, day):
 
-
         console.print("[bold cyan]Ingrese la fecha final del evento: [/bold cyan]\n")
         day = int(input("Día: "))
         month = int(input("Mes: "))

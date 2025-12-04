@@ -16,11 +16,12 @@ class Event:
 
     def to_dict(self): #convierte el evento a diccionario para guardar en JSON
         return {
+            'name': self.name,
+            'description': self.description,
             'start': self.start.isoformat(),
             'end': self.end.isoformat(),
-            'name': self.name,
             'resources': self.resources,
-            'description': self.description
+            'estado': 'planificado'
         }
 
     @classmethod # https://www.geeksforgeeks.org/python/classmethod-in-python/ explicacion de los class methods

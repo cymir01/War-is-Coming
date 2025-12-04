@@ -105,9 +105,7 @@ Cada "General" tiene límite de unidades que puede comandar efectivamente
 
 # Westerosi Common Calendar
 
-first - twelfth turn
-
-Esta página expone de forma resumida los eventos acaecidos desde la Conquista de Aegon I Targaryen, el punto desde el cual los maestres y eruditos han asignado el comienzo del calendario ponienti. Todas las fechas posteriores a este punto se designan con la sigla d.C. (después de la Conquista), mientras que las anteriores reciben la sigla a.C. (antes de la Conquista).
+En Westeros, el año está dividido en 12 meses, llamados lunas, de 30 dás cada uno formando un total de 360 días. La Conquista de Aegon I Targaryen es el punto desde el cual los maestres y eruditos han asignado el comienzo del calendario ponienti. Todas las fechas posteriores a este punto se designan con la sigla DC (después de la Conquista), mientras que las anteriores reciben la sigla AC (antes de la Conquista). Según la tradición, la historia conocida de Poniente se remonta a más de 12 000 años y sus maestres especulan que el mundo mismo puede tener 40 000 años (o más, posiblemente quinientos mil años o más). El planificador de Westeros se extiende desde el periodo conocido como La llegada de los Ándalos que ocurre aproximadamente en el año 6 000 AC, hasta el 302 DC que es la fecha hasta la que llegan los libros publicados actualmente
 
 ### **Estructura del Calendario**
 Formato: AÑO-MES-DÍA

@@ -44,26 +44,19 @@ def add_event(name, description, start, end, resources_ids=None): #instanciar la
     #asegurar que start y end sean objetos datetime
 
     event = Event(
-
+        start=start,
+        end=end,
+        name=name,
+        resources=resources_ids or [],
+        description=description
     )
-    event.to_dcit()
 
-    event = {
-        'id': NEXT_EVENT_ID,
-        'name': name,
-        'description': description,
-        'start': start.isoformat() if isinstance(start, datetime) else start,
-        'end': end.isoformat() if isinstance(end, datetime) else end,
-        'resources_ids': resources_ids or [],
-        'estado': 'planificado',
-        'tipo': 'batalla'
-    }
-    
+    event.to_dict()
+
     EVENTS[NEXT_EVENT_ID] = event
     print(f"Evento '{name}' agregado (ID: {NEXT_EVENT_ID})\n")
     NEXT_EVENT_ID += 1
     save_data()
-    return event
 
 def list_events():
     return EVENTS.copy()

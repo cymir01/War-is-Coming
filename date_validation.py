@@ -1,23 +1,13 @@
 from datetime import datetime
 
-def valid_date(year, month, day):
+def valid_date_westeros(year, month, day):
     valid = False
 
-    if month == 2:
-        if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0):
-            valid = day > 0 and day <= 29
-        else:
-            valid = day > 0 and day <= 28
-    else:
-        if month <= 7:
-            if day <= 30 + month % 2 and day > 0:
-                valid = True
-        elif month <= 12:
-            if day <= 31 - (month % 2) and day > 0:
-                valid = True
+    if 1 < month <= 12 and 1 < day <= 30 and:
+        valid = True
+    if year 
+        
     return valid
-
-# print(valid_date(2000, 2, 30))
 
 def overlap(intervalo_1, intervalo_2): #intervalos son listas con dos elementos (fecha inicio y de fin)
     '''
