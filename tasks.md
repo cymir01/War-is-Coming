@@ -5,7 +5,6 @@
 - Agregar a Evento el atributo tipo de evento y además agregarle ID para manejar la info más cómodo
 - Terminar el capítulo sobre OOP del libro de Python
 - Estudiarme la cp08 de pro
-- Leer el capítulo sobre trabajo con archivos en el libro de Python
 - Hacer que las fechas se ingresen por año, mes y dia... ver como mejorar la visual de esa seccion en main
 - Terminar de hacer el validador de fechas personalizado para el continente de Poniente
 - agregar estado 
