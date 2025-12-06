@@ -16,7 +16,7 @@ console.print(panel)
 nombre = Prompt.ask("¿Cuál es tu nombre, lord?")
 
 console.print("--- Gestor de Eventos ---")
-
+#!perimitir que los minutos tengan valor por defecto " "
 while True:  
     cmd = console.input("[bold cyan]Acción (agregar, listar, salir): [/bold cyan]\n")
     if cmd == 'agregar':
@@ -26,7 +26,14 @@ while True:
             desc = console.input("Descripción del evento: \n")
         
         console.print("\n[bold cyan]Era histórica del evento:[/bold cyan]")
-        era = Prompt.ask("¿Antes de la Conquista (AC) o Después de la Conquista (DC)?", choices=["AC", "DC", "ac", "dc"])
+        
+        while True:
+            era_input = Prompt.ask("¿Antes de la Conquista (AC) o Después de la Conquista (DC)?")
+            era = era_input.strip().upper()
+            if era in ("AC", "DC"):
+                break
+            else:
+                console.print("[red]Por favor, ingrese 'AC' o 'DC' (no distingue mayúsculas/minúsculas).[/red]")
         
         console.print("\n[bold cyan]Ingrese la fecha y hora inicial del evento:[/bold cyan]")
 
