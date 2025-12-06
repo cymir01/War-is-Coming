@@ -7,7 +7,7 @@ from rich.prompt import Prompt
 from rich.text import Text
 from core import add_event, list_events
 from rich.prompt import Confirm
-from date_validation import valid_date
+from date_validation import valid_date_westeros
 
 console = Console()
 
@@ -20,7 +20,7 @@ tabla.add_column("Casa", style="cyan")
 tabla.add_column("Líder", style="magenta")
 tabla.add_column("Tropas", justify="right")
 tabla.add_row("Stark", "Robb Stark", "20,000")
-tabla.add_row("Lannister", "Tywin Lannister", "35,00\0")
+tabla.add_row("Lannister", "Tywin Lannister", "35,000")
 console.print(tabla)
 
 console.print("--- Gestor de Tareas ---")
@@ -29,22 +29,50 @@ while True:
     cmd = console.input("[bold cyan]Acción (agregar, listar, salir): [/bold cyan]\n")
     if cmd == 'agregar':
         name = console.input("Nombre del evento: \n")
-        if Confirm.ask("Desea agregar descripción al evento? \n"):
+        desc = " "
+        if Confirm.ask("Desea agregar descripción al evento? \n", default=False):
             desc = console.input("Descripción del evento: \n")
-
-        console.print("[bold cyan]Ingrese la fecha inicial del evento: [/bold cyan]\n")
-        day = int(input("Día: "))
-        month = int(input("Mes: "))
-        year = int(input("Año: "))
         
-        # if valid_date(year, month, day):
+        console.print("\n[bold cyan]Ingrese la fecha y hora inicial del evento:[/bold cyan]")
 
-        console.print("[bold cyan]Ingrese la fecha final del evento: [/bold cyan]\n")
-        day = int(input("Día: "))
-        month = int(input("Mes: "))
-        year = int(input("Año: "))
+        while True:
+            try:
+                day_start = int(console.input("Día: "))
+                month_start = int(console.input("Mes: "))
+                year_start = int(console.input("Año: "))
+                hours_start = int(console.input("Hora: "))
+                minutes_start = int(console.input("Minutos: "))
 
+                if valid_date_westeros(year_start, month_start, day_start):
+                    break
+                else:
+                    console.print("[red]Fecha inválida. Intente de nuevo[/red]")
+            except ValueError:
+                console.print("[red]Error: Debe ingresar números válidos.[/red]")
+
+        start = datetime(year_start, month_start, day_start, hours_start, minutes_start)
+
+        console.print("\n[bold cyan]Ingrese la fecha y hora final del evento:[/bold cyan]")
+        
+        while True:
+            try:
+                day_end = int(console.input("Día: "))
+                month_end = int(console.input("Mes: "))
+                year_end = int(console.input("Año: "))
+                hours_end = int(console.input("Hora: "))
+                minutes_end = int(console.input("Minutos: "))
+                
+                if valid_date_westeros(year_end, month_end, day_end):
+                    break
+                else:
+                    console.print("[red]Fecha inválida. Intente de nuevo.[/red]")
+            except ValueError:
+                console.print("[red]Error: Debe ingresar números válidos.[/red]")
+        
+        end = datetime(year_end, month_end, day_end, hours_end, minutes_end)
+        
         add_event(name=name, description=desc, start=start, end=end)
+
     elif cmd == 'listar':
         events = list_events()
         if not events: 

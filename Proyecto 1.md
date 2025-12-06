@@ -66,7 +66,7 @@ La interacción con tu aplicación puede ser a través de una **interfaz de cons
 - **Listar** todos los eventos planificados.
 - **Agregar** un nuevo evento, invocando toda la lógica de validación.
 - **Eliminar** un evento existente, liberando sus recursos para que queden disponibles.
-- **Ver Detalles** de un evento específico (qué recursos usa, a qué hora) o de un recurso (cuál es su agenda).
+- 
 
 ### Persistencia de Datos
 

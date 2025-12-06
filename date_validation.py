@@ -1,12 +1,20 @@
 from datetime import datetime
 
-def valid_date_westeros(year, month, day):
+def valid_date_westeros(year, month, day): 
+    #!me di cuenta de que tiene que validar el año segun si es AC o DC
+    #!AC hay 6000 años y DC hay 302
     valid = False
 
-    if 1 < month <= 12 and 1 < day <= 30 and:
+    if 1 < month <= 12:
         valid = True
-    if year 
-        
+        print("El mes ingresado es inválido")
+    if 1 < day <= 30:
+        valid = True
+        print("El dia es invalido")
+    if 1 <= year <= 6000:
+        valid = True
+        print("Año inválido")
+    
     return valid
 
 def overlap(intervalo_1, intervalo_2): #intervalos son listas con dos elementos (fecha inicio y de fin)
