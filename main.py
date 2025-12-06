@@ -15,23 +15,18 @@ panel = Panel(Text("¡War is Coming!", justify="center"), style="deep_sky_blue4"
 console.print(panel)
 nombre = Prompt.ask("¿Cuál es tu nombre, lord?")
 
-tabla = Table(title="Ejércitos de Poniente")
-tabla.add_column("Casa", style="cyan")
-tabla.add_column("Líder", style="magenta")
-tabla.add_column("Tropas", justify="right")
-tabla.add_row("Stark", "Robb Stark", "20,000")
-tabla.add_row("Lannister", "Tywin Lannister", "35,000")
-console.print(tabla)
-
-console.print("--- Gestor de Tareas ---")
+console.print("--- Gestor de Eventos ---")
 
 while True:  
     cmd = console.input("[bold cyan]Acción (agregar, listar, salir): [/bold cyan]\n")
     if cmd == 'agregar':
         name = console.input("Nombre del evento: \n")
         desc = " "
-        if Confirm.ask("Desea agregar descripción al evento? \n", default=False):
+        if Confirm.ask("Desea agregar descripción al evento? \n"):
             desc = console.input("Descripción del evento: \n")
+        
+        console.print("\n[bold cyan]Era histórica del evento:[/bold cyan]")
+        era = Prompt.ask("¿Antes de la Conquista (AC) o Después de la Conquista (DC)?", choices=["AC", "DC", "ac", "dc"])
         
         console.print("\n[bold cyan]Ingrese la fecha y hora inicial del evento:[/bold cyan]")
 
@@ -43,14 +38,27 @@ while True:
                 hours_start = int(console.input("Hora: "))
                 minutes_start = int(console.input("Minutos: "))
 
-                if valid_date_westeros(year_start, month_start, day_start):
+                if not (1 <= month_start <= 12):
+                    console.print("[red]Mes inválido. Debe estar entre 1 y 12.[/red]")
+                    continue
+                if not (1 <= day_start <= 30):  # Validación básica, datetime validará días específicos
+                    console.print("[red]Día inválido. Debe estar entre 1 y 30.[/red]")
+                    continue
+                if not (0 <= hours_start <= 23):
+                    console.print("[red]Hora inválida. Debe estar entre 0 y 23.[/red]")
+                    continue
+                if not (0 <= minutes_start <= 59):
+                    console.print("[red]Minutos inválidos. Debe estar entre 0 y 59.[/red]")
+                    continue
+
+                start = datetime.datetime(year_start, month_start, day_start, hours_start, minutes_start)
+
+                if valid_date_westeros(year_start):
                     break
                 else:
-                    console.print("[red]Fecha inválida. Intente de nuevo[/red]")
-            except ValueError:
-                console.print("[red]Error: Debe ingresar números válidos.[/red]")
-
-        start = datetime(year_start, month_start, day_start, hours_start, minutes_start)
+                    console.print("[red]Fecha inválida según el calendario de Poniente. Intente de nuevo.[/red]")
+            except ValueError as e:
+                console.print(f"[red]Error de fecha: {str(e)}. Intente de nuevo.[/red]")
 
         console.print("\n[bold cyan]Ingrese la fecha y hora final del evento:[/bold cyan]")
         
@@ -61,16 +69,33 @@ while True:
                 year_end = int(console.input("Año: "))
                 hours_end = int(console.input("Hora: "))
                 minutes_end = int(console.input("Minutos: "))
+
+                if not (1 <= month_end <= 12):
+                    console.print("[red]Mes inválido. Debe estar entre 1 y 12.[/red]")
+                    continue
+                if not (1 <= day_end <= 30):
+                    console.print("[red]Día inválido. Debe estar entre 1 y 30.[/red]")
+                    continue
+                if not (0 <= hours_end <= 23):
+                    console.print("[red]Hora inválida. Debe estar entre 0 y 23.[/red]")
+                    continue
+                if not (0 <= minutes_end <= 59):
+                    console.print("[red]Minutos inválidos. Debe estar entre 0 y 59.[/red]")
+                    continue
                 
-                if valid_date_westeros(year_end, month_end, day_end):
+                end = datetime.datetime(year_end, month_end, day_end, hours_end, minutes_end)
+
+                if valid_date_westeros(year_end):
                     break
                 else:
-                    console.print("[red]Fecha inválida. Intente de nuevo.[/red]")
-            except ValueError:
-                console.print("[red]Error: Debe ingresar números válidos.[/red]")
-        
-        end = datetime(year_end, month_end, day_end, hours_end, minutes_end)
-        
+                    console.print("[red]Fecha inválida según el calendario de Poniente. Intente de nuevo.[/red]")
+            except ValueError as e:
+                console.print(f"[red]Error de fecha: {str(e)}. Intente de nuevo.[/red]")
+
+        if end <= start:
+            console.print("[red]Error: La fecha final debe ser posterior a la fecha inicial.[/red]")
+            continue
+
         add_event(name=name, description=desc, start=start, end=end)
 
     elif cmd == 'listar':
@@ -99,3 +124,12 @@ fecha3 = datetime.datetime(2000, 11, 1, 12, 00, 00)
 fecha4 = datetime.datetime(2010, 5, 10, 12, 00, 00)
 
 print(overlap([fecha1, fecha2], [fecha3, fecha4]))
+
+#!usar estas tablas para listar el inventario de recursos y eventos y demas
+# tabla = Table(title="Ejércitos de Poniente")
+# tabla.add_column("Casa", style="cyan")
+# tabla.add_column("Líder", style="magenta")
+# tabla.add_column("Tropas", justify="right")
+# tabla.add_row("Stark", "Robb Stark", "20,000")
+# tabla.add_row("Lannister", "Tywin Lannister", "35,000")
+# console.print(tabla)
