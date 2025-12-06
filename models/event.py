@@ -1,12 +1,14 @@
 from datetime import datetime
 
 class Event:
-    def __init__(self, start: datetime, end: datetime, name: str, resources: list = None, description: str = ""):
+    def __init__(self, start: datetime, end: datetime, era: str,name: str, status: str, resources: list = None, description: str = ""):
         self.start = start
         self.end = end
+        self.era = era
         self.name = name
         self.resources = resources or []  #valor por defecto si es None
         self.description = description
+        self.status = status
 
     def get_period(self):
         return [self.start, self.end]
@@ -20,8 +22,9 @@ class Event:
             'description': self.description,
             'start': self.start.isoformat(),
             'end': self.end.isoformat(),
+            'era': self.era,
+            'status': self.status,
             'resources': self.resources,
-            'estado': 'planificado'
         }
 
     @classmethod # https://www.geeksforgeeks.org/python/classmethod-in-python/ explicacion de los class methods
