@@ -7,18 +7,19 @@ from rich.prompt import Prompt
 from rich.text import Text
 from core import add_event, list_events
 from rich.prompt import Confirm
-from date_validation import valid_date_westeros
+from date_validation import valid_year_westeros
 
 console = Console()
 
 panel = Panel(Text("¡War is Coming!", justify="center"), style="deep_sky_blue4")
 console.print(panel)
-nombre = Prompt.ask("¿Cuál es tu nombre, lord?")
-
-console.print("--- Gestor de Eventos ---")
+user_name = Prompt.ask("¿Cuál es tu nombre, lord?")
 #!perimitir que los minutos tengan valor por defecto " "
+
+#!mejorar la interfaz para que perimita ejecutar comandos (agregar, listar, salir, eliminar evento)
+#!presionando ciertas teclas (a, l, s, e)
 while True:  
-    cmd = console.input("[bold cyan]Acción (agregar, listar, salir): [/bold cyan]\n")
+    cmd = console.input(f"[bold cyan]¿Hola {user_name}!, qué acción desea realizar? (agregar, ): [/bold cyan]\n")
     if cmd == 'agregar':
         name = console.input("Nombre del evento: \n")
         desc = " "
@@ -28,12 +29,12 @@ while True:
         console.print("\n[bold cyan]Era histórica del evento:[/bold cyan]")
         
         while True:
-            era_input = Prompt.ask("¿Antes de la Conquista (AC) o Después de la Conquista (DC)?")
+            era_input = Prompt.ask("¿Antes de la Conquista (AC) o después de la Conquista (DC)?")
             era = era_input.strip().upper()
             if era in ("AC", "DC"):
                 break
             else:
-                console.print("[red]Por favor, ingrese 'AC' o 'DC' (no distingue mayúsculas/minúsculas).[/red]")
+                console.print("[red]Por favor, ingrese 'AC' o 'DC'.[/red]")
         
         console.print("\n[bold cyan]Ingrese la fecha y hora inicial del evento:[/bold cyan]")
 
@@ -60,7 +61,7 @@ while True:
 
                 start = datetime.datetime(year_start, month_start, day_start, hours_start, minutes_start)
 
-                if valid_date_westeros(year_start):
+                if valid_year_westeros(year_start, era):
                     break
                 else:
                     console.print("[red]Fecha inválida según el calendario de Poniente. Intente de nuevo.[/red]")
@@ -92,16 +93,20 @@ while True:
                 
                 end = datetime.datetime(year_end, month_end, day_end, hours_end, minutes_end)
 
-                if valid_date_westeros(year_end):
+                if valid_year_westeros(year_end, era):
                     break
                 else:
                     console.print("[red]Fecha inválida según el calendario de Poniente. Intente de nuevo.[/red]")
             except ValueError as e:
                 console.print(f"[red]Error de fecha: {str(e)}. Intente de nuevo.[/red]")
-
+        
+        #!no me interesa que itere de nuevo desde el principio, sino solo a partir de la parte en la que agrega las fechas
         if end <= start:
             console.print("[red]Error: La fecha final debe ser posterior a la fecha inicial.[/red]")
             continue
+
+        #!agregar aqui la llamada a la funcion is_new_event_overlapping_existing para ver si el evento se solapa
+        #!con los guardados en el json
 
         add_event(name=name, description=desc, start=start, end=end)
 
@@ -120,17 +125,10 @@ while True:
             
             console.print(table)
     elif cmd == 'salir': 
-        console.print("Adios") 
+        console.print(f"Adiós {user_name}!") 
         break
     else:
         console.print("Comando no reconocido\n")
-
-fecha1 = datetime.datetime(2000, 2, 10, 12, 00, 00)
-fecha2 = datetime.datetime(2000, 10, 10, 12, 30, 00)
-fecha3 = datetime.datetime(2000, 11, 1, 12, 00, 00)
-fecha4 = datetime.datetime(2010, 5, 10, 12, 00, 00)
-
-print(overlap([fecha1, fecha2], [fecha3, fecha4]))
 
 #!usar estas tablas para listar el inventario de recursos y eventos y demas
 # tabla = Table(title="Ejércitos de Poniente")
