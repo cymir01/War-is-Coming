@@ -33,18 +33,18 @@ while True:
                 break
             else:
                 console.print("[red]Por favor, ingrese 'AC' o 'DC'.[/red]")
-    
+        #!ver por que ocurren problemas al usar type=int, hacer varias pruebas e investigar
         while True:
             console.print("\n[bold cyan]Fecha y hora de inicio del evento:[/bold cyan]")
             try:
-                year_s = int(Prompt.ask("Año", default=0)) 
-                #!revisar bien por que se produce el bucle infinito en la linea 40 al pone type solo o con default
+                year_s = int(Prompt.ask("Año")) 
+                #!revisar bien por que se produce el bucle infinito en la linea 40 al poner type=int solo o con default=0
                 month_s = int(Prompt.ask("Mes [1-12]"))
                 day_s = int(Prompt.ask("Día [1-30]"))
-                hour_s = int(Prompt.ask("Hora [0-23]", default=0, type=int))
-                minute_s = int(Prompt.ask("Minutos [0-59]", default=0, type=int))
+                hour_s = int(Prompt.ask("Hora [0-23]", default=0))
+                minute_s = int(Prompt.ask("Minutos [0-59]", default=0))
             except Exception:
-                console.print("[red]❌ Entrada inválida. Use solo números.[/red]")
+                console.print("[red]Entrada inválida. Use solo números.[/red]")
                 continue
 
             console.print("\n[bold cyan]Fecha y hora de fin del evento:[/bold cyan]")
@@ -55,7 +55,7 @@ while True:
                 hour_e = int(Prompt.ask("Hora [0-23]", default=0))
                 minute_e = int(Prompt.ask("Minutos [0-59]", default=0))
             except Exception:
-                console.print("[red]❌ Entrada inválida. Use solo números.[/red]")
+                console.print("[red]Entrada inválida. Use solo números.[/red]")
                 continue
             
             ok_s, msg_s, start = validate_datetime_input(year_s, month_s, day_s, hour_s, minute_s, era)
@@ -70,11 +70,11 @@ while True:
         
             #!no me interesa que itere de nuevo desde el principio, sino solo a partir de la parte en la que agrega las fechas
             if end <= start:
-                console.print("[red]❌ La fecha final debe ser posterior a la inicial.[/red]")
+                console.print("[red]La fecha final debe ser posterior a la inicial.[/red]")
                 continue  # ← vuelve a pedir SOLO las fechas
             break
         add_event(name=name, description=desc, start=start, end=end, era=era)
-        console.print(f"[green]✅ Evento '{name}' agregado.[/green]")
+        console.print(f"[green]Evento '{name}' agregado.[/green]")
 
         #!agregar aqui la llamada a la funcion is_new_event_overlapping_existing para ver si el evento se solapa con los guardados en el json
 

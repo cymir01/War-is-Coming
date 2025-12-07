@@ -53,9 +53,12 @@ def add_event(name, description, start, end, era, status=None, resources_ids=Non
         description=description
     )
 
-    event.to_dict()
+    # event.to_dict()... no debe ir aqui fuera debe guardarse en EVENTS como 
+    # ocurre en la linea 59, si no el programa lanza:
+    # TypeError: Object of type Event is not JSON serializable porque intenta
+    #guardar una instancia de clase en lugar de un 
 
-    EVENTS[NEXT_EVENT_ID] = event
+    EVENTS[NEXT_EVENT_ID] = event.to_dict() 
     print(f"Evento '{name}' agregado (ID: {NEXT_EVENT_ID})\n")
     NEXT_EVENT_ID += 1
     save_data()

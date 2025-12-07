@@ -1,22 +1,3 @@
 {
     "events": {
-        "1": {
-            "id": 1,
-            "name": "BAtalla",
-            "start": "2026/4/4",
-            "end": "2056/4/4",
-            "resources_ids": [],
-            "estado": "planificado",
-            "tipo": "batalla"
-        },
-        "2": {
-            "id": 2,
-            "name": "aaa",
-            "description": "ddd",
-            "start": "2045/3/3",
-            "end": "2050/4/4",
-            "resources_ids": [],
-            "estado": "planificado",
-            "tipo": "batalla"
-        },
-        "3": 
+        "1": 
