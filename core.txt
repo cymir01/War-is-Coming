@@ -38,7 +38,7 @@ def load_data():
     except Exception as e:
         print(f"Error al cargar datos: {e}")
 
-def add_event(name, description, start, end, era, status=None, resources_ids=None): #instanciar la clase Event aqui
+def add_event(name, description, start, end, era, status, resources_ids=None): #instanciar la clase Event aqui
     global NEXT_EVENT_ID
     from datetime import datetime
     #asegurar que start y end sean objetos datetime

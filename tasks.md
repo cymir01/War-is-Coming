@@ -6,7 +6,6 @@ Ver como unirlas (un game manager)
 
 ## Programming part
 Standard Colors — Rich 14.1.0 documentation https://rich.readthedocs.io/en/stable/appendix/colors.html
-Turtle Programming in Python - GeeksforGeeks https://share.google/GovFICQbQvXuQfdPr
 
 ### Revisar:
 Top 20 Python Libraries To Know in 2025 - GeeksforGeeks https://share.google/XELxyd3gcEOty7XBY

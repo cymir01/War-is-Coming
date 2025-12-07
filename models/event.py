@@ -1,7 +1,7 @@
 from datetime import datetime
 
 class Event:
-    def __init__(self, start: datetime, end: datetime, era: str,name: str, status: str, resources: list = None, description: str = ""):
+    def __init__(self, start: datetime, end: datetime,name: str, era: str, status: str, resources: list = None, description: str = ""):
         self.start = start
         self.end = end
         self.era = era

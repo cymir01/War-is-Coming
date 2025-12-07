@@ -18,9 +18,5 @@
             "resources_ids": [],
             "estado": "planificado",
             "tipo": "batalla"
-        }
-    },
-    "resources": {},
-    "next_event_id": 3,
-    "next_resource_id": 1
-}
+        },
+        "3": 

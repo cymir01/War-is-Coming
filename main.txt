@@ -38,8 +38,8 @@ while True:
             console.print("\n[bold cyan]Fecha y hora de inicio del evento:[/bold cyan]")
             try:
                 year_s = int(Prompt.ask("Año", type=int))
-                month_s = int(Prompt.ask("Mes [1-12]"))
-                day_s = int(Prompt.ask("Día [1-30]"))
+                month_s = int(Prompt.ask("Mes [1-12]", type=int))
+                day_s = int(Prompt.ask("Día [1-30]", type=int))
                 hour_s = int(Prompt.ask("Hora [0-23]", default=0, type=int))
                 minute_s = int(Prompt.ask("Minutos [0-59]", default=0, type=int))
             except Exception:
@@ -48,11 +48,11 @@ while True:
 
             console.print("\n[bold cyan]Fecha y hora de fin del evento:[/bold cyan]")
             try:
-                year_e = int(Prompt.ask("Año"))
-                month_e = int(Prompt.ask("Mes [1-12]"))
-                day_e = int(Prompt.ask("Día [1-30]"))
-                hour_e = int(Prompt.ask("Hora [0-23]", default=0))
-                minute_e = int(Prompt.ask("Minutos [0-59]", default=0))
+                year_e = int(Prompt.ask("Año", type=int))
+                month_e = int(Prompt.ask("Mes [1-12]", type=int))
+                day_e = int(Prompt.ask("Día [1-30]", type=int))
+                hour_e = int(Prompt.ask("Hora [0-23]", default=0, type=int))
+                minute_e = int(Prompt.ask("Minutos [0-59]", default=0, type=int))
             except Exception:
                 console.print("[red]❌ Entrada inválida. Use solo números.[/red]")
                 continue
