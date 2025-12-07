@@ -37,7 +37,8 @@ while True:
         while True:
             console.print("\n[bold cyan]Fecha y hora de inicio del evento:[/bold cyan]")
             try:
-                year_s = int(Prompt.ask("Año", type=int))
+                year_s = int(Prompt.ask("Año", default=0)) 
+                #!revisar bien por que se produce el bucle infinito en la linea 40 al pone type solo o con default
                 month_s = int(Prompt.ask("Mes [1-12]"))
                 day_s = int(Prompt.ask("Día [1-30]"))
                 hour_s = int(Prompt.ask("Hora [0-23]", default=0, type=int))
