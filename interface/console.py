@@ -8,6 +8,7 @@ from rich.text import Text
 from core import add_event, list_events
 from rich.prompt import Confirm
 from interface.command_add_event import command_add
+from interface.command_view_details import command_view_details
 
 console = Console()
 
@@ -16,14 +17,13 @@ console.print(panel)
 user_name = Prompt.ask("¿Cuál es tu nombre, lord?")
 #!perimitir que los minutos tengan valor por defecto " "
 
-#!mejorar la interfaz para que perimita ejecutar comandos (agregar, listar, salir, eliminar evento)
-#!presionando ciertas teclas (a, l, s, e)
+#!mejorar la interfaz para que perimita ejecutar comandos (agregar, listar, salir, eliminar evento) presionando ciertas teclas (a, l, s, e)
+#!agregar los siguientes comandos: agregar, listar + ver detalles (quiza usando el id como comando (ej: 5 para ver detalles de evento 5)), salir, eliminar evento
 while True:  
     cmd = console.input(f"[bold cyan]¿Hola {user_name}!, qué acción desea realizar? (agregar, ): [/bold cyan]\n")
-    if cmd == 'a':
+    if cmd == 'a' or 'A':
         command_add()
-        console.print(f"[green]Evento '{name}' agregado.[/green]")
-    elif cmd == 'l':
+    elif cmd == 'l' or 'L':
         events = list_events()
         if not events: 
             console.print("[yellow]Todavía no hay eventos programados[/yellow]") 
@@ -33,17 +33,22 @@ while True:
             table.add_column("Descripción", style="magenta") 
             table.add_column("Estado", style="green")  
             
+            #!agregar mas info de los eventos a la tabla
             for id, event in events.items(): 
-                table.add_row(str(id), event['desc'], events['estado'])  
+                table.add_row(str(id), event['desc'], events['estado'])
             
             console.print(table)
+            cmd_input = console.input(f"[bold cyan]Si desea ver detalles de un evento específico presione la tecla V[/bold cyan]\n")
+            if cmd_input == 'v' or 'V':
+                command_view_details()
 
-    elif cmd == 's': 
+
+    elif cmd == 's' or 'S': 
         console.print(f"Adiós {user_name}!") 
         break
 
     else:
-        console.print("Comando no reconocido\n")
+        console.print("Comando no reconocido. Vuelva a intentarlo\n")
 
 #!usar estas tablas para listar el inventario de recursos y eventos y demas
 # tabla = Table(title="Ejércitos de Poniente")

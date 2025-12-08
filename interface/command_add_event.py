@@ -6,6 +6,7 @@ from rich.prompt import Prompt
 from rich.text import Text
 from core import add_event, list_events
 from rich.prompt import Confirm
+from date_validation import is_new_event_overlapping_existing
 
 def command_add():
     console = Console()
@@ -60,7 +61,10 @@ def command_add():
         if end <= start:
             console.print("[red]La fecha final debe ser posterior a la inicial.[/red]")
             continue  # ← vuelve a pedir SOLO las fechas
+
+        #!agregar aqui la llamada a la funcion is_new_event_overlapping_existing para ver si el evento se solapa con los guardados en el json
+        is_new_event_overlapping_existing()
+        
         break
     add_event(name=name, description=desc, start=start, end=end, era=era)
-
-    #!agregar aqui la llamada a la funcion is_new_event_overlapping_existing para ver si el evento se solapa con los guardados en el json
+    console.print(f"[green]Evento '{name}' agregado[/green]")

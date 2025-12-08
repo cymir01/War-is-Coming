@@ -33,6 +33,7 @@ def validate_datetime_input(year, month, day, hours, minutes, era):
     except ValueError as e:
         return False, f"[red]Error de fecha: {str(e)}. Intente de nuevo[/red]", None
 
+#!invetigar por que overlap como lo escribi no cubre todos los casos
 def overlap(intervalo_1, intervalo_2): #intervalos son listas con dos elementos (fecha inicio y de fin)
     '''
     esta funcion devuelve True si se solapan los intervalos de tiempo y False en caso contrario

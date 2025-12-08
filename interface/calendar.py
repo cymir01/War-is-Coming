@@ -5,7 +5,7 @@ from rich.text import Text
 from datetime import datetime, timedelta
 import calendar
 from typing import List, Optional
-from models.evento import Evento
+from models.event import Event
 
 console = Console()
 

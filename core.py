@@ -70,3 +70,5 @@ def list_resources():
     return RESOURCES.copy()
 
 load_data()
+
+print(list_events())
