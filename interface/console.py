@@ -7,6 +7,7 @@ from rich.prompt import Prompt
 from rich.text import Text
 from core import add_event, list_events
 from rich.prompt import Confirm
+from interface.command_add_event import command_add
 
 console = Console()
 
@@ -20,7 +21,8 @@ user_name = Prompt.ask("¿Cuál es tu nombre, lord?")
 while True:  
     cmd = console.input(f"[bold cyan]¿Hola {user_name}!, qué acción desea realizar? (agregar, ): [/bold cyan]\n")
     if cmd == 'a':
-        
+        command_add()
+        console.print(f"[green]Evento '{name}' agregado.[/green]")
     elif cmd == 'l':
         events = list_events()
         if not events: 
