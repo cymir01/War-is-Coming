@@ -1,12 +1,12 @@
-from date_validation import overlap
-from date_validation import validate_datetime_input
+from services.date_validation import overlap
+from services.date_validation import validate_datetime_input
 from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.text import Text
-from core import add_event, list_events
+from services.core import add_event, list_events
 from rich.prompt import Confirm
-from date_validation import is_new_event_overlapping_existing
+from services.date_validation import is_new_event_overlapping_existing
 
 def command_add():
     console = Console()
@@ -34,7 +34,7 @@ def command_add():
             hour_s = int(Prompt.ask("Hora [0-23]", default=0))
             minute_s = int(Prompt.ask("Minutos [0-59]", default=0))
         except Exception:
-            console.print("[red]Entrada inválida. Use solo números.[/red]")
+            console.print("[red]Entrada inválida. Use solo números[/red]")
             continue
 
         console.print("\n[bold cyan]Fecha y hora de fin del evento:[/bold cyan]")

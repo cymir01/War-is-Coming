@@ -1,11 +1,11 @@
-from date_validation import overlap
-from date_validation import validate_datetime_input
+from services.date_validation import overlap
+from services.date_validation import validate_datetime_input
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.text import Text
-from core import add_event, list_events
+from services.core import add_event, list_events
 from rich.prompt import Confirm
 from interface.command_add_event import command_add
 from interface.command_view_details import command_view_details
