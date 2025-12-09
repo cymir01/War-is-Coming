@@ -35,7 +35,7 @@ while True:
             
             #!agregar mas info de los eventos a la tabla
             for id, event in events.items(): 
-                table.add_row(str(id), event['desc'], events['estado'])
+                table.add_row(str(id), event['desc'], event['estado'])
             
             console.print(table)
             cmd_input = console.input(f"[bold cyan]Si desea ver detalles de un evento específico presione la tecla V[/bold cyan]\n")
