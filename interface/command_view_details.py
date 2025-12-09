@@ -15,23 +15,19 @@ console = Console()
 #!usar los ids de los eventos para mostrar los detalles de los eventos usandolos de comando
 def command_view_details():
     events = list_events()
-    cmd = console.input("Introduzca el ID del evento para mostrar los detalles")
     while True:
-        try:
-            if cmd in events:
-                table = Table(title=f"Detalles del evento número {cmd}")
-                table.add_column("ID", style="cyan")
-                table.add_column("Descripción", style="magenta")
-                table.add_column("Estado", style="green")
-            else:
-                print("El evento solicitado no existe")
+        cmd = console.input("Introduzca el ID del evento para mostrar los detalles o presione la tecla s para salir")
 
-            for id, event in events.items():
-                if cmd == id:
-                    table.add_row(str(id), event['desc'], event['estado'])
-            
+        if cmd.lower() == 's':
+            break
+
+        if cmd in events:
+            table = Table(title=f"Detalles del evento número {cmd}")
+            table.add_column("ID", style="cyan")
+            table.add_column("Descripción", style="magenta")
+            table.add_column("Estado", style="green")
+            table.add_row(cmd, events['desc'], events['estado']) #!agregar aqui mas info del evento (recursos que usa, etc)
             console.print(table)
-
-        except Exception:
-            print("El evento solicitado no existe. Vuelva a intentarlo")
-        break
+            break
+        else:
+            console.print("[red]El evento solicitado no existe[/red]")

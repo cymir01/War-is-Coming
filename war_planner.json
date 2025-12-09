@@ -1,9 +1,0 @@
-{
-    "events": {
-        "1": {
-            "desc": "tarea",
-            "estado": "pendiente"
-        }
-    },
-    "next_id": 2
-}
