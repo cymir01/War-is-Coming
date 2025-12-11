@@ -27,16 +27,17 @@ class Event:
             'resources': self.resources,
         }
 
-    @classmethod # https://www.geeksforgeeks.org/python/classmethod-in-python/ explicacion de los class methods
-    def from_dict(cls, data):
+    @staticmethod # https://www.geeksforgeeks.org/python/classmethod-in-python/ explicacion de los class methods
+    def from_dict(data):
         """Crea un Event desde diccionario (para cargar desde JSON)"""
-        return cls(
+        event = Event(
             start=datetime.fromisoformat(data['start']),
             end=datetime.fromisoformat(data['end']),
             name=data['name'],
             resources=data.get('resources', []),
             description=data.get('description', '')
         )
+        return event
 
 start = datetime(2025, 11, 15, 10, 30, 0)
 end = datetime(2025, 11, 20, 14, 45, 0)
