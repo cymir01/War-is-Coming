@@ -7,7 +7,7 @@ from rich.text import Text
 from services.core import add_event, list_events
 from rich.prompt import Confirm
 from services.date_validation import is_new_event_overlapping_existing
-
+#incompleto
 def command_add():
     console = Console()
     name = console.input("Nombre del evento: \n")
