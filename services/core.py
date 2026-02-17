@@ -52,8 +52,8 @@ def add_event(name, description, start, end, era, status=None, resources_ids=Non
         resources=resources_ids or [],
         description=description
     )
-
-    # event.to_dict()... no debe ir aqui fuera debe guardarse en EVENTS como 
+    
+    #event.to_dict()... no debe ir aqui fuera debe guardarse en EVENTS como 
     # ocurre en la linea 59, si no el programa lanza:
     # TypeError: Object of type Event is not JSON serializable porque intenta
     #guardar una instancia de clase en lugar de un 

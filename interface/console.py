@@ -10,6 +10,8 @@ from rich.prompt import Confirm
 from interface.command_add_event import command_add
 from interface.command_view_details import command_view_details
 
+#! agregar en la interfaz principal como funciones independientes la de agregar evento por un lado, listar los eventos existentes
+#! por otro, eilimar evento y asi
 console = Console()
 
 panel = Panel(Text("¡War is Coming!", justify="center"), style="deep_sky_blue4")
@@ -41,7 +43,6 @@ while True:
             cmd_input = console.input(f"[bold cyan]Si desea ver detalles de un evento específico presione la tecla V[/bold cyan]\n")
             if cmd_input == 'v' or 'V':
                 command_view_details()
-
 
     elif cmd == 's' or 'S': 
         console.print(f"Adiós {user_name}!") 

@@ -1,11 +1,12 @@
 class Resource:
-    def __init__(self, name, type, house, total_amount, available_amount, status, attributes):
+    def __init__(self, name, id, type, house, total_amount, available_amount, status, attributes):
         self.name = name 
+        self.id = id
         self.type = type
         self.house = house
         self.total_amount = total_amount
         self.available_amount = available_amount
-        self.attributes = attributes #! esto tendria {movilidad, rendimiento}
+        self.attributes = attributes #!esto tendria {movilidad, rendimiento}
         self.status = status
         
 

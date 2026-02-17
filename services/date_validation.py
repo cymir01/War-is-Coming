@@ -1,5 +1,4 @@
 from datetime import datetime
-from rich.prompt import Prompt
 
 def validate_datetime_input(year, month, day, hours, minutes, era):
     """
@@ -38,16 +37,15 @@ def overlap(intervalo_1, intervalo_2): #intervalos son listas con dos elementos 
     '''
     esta funcion devuelve True si se solapan los intervalos de tiempo y False en caso contrario
     '''
-    if intervalo_2[1] > intervalo_1[0] >= intervalo_2[0]:
+    inicio1, fin1 = intervalo_1
+    inicio2, fin2 = intervalo_2
+    return max(inicio1, inicio2) < min(fin1, fin2)
+'''
+if intervalo_2[1] > intervalo_1[0] >= intervalo_2[0]:
         return True
     if intervalo_1[1] > intervalo_2[0] >= intervalo_1[0]:
         return True
     return False
-'''otra via:
-def overlap(intervalo_1, intervalo_2):
-    inicio1, fin1 = intervalo_1
-    inicio2, fin2 = intervalo_2
-    return max(inicio1, inicio2) < min(fin1, fin2)
 '''
 
 def is_new_event_overlapping_existing(new_event, existing_events): 
@@ -76,6 +74,3 @@ def is_new_event_overlapping_existing(new_event, existing_events):
 # minutes = Prompt.ask("minutos")
 
 # ok, msg, start = validate_datetime_input(year_s, month, day, hours, minutes, era) 
-
-def find_available_time_slot():
-    pass

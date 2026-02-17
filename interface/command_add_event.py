@@ -7,7 +7,7 @@ from rich.text import Text
 from services.core import add_event, list_events
 from rich.prompt import Confirm
 from services.date_validation import is_new_event_overlapping_existing
-#incompleto
+
 def command_add():
     console = Console()
     name = console.input("Nombre del evento: \n")
@@ -64,7 +64,6 @@ def command_add():
 
         #!agregar aqui la llamada a la funcion is_new_event_overlapping_existing para ver si el evento se solapa con los guardados en el json
         is_new_event_overlapping_existing()
-        
         break
     add_event(name=name, description=desc, start=start, end=end, era=era)
     console.print(f"[green]Evento '{name}' agregado[/green]")
