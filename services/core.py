@@ -10,12 +10,18 @@ NEXT_RESOURCE_ID = 1
 
 def save_data():
     global EVENTS, RESOURCES, NEXT_EVENT_ID, NEXT_RESOURCE_ID
+    events_dict = {}
+
+    for event_id, event_obj in EVENTS.items():
+        events_dict[event_id] = event_obj.to_dict()
+
     data = {
-        'events': EVENTS,
+        'events': events_dict,
         'resources': RESOURCES,
         'next_event_id': NEXT_EVENT_ID,
         'next_resource_id': NEXT_RESOURCE_ID
     }
+    
     with open(FILEPATH, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
 
@@ -28,7 +34,12 @@ def load_data():
     try:
         with open(FILEPATH, 'r', encoding='utf-8') as f:
             data = json.load(f)
-            EVENTS = data.get('events', {})
+
+            events_dict = data.get('events', {})
+            EVENTS = {}
+            for event_id, event_data in events_dict.items():
+                EVENTS[int(event_id)] = Event.from_dict(event_data)
+
             RESOURCES = data.get('resources', {})
             NEXT_EVENT_ID = data.get('next_event_id', 1)
             NEXT_RESOURCE_ID = data.get('next_resource_id', 1)

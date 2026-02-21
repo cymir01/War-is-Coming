@@ -1,6 +1,6 @@
 class Resource:
     def __init__(self, name, id, type, house, total_amount, available_amount, status, attributes):
-        self.name = name 
+        self.name = name
         self.id = id
         self.type = type
         self.house = house
@@ -8,7 +8,6 @@ class Resource:
         self.available_amount = available_amount
         self.attributes = attributes #!esto tendria {movilidad, rendimiento}
         self.status = status
-        
 
     def to_dict(self) -> dict:
         """convierte el recurso a un diccionario para json"""

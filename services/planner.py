@@ -7,6 +7,7 @@ def find_next_available_time_slot(resource_ids, duration_hours, start_from=None,
 
     for rid in resource_ids:
         if rid not in RESOURCES:
+
             return False, None, f"Recurso {rid} no existe"
     if duration_hours <= 0:
         return False, None, "Duración debe ser positiva"
