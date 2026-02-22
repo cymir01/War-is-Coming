@@ -27,7 +27,7 @@ class Event:
             'resources': self.resources,
         }
 
-    @staticmethod # https://www.geeksforgeeks.org/python/classmethod-in-python/ explicacion de los class methods
+    @staticmethod
     def from_dict(data):
         """Crea un Event desde diccionario (para cargar desde JSON)"""
         event = Event(
