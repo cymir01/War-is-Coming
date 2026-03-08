@@ -3,7 +3,7 @@ class Resource:
         self.name = name
         self.id = id
         self.type = type
-        self.house = house
+        self.house = house #este etributo me sirve para las restricciones entre casas (ej: unidades de infantreria pesada de Stark no se pueden usar junto con unidades de los Lannister)
         self.total_amount = total_amount
         self.available_amount = available_amount
         self.attributes = attributes or {}

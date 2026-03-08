@@ -10,8 +10,6 @@ from rich.prompt import Confirm
 from interface.command_add_event import command_add
 from interface.command_view_details import command_view_details
 
-#! agregar en la interfaz principal como funciones independientes la de agregar evento por un lado, listar los eventos existentes
-#! por otro, eilimar evento y asi
 console = Console()
 
 panel = Panel(Text("¡War is Coming!", justify="center"), style="deep_sky_blue4")

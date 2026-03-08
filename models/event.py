@@ -1,14 +1,15 @@
 from datetime import datetime
 
 class Event:
-    def __init__(self, start: datetime, end: datetime,name: str, era: str, status: str, resources: list = None, description: str = ""):
+    def __init__(self, start: datetime, end: datetime, name: str, type: str, era: str, status: str, resources: list = None, description: str = ""):
         self.start = start
         self.end = end
         self.era = era
         self.name = name
         self.resources = resources or []  #valor por defecto si es None
         self.description = description
-        self.status = status
+        self.status  = status
+        self.type = type
 
     def get_period(self):
         return [self.start, self.end]

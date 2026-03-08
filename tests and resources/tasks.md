@@ -1,3 +1,5 @@
+si los recursos van a tener el atributo casa entonces el usuario, cuando pida el recurso va a tener que establecer tambien de que casa lo quiere (infanteria Lannister o Stark, etc). Si el usuario pide caballeria Lannister e infanteria Stark el programa debe dar error porque hay restriccion entre esas dos casas, puesto que los lannister tienen enemistad con los Stark. El usuario en genral solo puede seleccionar recursos para un mismo evento solo si los recursos pertencen a casa aliadas o a la misma casa. 
+
 # Ideas:
 Idea de Antony:
 Hacer 3 clases basicas que necesites (eventos, recursos y restricciones)
