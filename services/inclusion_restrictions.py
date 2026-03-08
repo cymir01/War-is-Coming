@@ -5,6 +5,7 @@ def event_type_inclusion_restriction(type, resources):
         "Asedio a Castillo": ["Maquinaria de Asedio", "Arqueros", "Infantería Pesada"],
         "Batalla Naval": ["Almirante", "Armada"]
     }
+    #ff
     # if type == "Asedio a Castillo":
     #     if resource != "Maquinaria de Asedio" or resource != "Arqueros" or resource != "Infantería Pesada":
     #         error = True
