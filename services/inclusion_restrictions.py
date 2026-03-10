@@ -11,7 +11,7 @@ def event_type_inclusion_restriction(type, resources):
     }
 
     needed = required_resources[type]
-    
+    # comment
 
 
 event_type_inclusion_restriction(type="Asedio a Castillo", resources=["2"])
