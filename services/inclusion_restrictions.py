@@ -1,29 +1,20 @@
 
 def event_type_inclusion_restriction(type, resources):
-    error = False
-    required_resouces = {
+
+    required_resources = {
         "Asedio a Castillo": ["Maquinaria de Asedio", "Arqueros", "Infantería Pesada"],
-        "Batalla Naval": ["Almirante", "Armada"]
+        "Batalla Naval": ["Almirante", "Armada"],
+        "Batalla Campal": ["Infantería Pesada", "Caballería Pesada", "Arqueros"],
+        "Torneo de Caballeros": ["Caballeros", "Ca"],
+        "Emboscada": ["Infantería Ligera", "Caballería Ligera", "Arqueros"],
+        "Misión de Espionaje": ["Maestro de Espías"]
     }
-    #ff
-    # if type == "Asedio a Castillo":
-    #     if resource != "Maquinaria de Asedio" or resource != "Arqueros" or resource != "Infantería Pesada":
-    #         error = True
-    # if type == "Batalla Naval":
-    #     if resource != "Almirante" or resource != "Armada":
-    #         error = True
-    # if type == "Batalla Campal":
-    #     if resource != "Infantería Pesada" or resource != ""
-    # if type == "Torneo de Caballos":
-    #     if resource != "Caballeros" or resource != "Caballos":
-    #         error = True
-    # if type == "Emboscada":
-    #     if resource != "Caballería Ligera" or resource != "Infantería Ligera" or resource != "Arqueros":
-    #         error =  True
-    # if type == "Misión de Espionaje":
-    #     if resource != "Maestro de Espías":
-    #         error = True
-    # return error
+
+    needed = required_resources[type]
+    
+
+
+event_type_inclusion_restriction(type="Asedio a Castillo", resources=["2"])
 
 def inclusion_restriction_special_resources(resources):
     error = False
@@ -47,5 +38,3 @@ def atm():
         print("Withdrawal amount must be a multiple of 10")
     if not error:
         print("Remaining balance:", balance - withdrawal_amount)
-
-event_type_inclusion_restriction(type="4", resources=[4, 3])
