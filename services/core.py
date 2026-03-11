@@ -74,6 +74,9 @@ def add_event(name, description, start, end, era, status=None, resources_ids=Non
     NEXT_EVENT_ID += 1
     save_data()
 
+    #agregar por aqui la llamada a la funcion que verficia si hay overlapping entre eventos, pero tambien tengo que 
+    #que verificar si hay conflicto 
+
 def list_events():
     return EVENTS.copy()
 

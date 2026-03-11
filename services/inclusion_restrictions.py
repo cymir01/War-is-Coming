@@ -1,7 +1,7 @@
 
 def event_type_inclusion_restriction(type, resources):
-
-    required_resources = {
+    # pendiente definir bien los recursos y tipos de evento
+    required_resources_by_event_type = {
         "Asedio a Castillo": ["Maquinaria de Asedio", "Arqueros", "Infantería Pesada"],
         "Batalla Naval": ["Almirante", "Armada"],
         "Batalla Campal": ["Infantería Pesada", "Caballería Pesada", "Arqueros"],
@@ -10,33 +10,23 @@ def event_type_inclusion_restriction(type, resources):
         "Misión de Espionaje": ["Maestro de Espías"]
     }
 
-    needed = required_resources[type]
+    needed_resources = required_resources_by_event_type[type]
     
-    if resources not in needed:
-        pass
+    for required_resource in needed_resources:
+        if required_resource not in resources:
+            return False
 
+    return True
 
-event_type_inclusion_restriction(type="Asedio a Castillo", resources=["2"])
-
-def inclusion_restriction_special_resources(resources):
+def inclusion_restriction_between_resources(resources):
+    inclusive_resources = {
+        "Maquinaria de Asedio": "Ingeniero de Asedio",
+        "Fuego Valyrio": "Piromante",
+        "Caballero": "Espada",
+        "Dragón": "Jinete de Sangre Valyria",
+        "Vidriagón": "Tallador",
+    }
     error = False
     if "Mercenario" in resources and "Oro" not in resources:
         error = True
     return error
-
-def atm():
-    balance = int(input("What is your current balance? "))
-    withdrawal_amount = int(input("Enter the amount to withdraw "))
-    error = False
-
-    if withdrawal_amount <= 0:
-        error = True
-        print("Withdrawal amount cannot be negative or 0")
-    if balance < withdrawal_amount:
-        error = True
-        print("Insufficient balance")
-    if withdrawal_amount%10 != 0:
-        error = True
-        print("Withdrawal amount must be a multiple of 10")
-    if not error:
-        print("Remaining balance:", balance - withdrawal_amount)
