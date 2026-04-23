@@ -1,4 +1,4 @@
-def exclusion_restriction_houses():
+def exclusion_restriction_houses(resources):
     pass
 
 def exclusion_restriction_special_resources(resources):

@@ -1,0 +1,4 @@
+restriccion de exclusion entre casas..los recrusos tendran el atributo house para saber si dos recursos o mas solicitados pertenecen a casas enemistadas, de ser el caso, el programa debe dar un mensaje de error y pedir al usuario usar un recurso de casas aliadas. Eso implica que anres de extaer los dccionarios recurso del inventario de recursos debo pasar a la funcion de restricion de inclusion de casas el input del usuario y si es valido proceder, si ni iterar hasta que sea valido. lo otro que requiere es informar al usuaruo cuales son las casas enemistades y cuales las aliadas para que sepa seleccionar los recursos
+
+usar tipo de evento para crear restricciones de inclusion y exclusion para los evetnos de determinado tipo (no son restricciones entre recurdsos pero es una funcionalidad parecida).. ejemplos: si el evento es una emboscada no se puede usar infanteria pesada como recurso (exclusion), si el evento es una batalla naval hay que usar armada (inclusion)
+

@@ -1,3 +1,7 @@
+
+
+
+
 # Planificador Inteligente de Eventos
 
 El proyecto consiste en construir una aplicación de software completa para planificar **eventos** que consumen **recursos** de un inventario limitado. Dado que los eventos tienen una duración específica en el tiempo (un inicio y un fin), el reto principal del proyecto es garantizar que no existan conflictos ni colisiones en la asignación de recursos. Por lo tanto, manejar las nociones de operaciones con intervalos de tiempo será una habilidad central para el éxito. Te enfrentarás a uno de los problemas más comunes y cruciales en el mundo real: la gestión de la disponibilidad y la resolución de conflictos.

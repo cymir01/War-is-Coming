@@ -12,6 +12,3 @@ def find_next_available_time_slot(resource_ids, duration_hours, start_from=None,
     if duration_hours <= 0:
         return False, None, "Duración debe ser positiva"
     
-
-    
-    

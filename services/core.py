@@ -11,7 +11,7 @@ NEXT_RESOURCE_ID = 1
 def save_data():
     global EVENTS, RESOURCES, NEXT_EVENT_ID, NEXT_RESOURCE_ID
     events_dict = {}
-
+    
     for event_id, event_obj in EVENTS.items():
         events_dict[event_id] = event_obj.to_dict()
 
