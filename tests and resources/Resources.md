@@ -6,7 +6,6 @@ Past a certain point, all the dates grow hazy and confused, and the clarity of h
 —Hoster Blackwood to Jaime Lannister
 
 
-
 Eventos: Operaciones militares 
 Operaciones ofensivas
 "Asedio a Castillo" - Ataque prolongado a fortalezas

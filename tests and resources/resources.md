@@ -34,3 +34,4 @@ oro
 espada de acero valyrio
 guerrero de linaje noble
 
+

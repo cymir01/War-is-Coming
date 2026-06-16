@@ -2,7 +2,7 @@ from rich.console import Console
 
 #!agregar la funcion de liberar los recursos que usa el evento
 #!usar lower y strip para estandarizar los nombres y evitar potenviales errores al comparar
-def command_delete():
+def command_delete_event():
     events = {'name': "nombre"}
     while True:
         console = Console()
@@ -19,4 +19,3 @@ def command_delete():
             console.print(f"[green]El evento {event_deleted} ha sido eliminado satisfactoriamente[/green]")
         else:
             return "El evento no existe"
-        

@@ -1,0 +1,34 @@
+{
+    "recursos": {
+    "1": { "id": 1, "nombre": "Infantería pesada Lannister", "casa": "Lannister" },
+    "2": { "id": 2, "nombre": "Caballería Lannister", "casa": "Lannister" },
+    "3": { "id": 3, "nombre": "Maquinaria asedio Lannister", "casa": "Lannister" },
+    "4": { "id": 4, "nombre": "Infantería pesada Stark", "casa": "Stark" },
+    "5": { "id": 5, "nombre": "Caballería Stark", "casa": "Stark" }
+  },
+
+    "enemy_houses": {
+        "Lannister": ["Martell", "Stark", "Targaryen", "Tully"],
+        "Stark": ["Lannister", "Bolton", "Greyjoy"],
+        "Targaryen": ["Baratheon", "Lannister"],
+        "Baratheon": ["Targaryen"],
+        "Tully": ["Lannister", "Frey"],
+        "Martell": ["Lannister"],
+        "Greyjoy": ["Stark"],
+        "Bolton": ["Stark"],
+        "Frey": ["Stark", "Tully"]
+    },
+
+    "restricciones": {
+    "inclusion": [
+      { "resource_id": 3, "required_resource_id": 1 }
+    ],
+    "exclusion": []
+},
+
+    "events": {},
+
+    "next_event_id": 1
+}
+
+
