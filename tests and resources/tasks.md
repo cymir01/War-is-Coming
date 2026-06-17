@@ -1,3 +1,7 @@
+investigar este error:
+start1, end1 = interval_1
+    ^^^^^^^^^^^^
+TypeError: cannot unpack non-iterable datetime.datetime object
 
 invetigar por que este codigo no cubre todos los casos:
 if intervalo_2[1] > intervalo_1[0] >= intervalo_2[0]:
@@ -5,12 +9,6 @@ if intervalo_2[1] > intervalo_1[0] >= intervalo_2[0]:
     if intervalo_1[1] > intervalo_2[0] >= intervalo_1[0]:
         return True
     return False
-
-# Ideas:
-Idea de Antony:
-Hacer 3 clases basicas que necesites (eventos, recursos y restricciones)
-Sumas cosas
-Ver como unirlas (un game manager)
 
 ## Programming part
 Standard Colors — Rich 14.1.0 documentation https://rich.readthedocs.io/en/stable/appendix/colors.html
