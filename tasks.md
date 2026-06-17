@@ -1,3 +1,8 @@
+
+
+diferencia entre import datetime (module) y from datetime (module) import datetime (class)
+
+
 investigar este error:
 start1, end1 = interval_1
     ^^^^^^^^^^^^

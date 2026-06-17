@@ -1,5 +1,6 @@
 from datetime import datetime
 
+#usar encapsulamiento
 class Event:
     def __init__(self, start: datetime, end: datetime, name: str, type: str, location: str, status: str, resources: list = None, description: str = ""):
         self.start = start #date + time
@@ -13,6 +14,12 @@ class Event:
 
     def get_period(self):
         return [self.start, self.end]
+    
+    def get_start_date(self):
+        return self.start
+    
+    def get_end_date(self):
+        return self.end
 
     def get_duration(self):
         return self.end - self.start

@@ -19,7 +19,13 @@ panel = Panel(Text("¡War is Coming!", justify="center"), style="deep_sky_blue4"
 console.print(panel)
 user_name = Prompt.ask("¿Cuál es tu nombre?")
 #añadir un texto de bienvenida como Hola {user_name}, etc + la explicacion e los comandos para realizar acciones
-
+print(f"Hola {user_name}!. A continuacion los comandos pra realizar acciones...")
+print(
+    "a - agregar" \
+    "l - listar" \
+    "d - eliminar" \
+    "v - ver detalles" \
+)
 #!mejorar la interfaz para que perimita ejecutar comandos (agregar, listar, salir, eliminar evento) presionando ciertas teclas (a, l, s, e)
 #!agregar los siguientes comandos: agregar, listar + ver detalles (quiza usando el id como comando (ej: 5 para ver detalles de evento 5)), salir, eliminar evento
 while True:  
