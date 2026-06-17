@@ -19,11 +19,7 @@
         "Frey": ["Stark", "Tully"]
     },
 
-    "restricciones": {
-    "inclusion": [
-      { "resource_id": 3, "required_resource_id": 1 }
-    ],
-    "exclusion": []
+    "inclusion_restrictions": {"1": ["]
 },
 
     "events": {},
