@@ -15,17 +15,20 @@ FILEPATH = "src/services/war_planner.json"
 
 EVENTS = [] #cambiar el codigo que gestiona events para que opere con lista y no dict
 RESOURCES = {} #diccionario {id: Resource}
-RESTRICTIONS = [] #lista de diccionarios
+RESTRICTIONS = {}
 NEXT_EVENT_ID = 1
 
 def load_data():
     global EVENTS, RESOURCES, RESTRICTIONS, NEXT_EVENT_ID
 
-    if not os.path.exists(FILEPATH):
-        default_data = default_data_function()
-        with open(FILEPATH, "w", encoding="utf-8") as f:
-            json.dump(default_data, f, indent=4, ensure_ascii=False)
-        load_data()
+    if not os.path.exists(FILEPATH): #revisar bien este bloque
+        default_data = default_data_function() #corregir el idioma y el diseño de recursos
+        resources_dict = default_data["resources"]
+        RESOURCES = {int(id): Resource.create_robject_from_dict(r_data) for id, r_data in resources_dict.items()}
+        RESTRICTIONS = default_data["restrictions"]
+        EVENTS = []
+        NEXT_EVENT_ID = default_data["next_event_id"]
+        save_data()
         return
     
     try:

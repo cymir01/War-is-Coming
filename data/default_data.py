@@ -1,18 +1,18 @@
 def default_data_function():
     default_data = {
-        "recursos": {
-        "1": { "id": 1, "nombre": "Infantería pesada Lannister", "casa": "Lannister" },
-        "2": { "id": 2, "nombre": "Caballería Lannister", "casa": "Lannister" },
-        "3": { "id": 3, "nombre": "Maquinaria asedio Lannister", "casa": "Lannister" },
-        "4": { "id": 4, "nombre": "Infantería pesada Stark", "casa": "Stark" },
-        "5": { "id": 5, "nombre": "Caballería Stark", "casa": "Stark" },
-        "6": { "id": 6, "nombre": "Arqueros Lannister", "casa": "Lannister" },
-        "7": { "id": 7, "nombre": "Arqueros Stark", "casa": "Stark" },
-        "8": { "id": 8, "nombre": "Maestro de Guerra Lannister", "casa": "Lannister" },
-        "9": { "id": 9, "nombre": "Eddard Stark", "casa": "Stark" },
-        "10": { "id": 10, "nombre": "Fuego Valyrio", "casa": "Targaryen" },
-        "11": { "id": 11, "nombre": "Piromante", "casa": "Targaryen" },
-        "12": { "id": 12, "nombre": "Espada de Acero Valyrio", "casa": "Targaryen" }
+        "resources": {
+        "1": { "id": 1, "name": "Infantería pesada Lannister", "house": "Lannister" },
+        "2": { "id": 2, "name": "Caballería Lannister", "house": "Lannister" },
+        "3": { "id": 3, "name": "Maquinaria asedio Lannister", "house": "Lannister" },
+        "4": { "id": 4, "name": "Infantería pesada Stark", "house": "Stark" },
+        "5": { "id": 5, "name": "Caballería Stark", "house": "Stark" },
+        "6": { "id": 6, "name": "Arqueros Lannister", "house": "Lannister" },
+        "7": { "id": 7, "name": "Arqueros Stark", "house": "Stark" },
+        "8": { "id": 8, "name": "Maestro de Guerra Lannister", "house": "Lannister" },
+        "9": { "id": 9, "name": "Eddard Stark", "house": "Stark" },
+        "10": { "id": 10, "name": "Fuego Valyrio", "house": "Targaryen" },
+        "11": { "id": 11, "name": "Piromante", "house": "Targaryen" },
+        "12": { "id": 12, "name": "Espada de Acero Valyrio", "house": "Targaryen" }
         },
 
         "enemy_houses": {
@@ -27,13 +27,13 @@ def default_data_function():
             "Frey": ["Stark", "Tully"]
         },
 
-        "restricciones": {
-            "inclusion_entre_recursos": {
+        "restrictions": {
+            "inclusion_restrictions": {
                 "3": ["1"],              #Maquinaria asedio requiere infantería pesada
                 "10": ["11"],            #Fuego Valyrio requiere Piromante
                 "8": ["1", "3"]          #Maestre de Guerra requiere infantería y maquinaria
             },
-            "exclusion_entre_recursos": {
+            "exclusion_restrictions": {
                 "1": ["4"],              #Infantería Lannister no con Infantería Stark
                 "2": ["5"],              #Caballería Lannister no con Caballería Stark
                 "3": ["5"],              #Maquinaria Lannister no con Caballería Stark
