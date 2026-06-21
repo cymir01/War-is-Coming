@@ -19,19 +19,19 @@ def validate_restrictions(new_event, resources, restrictions):
     event_type_exclusion_restrictions = restrictions.get("event_type_exclusion_restrictions", {})
     event_type_inclusion_restrictions = restrictions.get("event_type_inclusion_restrictions", {})
     houses_exclusion_restrictions = restrictions.get("houses_exclusion_restrictions", {})
-
+#terminar los strings de error. Ademas puedo referir los recursos especificos con problemas
     if not validate_exclusion_restrictions_between_resources(new_event, exclusion_restrictions):
-        return False
+        return False, 'El evento contiene recursos excluyentes entre sí'
     if not validate_inclusion_restrictions_between_resources(new_event, inclusion_restrictions):
-        return False
+        return False, 'El evento ...'
     if not validate_event_type_exclusion_restriction(new_event, event_type_exclusion_restrictions):
-        return False
+        return False, ''
     if not validate_event_type_inclusion_restriction(new_event, event_type_inclusion_restrictions):
-        return False
+        return False, ''
     if not validate_houses_exclusion_restrictions(new_event, resources, houses_exclusion_restrictions):
-        return False
+        return False, ''
     
-    return True
+    return True, ''
 
 def validate_inclusion_restrictions_between_resources(new_event, inclusion_restrictions):
     """devuelve True si se cumplen las restricciones de inclusion y False si no"""
