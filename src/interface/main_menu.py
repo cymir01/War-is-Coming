@@ -1,5 +1,5 @@
-from src.services.time_manager import overlap
-from services.validation_logic import validate_date_input
+from src.services.planner import overlap
+from services.planner import validate_date_input
 from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt
@@ -12,7 +12,6 @@ from interface.command_list_events import command_list_planned_events
 from interface.command_delete_event import command_delete_event
 
 
-
 console = Console()
 
 panel = Panel(Text("¡War is Coming!", justify="center"), style="deep_sky_blue4")
@@ -21,10 +20,10 @@ user_name = Prompt.ask("¿Cuál es tu nombre?")
 #añadir un texto de bienvenida como Hola {user_name}, etc + la explicacion e los comandos para realizar acciones
 print(f"Hola {user_name}!. A continuacion los comandos pra realizar acciones...")
 print(
-    "a - agregar" \
-    "l - listar" \
-    "d - eliminar" \
-    "v - ver detalles" \
+    "a - agregar \n"
+    "l - listar \n"
+    "d - eliminar \n"
+    "v - ver detalles \n"
 )
 #!mejorar la interfaz para que perimita ejecutar comandos (agregar, listar, salir, eliminar evento) presionando ciertas teclas (a, l, s, e)
 #!agregar los siguientes comandos: agregar, listar + ver detalles (quiza usando el id como comando (ej: 5 para ver detalles de evento 5)), salir, eliminar evento

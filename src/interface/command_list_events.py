@@ -1,5 +1,6 @@
 from rich.table import Table
 from rich.console import Console
+from src.services.data_manager import list_events
 
 
 def command_list_planned_events():

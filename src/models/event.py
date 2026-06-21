@@ -2,16 +2,20 @@ from datetime import datetime
 
 #usar encapsulamiento
 class Event:
-    def __init__(self, start: datetime, end: datetime, name: str, type: str, location: str, status: str, resources: list = None, description: str = ""):
-        self.start = start #date + time
-        self.end = end #date + time
+    def __init__(self, id: str, name: str, start: datetime, end: datetime, event_type: str, location: str, status="planned", resources_ids: list = None, description: str = ""):
+        self.id = id
         self.name = name
-        self.resources = resources or []  #valor por defecto si es None, se trata de los recursos que usa el evento
         self.description = description
-        self.status  = status
-        self.type = type
+        self.start = start
+        self.end = end
+        self.event_type = event_type
         self.location = location
-
+        self.resources_ids = resources_ids or []  #valor por defecto si es None, se trata de los recursos que usa el evento
+        self.status  = status
+    
+    def __lt__(self, other):
+        return self.start < other.start
+    
     def get_period(self):
         return [self.start, self.end]
     
@@ -26,25 +30,29 @@ class Event:
 
     def to_dict(self): #convierte el evento a diccionario para guardar en JSON
         return {
-            'name': self.name,
-            'description': self.description,
-            'start': self.start.isoformat(),
-            'end': self.end.isoformat(),
-            'era': self.era,
-            'status': self.status,
-            'resources': self.resources,
+        "id": self.id,
+        'name': self.name,
+        'description': self.description,
+        'start': self.start.isoformat(),
+        'end': self.end.isoformat(),
+        'event_type': self.event_type,
+        'location': self.location,
+        'resources_ids': self.resources_ids,
+        'status': self.status
         }
 
-    @staticmethod
-    def from_dict(data):
+    @classmethod
+    def create_event_from_dict(cls, data):
         """Crea un Event desde diccionario (para cargar desde JSON)"""
-        event = Event(
+        return cls(
+            id=data['id'],
+            name=data['name'],
+            description=data.get('description', ''),
             start=datetime.fromisoformat(data['start']),
             end=datetime.fromisoformat(data['end']),
-            name=data['name'],
-            resources=data.get('resources', []),
-            description=data.get('description', '')
+            event_type=data['type'],
+            location=data['location'],
+            resources_ids=data['resources_ids'],
+            status=data.get('status', 'planned')
         )
-        return event
-
 

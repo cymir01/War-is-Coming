@@ -1,0 +1,78 @@
+{
+    "resources": {
+        "1": { "id": 1, "name": "Infantería pesada"},
+        "2": { "id": 2, "name": "Caballería pesada"},
+        "3": { "id": 3, "name": "Maquinaria de asedio"},
+        "4": { "id": 4, "name": "Infantería pesada Stark"},
+        "5": { "id": 5, "name": "Caballería Stark"},
+        "6": { "id": 6, "name": "Arqueros Lannister"},
+        "7": { "id": 7, "name": "Arqueros Stark"},
+        "8": { "id": 8, "name": "Maestro de Guerra Lannister"},
+        "9": { "id": 9, "name": "Eddard Stark"},
+        "": {"id": , "name": "Jaime Lannister"}
+        "": {"id": , "name": "Tywin Lannister"}
+        "11": { "id": 10, "name": "Fuego Valyrio"},
+        "11": { "id": 11, "name": "Piromante"},
+        "12": { "id": 12, "name": "Espada de Acero Valyrio"}
+    },
+
+    "restrictions": {
+        "inclusion_restrictions": {
+            "3": ["1"],              // Maquinaria asedio requiere infantería pesada
+            "10": ["11"],            // Fuego Valyrio requiere Piromante
+            "8": ["1", "3"]          // Maestre de Guerra requiere infantería y maquinaria
+        },
+        "exclusion_restrictions": {
+            "1": ["4"],              // Infantería Lannister no con Infantería Stark
+            "2": ["5"],              // Caballería Lannister no con Caballería Stark
+            "3": ["5"],              // Maquinaria Lannister no con Caballería Stark
+            "10": ["3"]              // Fuego Valyrio no con Maquinaria (seguridad)
+        },
+        "event_type_inclusion_restrictions": {
+            "Asedio a castillo": ["3"],         // Evento "Asedio" DEBE incluir maquinaria
+            "Batalla naval": ["10"], // Evento "Batalla Naval" DEBE incluir Fuego Valyrio
+            "Batalla campal": [],
+            "Asalto": ["1", "2"],    // Evento "Asalto" DEBE incluir infantería y caballería
+            "Emboscada": ["Infantería Ligera", "Caballería Ligera", "Arqueros"],
+            "Misión de Espionaje": ["Maestro de espías"],
+            "Misión diplomática": ["Embajador"],
+            "Defensa": ["1", "6"]    // Evento "Defensa" DEBE incluir infantería y arqueros
+        },
+        "event_type_exclusion_restrictions": {
+            "Emboscada": ["3"],      // Evento "Emboscada" NO puede usar maquinaria
+            "Batalla Naval": ["2", "5"],  // Batalla Naval NO puede usar caballería
+            "Asedio": ["2", "5"],    // Asedio NO puede usar caballería
+            "Defensa": ["2"]         // Defensa NO puede usar caballería
+        },
+        "houses_exclusion_restrictions": {
+            "Lannister": ["Martell", "Stark", "Targaryen", "Tully"],
+            "Stark": ["Lannister", "Bolton", "Greyjoy"],
+            "Targaryen": ["Baratheon", "Lannister"],
+            "Baratheon": ["Targaryen"],
+            "Tully": ["Lannister", "Frey"],
+            "Martell": ["Lannister"],
+            "Greyjoy": ["Stark"],
+            "Bolton": ["Stark"],
+            "Frey": ["Stark", "Tully"]
+        }
+    },
+
+    "events": [],
+    "next_event_id": 1
+}
+
+required_resources_by_event_type = {
+        "Asedio a Castillo": ["Maquinaria de Asedio", "Arqueros", "Infantería Pesada"],
+        "Batalla Naval": ["Almirante", "Armada"],
+        "Batalla Campal": ["Infantería Pesada", "Caballería Pesada", "Arqueros"],
+        "Emboscada": [],
+    }
+
+inclusive_resources = {
+        "Maquinaria de Asedio": ["Hijo del Lecho de Pulgas"],
+        "Fuego Valyrio": ["Piromante"],
+        "Dragón": ["Jinete de sangre valyria"],
+        "Espada de acero valyrio": ["Caballero de linaje noble"],
+        "Dothraki": ["Arakh", "Caballo"],
+        "Mercenarios": ["Oro"]
+    }

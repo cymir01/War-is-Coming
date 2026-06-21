@@ -1,34 +1,50 @@
-import json 
+import json
 import os
+import bisect
+from datetime import datetime
 from src.models.event import Event
+from src.models.resource import Resource
+from src.services.planner import validate_restrictions
+from src.services.planner import resources_conflict_check
+from data.default_data import default_data_function
+
+#implementar try-except blocks en el comando add event
+#implenmentar filtrado de eventos por atributo con funciones
 
 FILEPATH = "src/services/war_planner.json"
+
 EVENTS = [] #cambiar el codigo que gestiona events para que opere con lista y no dict
-RESOURCES = {}
+RESOURCES = {} #diccionario {id: Resource}
+RESTRICTIONS = [] #lista de diccionarios
 NEXT_EVENT_ID = 1
 
 def load_data():
-    global EVENTS, RESOURCES, NEXT_EVENT_ID
+    global EVENTS, RESOURCES, RESTRICTIONS, NEXT_EVENT_ID
 
     if not os.path.exists(FILEPATH):
-        return None
-
+        default_data = default_data_function()
+        with open(FILEPATH, "w", encoding="utf-8") as f:
+            json.dump(default_data, f, indent=4, ensure_ascii=False)
+        load_data()
+        return
+    
     try:
         with open(FILEPATH, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
-            events_dict = data.get('events', {})
-            EVENTS = {}
-            for event_id, event_data in events_dict.items():
-                EVENTS[int(event_id)] = Event.from_dict(event_data)
+            recursos_data = data.get('resources', {})
+            RESOURCES = {int(resource_id): Resource.create_robject_from_dict(resource_data) for resource_id, resource_data in recursos_data.items()}
 
-            RESOURCES = data.get('resources', {})
+            RESTRICTIONS = data.get('restricciones', [])
+
+            events_data = data.get('eventos', [])
+            EVENTS = [Event.create_event_from_dict(event_data) for event_data in events_data]
+            EVENTS.sort()  #usa __lt__ de la clase event
+
             NEXT_EVENT_ID = data.get('next_event_id', 1)
 
-            EVENTS = {int(k): v for k, v in EVENTS.items()}
-
     except Exception as e:
-        print(f"Error al cargar datos: {e}")
+        print(f"Error al cargar los datos: {e}")
 
 def events_binary_cronological_sort(events_list, new_event):
         if events_list == []:
@@ -59,47 +75,78 @@ def events_binary_cronological_sort(events_list, new_event):
 
 def save_data():
     global EVENTS, RESOURCES, NEXT_EVENT_ID
-
     data = {
-        'events': EVENTS,
+        "resources": {resource_id: resource.robject_to_dict() for resource_id, resource in RESOURCES.items()},
+        "restrictions": RESTRICTIONS,
+        'events': [event.to_dict() for event in EVENTS],
         'next_event_id': NEXT_EVENT_ID,
     }
-    
     with open(FILEPATH, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4, ensure_ascii=False, default=str)
 
-def add_event(name, description, start, end, type, location, resources_ids, status=None):
+def add_event(name, description, start, end, event_type, location, resources_ids, status="planned"):
     global NEXT_EVENT_ID
     from datetime import datetime
     #asegurar que start y end sean objetos datetime
 
-    event = Event(
+    for resource_id in resources_ids:
+        if resource_id not in RESOURCES:
+            raise ValueError(f"El recurso con id {resource_id} no existe")
+    
+    if isinstance(start, str):
+        start = datetime.fromisoformat(start)
+
+    if isinstance(end, str):
+        end = datetime.fromisoformat(end)
+
+    new_event = Event(
+        id=NEXT_EVENT_ID,
+        name=name,
+        description=description,
         start=start,
         end=end,
-        name=name,
-        type=type,
+        event_type=event_type,
         location=location,
-        status=status,
-        resources=resources_ids,
-        description=description
+        status=status or "planned",
+        resources_ids=resources_ids,
     )
 
-    EVENTS[NEXT_EVENT_ID] = event.to_dict()
+    if not validate_restrictions(new_event, RESTRICTIONS):
+        raise ValueError("El evento incumple las restricciones entre recursos")
+    
+    if resources_conflict_check(new_event, EVENTS):
+        raise ValueError("El evento pide recursos ya ocupados por otro evento programado")
+
+    bisect.insort(EVENTS, new_event) #terminar de agregar __lt__ en Event
     NEXT_EVENT_ID += 1
     save_data()
-
-    #agregar por aqui la llamada a la funcion que verficia si hay overlapping entre eventos, pero tambien tengo que 
-    #que verificar si hay conflicto 
-
+    
 def list_events():
     return EVENTS.copy()
 
-def get_event_by_id(event_id):
-    for event in EVENT
 def delete_event(event_id):
+    """retorna True si se elimino el evento, False si no"""
+    global EVENTS
+    for index, event in enumerate(EVENTS):
+        if event.id == event_id:
+            del EVENTS[index] #INVESTIGAR SOBRE POP PARA USARLO SI ES MEJOR
+            save_data()
+            return True
+        return False
 
+def get_event_by_id(event_id):
+    for event in EVENTS:
+        if event.id == event_id:
+            return event
+    return None
 
+def get_event_by_type():
+    pass
+
+def get_event_by_resource():
+    pass
+
+def get_events_in_range():
+    pass
 
 load_data()
-
-print(list_events())
