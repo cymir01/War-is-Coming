@@ -2,7 +2,7 @@ from datetime import datetime
 
 #usar encapsulamiento
 class Event:
-    def __init__(self, id: str, name: str, start: datetime, end: datetime, event_type: str, location: str, status="planned", resources_ids: list = None, description: str = ""):
+    def __init__(self, id: str, name: str, start: datetime, end: datetime, event_type: str, location: str, resources_ids: list, description: str = "", status: str = "planned"):
         self.id = id
         self.name = name
         self.description = description
@@ -28,7 +28,7 @@ class Event:
     def get_duration(self):
         return self.end - self.start
 
-    def to_dict(self): #convierte el evento a diccionario para guardar en JSON
+    def event_to_dict(self): #convierte el evento a diccionario para guardar en JSON
         return {
         "id": self.id,
         'name': self.name,
@@ -50,7 +50,7 @@ class Event:
             description=data.get('description', ''),
             start=datetime.fromisoformat(data['start']),
             end=datetime.fromisoformat(data['end']),
-            event_type=data['type'],
+            event_type=data['event_type'],
             location=data['location'],
             resources_ids=data['resources_ids'],
             status=data.get('status', 'planned')

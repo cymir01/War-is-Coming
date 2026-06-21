@@ -78,7 +78,7 @@ def save_data():
     data = {
         "resources": {resource_id: resource.robject_to_dict() for resource_id, resource in RESOURCES.items()},
         "restrictions": RESTRICTIONS,
-        'events': [event.to_dict() for event in EVENTS],
+        'events': [event.event_to_dict() for event in EVENTS],
         'next_event_id': NEXT_EVENT_ID,
     }
     with open(FILEPATH, 'w', encoding='utf-8') as f:
