@@ -11,7 +11,6 @@ def resources_conflict_check(new_event, existing_events):
                     return True
     return False
 
-
 def validate_restrictions(new_event, resources, restrictions):
     """funcion que valida las restricciones de inclusion y exclusion entre recursos"""
     inclusion_restrictions = restrictions.get("inclusion_restrictions", {})
@@ -20,15 +19,21 @@ def validate_restrictions(new_event, resources, restrictions):
     event_type_inclusion_restrictions = restrictions.get("event_type_inclusion_restrictions", {})
     houses_exclusion_restrictions = restrictions.get("houses_exclusion_restrictions", {})
 #terminar los strings de error. Ademas puedo referir los recursos especificos con problemas
-    if not validate_exclusion_restrictions_between_resources(new_event, exclusion_restrictions):
+    exc_rest_bool, exclusive_resource = validate_event_type_exclusion_restriction(new_event, exclusion_restrictions)
+    inc_rest_bool, required_resource = validate_event_type_inclusion_restriction(new_event, inclusion_restrictions)
+    et_inc_rest_bool, needed_resource = validate_event_type_inclusion_restriction(new_event, event_type_inclusion_restrictions)
+    et_exc_rest_bool, forbbiden_resource = validate_event_type_exclusion_restriction(new_event, event_type_exclusion_restrictions)
+    houses_exc_bool, exclusive_house = validate_houses_exclusion_restrictions(new_event, resources, houses_exclusion_restrictions)
+    
+    if not validate_exclusion_restrictions_between_resources():
         return False, 'El evento contiene recursos excluyentes entre sí'
-    if not validate_inclusion_restrictions_between_resources(new_event, inclusion_restrictions):
+    if not validate_inclusion_restrictions_between_resources():
         return False, 'El evento ...'
-    if not validate_event_type_exclusion_restriction(new_event, event_type_exclusion_restrictions):
+    if not validate_event_type_exclusion_restriction():
         return False, ''
-    if not validate_event_type_inclusion_restriction(new_event, event_type_inclusion_restrictions):
+    if not validate_event_type_inclusion_restriction():
         return False, ''
-    if not validate_houses_exclusion_restrictions(new_event, resources, houses_exclusion_restrictions):
+    if not validate_houses_exclusion_restrictions():
         return False, ''
     
     return True, ''
@@ -42,8 +47,8 @@ def validate_inclusion_restrictions_between_resources(new_event, inclusion_restr
             for required_id in required_resources:
                 required_id = int(required_id)
                 if required_id not in new_event_resources_ids:
-                    return False
-    return True
+                    return False, f"Error: El recurso {resource} necesita el recurso {required_id}, que el evento no incluye"
+    return True, ""
 
 def validate_exclusion_restrictions_between_resources(new_event, exclusion_restrictions):
     """True si no se viola ninguna restriccion, False en caso contrario"""
@@ -54,8 +59,8 @@ def validate_exclusion_restrictions_between_resources(new_event, exclusion_restr
             for exclusive_resource in exclusive_resources:
                 exclusive_resource = int(exclusive_resource)
                 if exclusive_resource in new_event_resources_ids:
-                    return False
-    return True
+                    return False, f"Error: El evento incluye los siguientes recursos excluyentes entre sí: {resource} y {exclusive_resource}"
+    return True, ''
 
 def validate_event_type_inclusion_restriction(new_event, event_type_inclusion_restrictions):
     event_type = new_event.even_type
@@ -66,8 +71,8 @@ def validate_event_type_inclusion_restriction(new_event, event_type_inclusion_re
         for required_resource in required_resources:
             required_resource = int(required_resource)
             if required_resource not in resources_ids_new_event:
-                return False
-    return True
+                return False, f"Error: "
+    return True, ""
 
 
 def validate_event_type_exclusion_restriction(new_event, event_type_exclusion_restrictions):
@@ -79,8 +84,8 @@ def validate_event_type_exclusion_restriction(new_event, event_type_exclusion_re
         for forbbiden_resource in forbbiden_resources:
             forbbiden_resource = int(forbbiden_resource)
             if forbbiden_resource in resources_ids_new_event:
-                return False
-    return True
+                return False, {forbbiden_resource}
+    return True, ''
 
 def validate_houses_exclusion_restrictions(new_event, resources, houses_exclusion_restrictions):
     houses_new_event = set()
@@ -94,8 +99,8 @@ def validate_houses_exclusion_restrictions(new_event, resources, houses_exclusio
             enemy_houses = houses_exclusion_restrictions[house]
             for enemy_house in enemy_houses:
                 if enemy_house in houses_new_event:
-                    return False
-    return True
+                    return False, {enemy_house}
+    return True, ""
 
 
 # Debes implementar una función inteligente que, dado un evento y los recursos que necesita, sea capaz de analizar el calendario y 
