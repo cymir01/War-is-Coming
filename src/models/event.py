@@ -2,7 +2,7 @@ from datetime import datetime
 
 #usar encapsulamiento
 class Event:
-    def __init__(self, id: str, name: str, start: datetime, end: datetime, event_type: str, location: str, resources_ids: list = [], description: str = "", status: str = "planned"):
+    def __init__(self, id: str, name: str, start: datetime, end: datetime, event_type: str, location: str = None, resources_ids: list = [], description: str = None, status: str = "planned"):
         self.id = id
         self.name = name
         self.description = description

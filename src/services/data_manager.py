@@ -115,7 +115,8 @@ def add_event(name, description, start, end, event_type, location, resources_ids
         status=status,
         resources_ids=resources_ids,
     )
-    
+    #pensar en como procesar la solicitud de un mismo recurso varias veces, valido o no?
+
     #en la funcion validate_restrictions en planner.py retorna mensajes de error para cada uno de los 3 casos
     #corregir este bloque condicional
     if not validate_restrictions(new_event, RESOURCES, RESTRICTIONS):

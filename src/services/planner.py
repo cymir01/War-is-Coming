@@ -1,6 +1,7 @@
-from datetime import datetime
 from datetime import datetime, timedelta
-from models.event import Event
+
+#qgestionar en add_event() cuando el usuario pide un recurso (id) que no existe
+#para que el usuario escoja los recursos tengo que listarlos con sus corresondientes id para que seleccione por id
 
 def resources_conflict_check(new_event, existing_events):
     """funcion que devuelve False si no hay conflicto y True de haber"""
@@ -24,30 +25,21 @@ def validate_restrictions(new_event, resources, restrictions):
     et_inc_rest_bool, needed_resource = validate_event_type_inclusion_restriction(new_event, event_type_inclusion_restrictions)
     et_exc_rest_bool, forbbiden_resource = validate_event_type_exclusion_restriction(new_event, event_type_exclusion_restrictions)
     houses_exc_bool, exclusive_house = validate_houses_exclusion_restrictions(new_event, resources, houses_exclusion_restrictions)
-    
-    if not validate_exclusion_restrictions_between_resources():
-        return False, 'El evento contiene recursos excluyentes entre sí'
-    if not validate_inclusion_restrictions_between_resources():
-        return False, 'El evento ...'
-    if not validate_event_type_exclusion_restriction():
-        return False, ''
-    if not validate_event_type_inclusion_restriction():
-        return False, ''
-    if not validate_houses_exclusion_restrictions():
-        return False, ''
+
     
     return True, ''
 
 def validate_inclusion_restrictions_between_resources(new_event, inclusion_restrictions):
     """devuelve True si se cumplen las restricciones de inclusion y False si no"""
     new_event_resources_ids = set(new_event.resources_ids)
+    
     for resource, required_resources in inclusion_restrictions.items():
         resource = int(resource)
         if resource in new_event_resources_ids:
             for required_id in required_resources:
                 required_id = int(required_id)
                 if required_id not in new_event_resources_ids:
-                    return False, f"Error: El recurso {resource} necesita el recurso {required_id}, que el evento no incluye"
+                    return False, f"error! el recurso {resource} requiere el recurso {required_id}"
     return True, ""
 
 def validate_exclusion_restrictions_between_resources(new_event, exclusion_restrictions):
@@ -59,7 +51,7 @@ def validate_exclusion_restrictions_between_resources(new_event, exclusion_restr
             for exclusive_resource in exclusive_resources:
                 exclusive_resource = int(exclusive_resource)
                 if exclusive_resource in new_event_resources_ids:
-                    return False, f"Error: El evento incluye los siguientes recursos excluyentes entre sí: {resource} y {exclusive_resource}"
+                    return False, f"error: el evento incluye recursos excluyentes: {resource} y {exclusive_resource}"
     return True, ''
 
 def validate_event_type_inclusion_restriction(new_event, event_type_inclusion_restrictions):
@@ -71,7 +63,7 @@ def validate_event_type_inclusion_restriction(new_event, event_type_inclusion_re
         for required_resource in required_resources:
             required_resource = int(required_resource)
             if required_resource not in resources_ids_new_event:
-                return False, f"Error: "
+                return False, f"Error: el evento tipo {event_type} requiere el recurso {required_resource}"
     return True, ""
 
 
@@ -84,7 +76,7 @@ def validate_event_type_exclusion_restriction(new_event, event_type_exclusion_re
         for forbbiden_resource in forbbiden_resources:
             forbbiden_resource = int(forbbiden_resource)
             if forbbiden_resource in resources_ids_new_event:
-                return False, {forbbiden_resource}
+                return False, f"Error: el evento tipo {event_type} no puede usar el recurso {forbbiden_resource}"
     return True, ''
 
 def validate_houses_exclusion_restrictions(new_event, resources, houses_exclusion_restrictions):
@@ -99,14 +91,56 @@ def validate_houses_exclusion_restrictions(new_event, resources, houses_exclusio
             enemy_houses = houses_exclusion_restrictions[house]
             for enemy_house in enemy_houses:
                 if enemy_house in houses_new_event:
-                    return False, {enemy_house}
+                    return False, f"error: la casa {house} no puede aliarse con la casa {enemy_house}"
     return True, ""
-
 
 # Debes implementar una función inteligente que, dado un evento y los recursos que necesita, sea capaz de analizar el calendario y 
 # sugerir el próximo intervalo de tiempo disponible donde se pueda realizar sin conflictos ni violaciones de restricciones.
-def find_next_available_time_slot(resource_ids, duration_hours, start_from=None, max_days=30):
-    pass
+def get_event_start(event):
+    return event.start
+
+def is_slot_valid(start_time, end_time, resources_ids, sorted_events):
+    for event in sorted_events:
+        if max(start_time, event.start) < min(end_time, event.end):
+            for resource_id in resources_ids:
+                if resource_id in event.resources_ids:
+                    return False
+    return True
+
+def find_next_available_time_slot(resource_ids, duration_hours, start_from=None, max_days=30, existing_events=None):
+    if existing_events is None:
+        existing_events = []
+    if start_from is None:
+        start_from = datetime.now()
+
+    sorted_events = sorted(existing_events, key=get_event_start)
+
+    end_limit = start_from + timedelta(days=max_days)
+    current_time = start_from
+
+    for event in sorted_events:
+        if event.end <= current_time:
+            continue
+    
+    if event.start > current_time:
+        gap_hours = (event.start - current_time).total_seconds() / 3600.0
+        if gap_hours >= duration_hours:
+            candidate_end = current_time + timedelta(hours=duration_hours)
+            if candidate_end <= event.start:
+                if is_slot_valid(current_time, candidate_end, resource_ids, sorted_events):
+                    return current_time, candidate_end
+    
+    for rid in resource_ids:
+        if rid in event.resources_ids:
+            current_time = max(current_time, event.end)
+            break
+    if (end_limit - current_time).total_seconds() / 3600.0 >= duration_hours:
+        candidate_end = current_time + timedelta(hours=duration_hours)
+        if candidate_end <= end_limit:
+            if is_slot_valid(current_time, candidate_end, resource_ids, sorted_events):
+                return current_time, candidate_end
+
+    return None
 
 def overlap(event1, event2):
     '''

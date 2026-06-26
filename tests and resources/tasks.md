@@ -1,4 +1,12 @@
 
+## 🧪 Pruebas
+
+Actualmente el proyecto no cuenta con una suite formal de pruebas unitarias, pero el diseño modular facilita su incorporación futura con `pytest`. Se recomienda cubrir:
+
+- Validación de restricciones (casos positivos y negativos).
+- Búsqueda de huecos con diferentes escenarios de ocupación.
+- Persistencia (carga y guardado de datos).
+- Flujo completo de comandos (simulación de entrada/salida).
 
 diferencia entre import datetime (module) y from datetime (module) import datetime (class)
 
