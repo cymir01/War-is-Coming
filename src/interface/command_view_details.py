@@ -1,7 +1,7 @@
 from rich.console import Console
 from rich.table import Table
 from rich.text import Text
-from services.data_manager import list_events
+from src.services.data_manager import list_events
 
 #!Bug Report: (revisar por que ocurre el error)
 # cymir@cymir-ThinkPad-T440p:~/00 Pojects/War-is-Coming$ /bin/python3 "/home/cymir/00 Pojects/War-is-Coming/interface/command_view_details.py"

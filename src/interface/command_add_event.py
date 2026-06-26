@@ -23,9 +23,9 @@ def command_add():
 
     console.print("\n[bold cyan]Recursos dsiponibles:[/bold cyan]")
     for resource_id, resoruce_data in RESOURCES.items():
-        type = resoruce_data.resource_type if resoruce_data.type is not None else "sin tipo"
+        type = resoruce_data.resource_type if resoruce_data.resource_type is not None else "sin tipo"
         house = resoruce_data.house if resoruce_data.house is not None else "sin casa"
-        console.print(f"{resource_id}: {resoruce_data.nombre} (tipo: {type}, casa: {house})")
+        console.print(f"{resource_id}: {resoruce_data.name} (tipo: {type}, casa: {house})")
 
     resources_input = Prompt.ask("ids de recursos (separados por comas)", default = "")
     resources_ids = []

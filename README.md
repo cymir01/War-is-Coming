@@ -4,7 +4,7 @@
   <img src="https://img.icons8.com/color/96/sword.png" alt="Espada">
   <img src="https://img.icons8.com/color/96/dragon.png" alt="Dragón">
   <img src="https://img.icons8.com/color/96/castle.png" alt="Castillo">
-  <h1>War is Coming</h1>
+  <h1>War is coming</h1>
   <p><em>Planificador de Eventos Bélicos – Universo de A Song of Ice and Fire</em></p>
 </div>
 
