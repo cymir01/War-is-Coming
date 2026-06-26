@@ -98,8 +98,6 @@ El código se organiza en capas modulares siguiendo principios de separación de
 - **Datetime**: gestión de fechas, duraciones y comparaciones temporales.
 - **Bisect**: mantenimiento de la lista de eventos ordenada cronológicamente.
 - **JSON**: persistencia de datos en archivo.
-- **Pytest** (pendiente de implementación): pruebas unitarias planificadas.
-
 ---
 
 ## 🚀 Cómo Empezar
