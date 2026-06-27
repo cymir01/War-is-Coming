@@ -81,6 +81,7 @@ def save_data():
     with open(FILEPATH, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4, ensure_ascii=False, default=str) #default=str para evitar fallo
 
+#VERIFICAR QUE SE COMUNIQUE BIEN CON EL COMANDO ADD_EVENT
 def add_event(name, description, start, end, event_type, location, resources_ids, status="planned"):
     global NEXT_EVENT_ID
 
@@ -88,6 +89,9 @@ def add_event(name, description, start, end, event_type, location, resources_ids
         if resource_id not in RESOURCES:
             raise ValueError(f"El recurso con id {resource_id} no existe")
     
+    #elimina duplicados de la lista de recuross
+    resources_ids = list(set(resources_ids))
+
     if isinstance(start, str):
         start = datetime.fromisoformat(start)
 
@@ -108,24 +112,19 @@ def add_event(name, description, start, end, event_type, location, resources_ids
         status=status,
         resources_ids=resources_ids,
     )
-    #pensar en como procesar la solicitud de un mismo recurso varias veces, valido o no?
-
-    #en la funcion validate_restrictions en planner.py retorna mensajes de error para cada uno de los 3 casos
-    #corregir este bloque condicional
     
-    
-    #ARREGLAR PLANNER.PY
     bool_restrictions, mesage = validate_restrictions(new_event, RESOURCES, RESTRICTIONS)
     if not bool_restrictions:
         return False, mesage
     
-    bool_conflict, mesage_conlfict = resources_conflict_check(new_event, EVENTS)
-    if not bool_conflict:
-        return False, mesage_conlfict
+    #ESPECIFICAR EL RECURSO OCUPADO
+    if resources_conflict_check(new_event, EVENTS):
+        return False, "Conflicto de recursos: algún recurso ya está ocupado en ese horario"
 
-    bisect.insort(EVENTS, new_event) #terminar de agregar __lt__ en Event
+    bisect.insort(EVENTS, new_event) #usa internamente el metodo __lt__ de la clase Event
     NEXT_EVENT_ID += 1
     save_data()
+    return True, new_event.id
     
 def list_events():
     return EVENTS.copy()

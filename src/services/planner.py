@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+#ARREGLAR LA LOGICA DE VALIDACION
 #qgestionar en add_event() cuando el usuario pide un recurso (id) que no existe
 #para que el usuario escoja los recursos tengo que listarlos con sus corresondientes id para que seleccione por id
 DEFAULT_START_DATE = datetime(301, 1, 1, 0, 0)
