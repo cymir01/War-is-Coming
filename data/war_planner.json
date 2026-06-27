@@ -101,26 +101,20 @@
         "98": {"id": 98, "name": "Ingeniero de asedio Arryn", "type": "Ingeniero de asedio", "house": "Arryn"},
         "99": {"id": 99, "name": "Almirante Arryn", "type": "Almirante", "house": "Arryn"},
         "100": {"id": 100, "name": "Caballero Arryn", "type": "Caballero", "house": "Arryn"},
+        
         "101": {"id": 101, "name": "Mercenarios", "type": "Mercenarios", "house": null},
         "102": {"id": 102, "name": "Oro", "type": "Oro", "house": null},
         "103": {"id": 103, "name": "Dragón", "type": "Dragón", "house": null},
-        "104": {"id": 104, "name": "Fuego Valyrio", "type": "Fuego Valyrio", "house": "Targaryen"},
-        "105": {"id": 105, "name": "Piromante", "type": "Piromante", "house": "Targaryen"},
-        "106": {"id": 106, "name": "Eddard Stark", "type": "Personaje", "house": "Stark"},
-        "107": {"id": 107, "name": "Robb Stark", "type": "Guerrero de linaje noble", "house": "Stark"},
-        "108": {"id": 108, "name": "Tywin Lannister", "type": "Personaje", "house": "Lannister"},
+        "104": {"id": 104, "name": "Fuego Valyrio", "type": "Fuego Valyrio", "house": null},
+        "105": {"id": 105, "name": "Piromante", "type": "Piromante", "house": null},
+        "106": {"id": 106, "name": "Eddard Stark", "type": "Noble", "house": "Stark"},
+        "107": {"id": 107, "name": "Robb Stark", "type": "Noble", "house": "Stark"},
+        "108": {"id": 108, "name": "Tywin Lannister", "type": "Noble", "house": "Lannister"},
         "109": {"id": 109, "name": "Jaime Lannister", "type": "Personaje", "house": "Lannister"},
         "110": {"id": 110, "name": "Cersei Lannister", "type": "Personaje", "house": "Lannister"},
-        "111": {"id": 111, "name": "Daenerys Targaryen", "type": "Jinete de dragón", "house": "Targaryen"},
+        "111": {"id": 111, "name": "Daenerys Targaryen", "type": "Jinete de sangre valyria", "house": "Targaryen"},
         "112": {"id": 112, "name": "Jon Snow", "type": "Personaje", "house": "Stark"},
-        "119": {"id": 119, "name": "Maestro de espías", "type": "Maestro de espías", "house": null},
-        "120": {"id": 120, "name": "Caballero", "type": "Caballero", "house": null},
-        "121": {"id": 121, "name": "Almirante", "type": "Almirante", "house": null},
-        "124": {"id": 124, "name": "Jinete de sangre valyria", "type": "Jinete de dragón", "house": "Targaryen"},
-        "125": {"id": 125, "name": "Maquinaria de asedio", "type": "Maquinaria de asedio", "house": null},
-        "126": {"id": 126, "name": "Ingeniero de asedio", "type": "Ingeniero de asedio", "house": null},
-        "127": {"id": 127, "name": "Espada de acero valyrio", "type": "Espada de acero valyrio", "house": "Targaryen"},
-        "128": {"id": 128, "name": "Guerrero de linaje noble", "type": "Guerrero de linaje noble", "house": null}
+        "127": {"id": 127, "name": "Espada de acero valyrio", "type": "Espada de acero valyrio", "house": null}
     },
     "restrictions": {
         "resource_type_inclusion_restrictions": {
@@ -128,8 +122,8 @@
             "Fuego Valyrio": ["Piromante"],
             "Maestro de espías": ["Oro"],
             "Mercenarios": ["Oro"],
-            "Dragón": ["Jinete de dragón"],
-            "Espada de acero valyrio": ["Guerrero de linaje noble"]
+            "Dragón": ["Jinete de sangre valyria"],
+            "Espada de acero valyrio": ["Noble"]
         },
 
         "resource_type_exclusion_restrictions": {
