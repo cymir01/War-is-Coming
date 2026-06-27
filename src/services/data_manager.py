@@ -11,9 +11,10 @@ from src.services.planner import resources_conflict_check
 #implenmentar filtrado de eventos por atributo con funciones
 
 FILEPATH = "data/war_planner.json"
+DEFAULT_DATA = "data/default_data.json"
 
 EVENTS = [] #cambiar el codigo que gestiona events para que opere con lista y no dict
-RESOURCES = {} #diccionario {id: Resource}
+RESOURCES = {}
 RESTRICTIONS = {}
 NEXT_EVENT_ID = 1
 
@@ -21,12 +22,18 @@ def load_data():
     global EVENTS, RESOURCES, RESTRICTIONS, NEXT_EVENT_ID
 #ARREGLAR
     if not os.path.exists(FILEPATH): #revisar bien este bloque
-        default_data = "data/default_data.json" #corregir el idioma y el diseño de recursos
-        resources_dict = default_data["resources"]
+        try:
+            with open(DEFAULT_DATA, 'r', encoding='utf-8') as f:
+                default_data = json.load(f)
+        except FileNotFoundError:
+            print("No se encontró default_data.json. Usando datos vacíos...")
+            default_data = {"resources": {}, "restrictions": {}, "events": [], "next_event_id": 1}
+
+        resources_dict = default_data.get("resources", {})
         RESOURCES = {int(id): Resource.create_robject_from_dict(r_data) for id, r_data in resources_dict.items()}
-        RESTRICTIONS = default_data["restrictions"]
+        RESTRICTIONS = default_data.get("restrictions", {})
         EVENTS = []
-        NEXT_EVENT_ID = default_data["next_event_id"]
+        NEXT_EVENT_ID = default_data.get("next_event_id", 1)
         save_data()
         return
     
@@ -37,44 +44,21 @@ def load_data():
             recursos_data = data.get('resources', {})
             RESOURCES = {int(resource_id): Resource.create_robject_from_dict(resource_data) for resource_id, resource_data in recursos_data.items()}
 
-            RESTRICTIONS = data.get('restrictions', [])
+            RESTRICTIONS = data.get('restrictions', {})
 
             events_data = data.get('events', [])
             EVENTS = [Event.create_event_from_dict(event_data) for event_data in events_data]
-            EVENTS.sort()  #usa __lt__ de la clase event
+            EVENTS.sort()  #ordena cronológicamente usando __lt__ de Event
 
             NEXT_EVENT_ID = data.get('next_event_id', 1)
 
     except Exception as e:
         print(f"Error al cargar los datos: {e}")
-        #cargar datos por defecto en caso de error?
+        load_default_data()
+        #cargar datos por defecto en caso de error
 
-# def events_binary_cronological_sort(events_list, new_event):
-#         if events_list == []:
-#             return [new_event]
-    
-#         if new_event in events_list:
-#             print("El evento ya existe")
-#             return events_list
-        
-#         left = 0
-#         right = len(events_list) - 1
-#         index = len(events_list)
-
-#         while left <= right:
-#             midle = (left + right)//2
-#             if new_event.get_start_date() < events_list[midle].get_start_date(): 
-#                 index = midle
-#                 right = midle - 1
-#             else:
-#                 left = midle + 1
-    
-#         if(index == len(events_list)):
-#             events_list.append(new_event)
-#         else:
-#             events_list.insert(index, new_event)
-
-#         return events_list
+def load_default_data():
+    pass
 
 def save_data():
     #no necesito global aqui porque solo se leen las variables sin reasignar
