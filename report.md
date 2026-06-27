@@ -1,330 +1,328 @@
 # Informe del Proyecto – War is Coming
 
 **Autor:** Cynthia Moreno Miranda  
-**Curso:** MATCOM, 2025-26
+**Curso:** MatCom, 2025–2026  
 
+---
+## Tabla de Contenidos
 
-    Qué hace tu programa
-    Cómo lo diseñaste y por qué tomaste las decisiones que tomaste
-    Qué aprendiste durante el desarrollo
-    Cómo se usa el programa (con ejemplos)
-    Dificultades que encontraste y cómo las resolviste
+- [1. ¿Qué hace el programa?](#1-qué-hace-el-programa)
+- [2. Diseño del programa y decisiones tomadas](#2-diseño-del-programa-y-decisiones-tomadas)
+- [3. Flujo del programa](#3-flujo-del-programa)
+- [4. Cómo se usa el programa (ejemplos)](#4-cómo-se-usa-el-programa-ejemplos)
+- [5. Dificultades encontradas y cómo las resolví](#5-dificultades-encontradas-y-cómo-las-resolví)
+- [6. Aprendizajes durante el desarrollo](#6-aprendizajes-durante-el-desarrollo)
+- [7. Conclusión](#7-conclusión)
+---
+
+## 1. ¿Qué hace el programa?
+
+*War is Coming* es un sistema de planificación de eventos militares ambientado en el universo de *Canción de Hielo y Fuego*. Permite a un comandante organizar campañas bélicas (asedios, batallas navales, asaltos, defensas, emboscadas, misiones diplomáticas y batallas campales) asignando recursos limitados —tropas de distintas casas, maquinaria de asedio, elementos especiales como Fuego Valyrio, personajes clave y recursos económicos— de forma que no se produzcan conflictos temporales ni violaciones de las reglas del universo.
+
+El programa ofrece las siguientes funcionalidades principales:
+
+- **Agregar eventos**: el usuario introduce el nombre, tipo, ubicación, lista de recursos (por ID) y fechas de inicio y fin. El sistema valida automáticamente que los recursos existan, que las fechas sean coherentes, que no haya conflictos de recursos (ningún recurso asignado a otro evento en ese horario) y que se cumplan todas las restricciones del dominio (co‑requisitos, exclusiones mutuas, enemistades entre casas y exigencias por tipo de evento). Si todo es correcto, el evento se guarda y se asigna un ID único.
+- **Búsqueda automática de huecos**: el usuario puede solicitar que el sistema encuentre el próximo intervalo de tiempo disponible para un conjunto de recursos y una duración determinada. El motor analiza el calendario existente, respetando tanto los conflictos de recursos como todas las restricciones, y sugiere una franja horaria válida.
+- **Listar eventos**: muestra una tabla con todos los eventos planificados, incluyendo ID, nombre, tipo, fechas y recursos asignados.
+- **Ver detalles de un evento**: a partir de un ID, muestra toda la información del evento (nombre, descripción, fechas, tipo, ubicación, recursos, estado).
+- **Eliminar eventos**: elimina un evento por su ID, liberando automáticamente los recursos que ocupaba.
+- **Persistencia**: todos los datos (recursos, restricciones, eventos, ID siguiente) se guardan en un archivo JSON, de modo que el estado se mantiene entre ejecuciones.
+
+El programa está diseñado para ser usado desde la línea de comandos, con una interfaz enriquecida que utiliza colores y tablas para mejorar la experiencia de usuario.
+
+[Volver al inicio](#tabla-de-contenidos)
 
 ---
 
-## 1. Introducción y dominio elegido
+## 2. Diseño del programa y decisiones tomadas
 
-*War is Coming* es un sistema de planificación de eventos bélicos ambientado en el universo de *A Song of Ice and Fire* (la saga de George R. R. Martin). El objetivo principal es gestionar campañas militares (asedios, batallas navales, asaltos, defensas, emboscadas, misiones diplomáticas y batallas campales) asignando recursos limitados (tropas de distintas casas, maquinaria de asedio, elementos especiales como Fuego Valyrio, personajes clave y recursos económicos) de forma que no se produzcan conflictos temporales ni violaciones de las reglas del universo.
+### 2.1 Arquitectura en capas
 
-Se eligió este dominio porque permite modelar con claridad las nociones de **eventos** (acciones bélicas), **recursos** (unidades, personajes, suministros) y **restricciones** (co‑requisitos, exclusiones, enemistades entre casas) de una manera rica y coherente. Además, el trasfondo de la saga proporciona un conjunto de reglas narrativas que hacen el proyecto más atractivo y fácil de entender para cualquier aficionado a la serie.
+He organizado el código en tres capas bien diferenciadas:
 
-La aplicación está diseñada para ser utilizada por un comandante o estratega que desee organizar sus ejércitos, evitando que dos eventos usen el mismo recurso a la vez y asegurando que las alianzas y combinaciones de tropas respeten la lógica de Poniente. El sistema también ofrece una función de búsqueda automática de huecos, que sugiere el próximo intervalo de tiempo disponible para un conjunto de recursos, facilitando la planificación.
+- **Capa de modelos** (`src/models/`): contiene las clases `Event` y `Resource`, que representan las entidades del dominio. Estas clases solo definen la estructura y métodos de conversión a/desde diccionarios, sin lógica de negocio. Esto sigue el principio de *responsabilidad única* y facilita la serialización.
 
----
+- **Capa de servicios** (`src/services/`): contiene la lógica de negocio.  
+  - `data_manager.py` gestiona el estado global (carga/guardado de datos, operaciones CRUD). Es el punto de acceso a los datos.  
+  - `planner.py` alberga el motor de validación de restricciones y el algoritmo de búsqueda de huecos. Separar esta lógica de la persistencia permite probar y modificar el planificador sin afectar al almacenamiento.
 
-## 2. Modelado del dominio
+- **Capa de interfaz** (`src/interface/`): contiene los comandos CLI y el menú principal. Cada comando (`add`, `list`, `view`, `delete`) está en un archivo independiente, lo que facilita el mantenimiento y la extensión.
 
-### 2.1 Eventos
+Esta separación de responsabilidades hace que el código sea más comprensible, mantenible y escalable.
 
-Un **evento** representa una operación militar planificada. En el código, la clase `Event` (en `src/models/event.py`) contiene:
+### 2.2 Elección del dominio y modelado
 
-- **ID** único (entero autoincrementado).
-- **Nombre** y **descripción** (opcional).
-- **Intervalo de tiempo**: `start` y `end` (objetos `datetime` de la librería estándar de Python).
-- **Tipo de evento**: entre *Asedio*, *Batalla Naval*, *Asalto*, *Defensa*, *Emboscada* y *Batalla Campal*.
-- **Ubicación** (opcional).
-- **Lista de IDs de recursos** que utiliza.
-- **Estado**: *planned* (por defecto), aunque se puede extender a otros estados (ej. *en curso*, *finalizado*).
+Elegí el universo de *Canción de Hielo y Fuego* porque ofrece un trasfondo rico en reglas y conflictos que se prestan naturalmente a un sistema de planificación con restricciones. Los eventos son acciones militares o diplomáticas, los recursos son unidades y personajes, y las restricciones reflejan las alianzas y enemistades de la saga. Esto hace que el proyecto sea atractivo y fácil de entender para cualquier aficionado.
 
-Cada evento se almacena en una lista global que se mantiene ordenada cronológicamente gracias al método `__lt__` de la clase `Event`, que compara las fechas de inicio. Esto facilita la búsqueda de huecos y la detección de conflictos, ya que los eventos se recorren en orden temporal.
+**Decisiones clave en el modelado:**
 
-### 2.2 Recursos
+- **Uso de tipos de recurso en lugar de IDs**: inicialmente definí las restricciones con IDs concretos (ej. `recurso 3` requiere `recurso 7`). Esto obligaba a actualizar las reglas al añadir nuevos recursos de la misma clase (por ejemplo, una nueva maquinaria de asedio para otra casa). Opté por usar el campo `tipo` del recurso, de modo que las restricciones se aplican a cualquier recurso que tenga ese tipo, independientemente de su casa. Esto hace el sistema genérico y escalable.
 
-Los recursos son las unidades y elementos necesarios para llevar a cabo los eventos. En `src/models/resource.py`, la clase `Resource` tiene:
+- **Validación en el momento de agregar**: todas las validaciones (restricciones y conflictos) se realizan antes de guardar el evento. Si algo falla, se devuelve un mensaje de error y el evento no se crea. Esto garantiza que el estado siempre sea consistente y evita tener que corregir datos incorrectos posteriormente.
 
-- **ID** único.
-- **Nombre** (ej. *Infantería pesada Lannister*).
-- **Tipo**: cadena que clasifica el recurso (*Infantería pesada*, *Caballería ligera*, *Maquinaria de asedio*, *Arqueros*, *Almirante*, *Maestro de espías*, *Mercenarios*, *Oro*, *Dragón*, *Fuego Valyrio*, *Piromante*, *Personaje*, *Jinete de dragón*, etc.).
-- **Casa** (opcional): a qué casa noble pertenece (*Lannister*, *Stark*, *Targaryen*, *Baratheon*, *Tully*, *Martell*, *Greyjoy*, *Bolton*, *Frey*, *Arryn*).
+- **Mantenimiento de orden cronológico**: la lista de eventos se mantiene ordenada por fecha de inicio mediante `bisect.insort`. Esto acelera la búsqueda de huecos y la detección de conflictos, ya que se recorren los eventos en orden temporal.
 
-Los recursos son **compartidos y reutilizables**: un mismo recurso no puede asignarse a dos eventos que se solapen en el tiempo. El sistema mantiene un inventario (diccionario `RESOURCES` en `data_manager.py`) que se carga desde un archivo JSON. Se han definido más de cien recursos, incluyendo diez tipos diferentes para cada casa, más recursos especiales sin casa (Mercenarios, Oro, Dragón, Fuego Valyrio) y varios personajes clave (Eddard Stark, Robb Stark, Tywin Lannister, Jaime Lannister, Cersei Lannister, Daenerys Targaryen, Jon Snow).
+- **Persistencia automática**: cada cambio en el estado (agregar o eliminar evento) se guarda inmediatamente en el archivo JSON. Esto evita pérdidas de datos y permite retomar la planificación en cualquier momento.
+
+- **Interfaz de consola enriquecida**: elegí la librería `rich` porque ofrece tablas, colores y paneles sin la complejidad de una GUI. Los mensajes de error en rojo y los textos en verde para éxito mejoran la usabilidad. Además, los prompts interactivos guían al usuario paso a paso.
 
 ### 2.3 Restricciones implementadas
 
-El corazón del proyecto son las restricciones, que garantizan que las combinaciones de recursos sean coherentes con la trama y las tácticas militares. Se han definido **cinco tipos de restricciones**, todas evaluadas en el momento de agregar un evento y también durante la búsqueda de huecos. Estas reglas son:
+El corazón del proyecto son las reglas que dictan cómo se pueden combinar los recursos. He definido tres tipos de restricciones, todas evaluadas al agregar un evento y durante la búsqueda de huecos:
 
-#### 2.3.1 Inclusiones entre recursos (co‑requisitos)
+1. **Inclusiones entre recursos (co‑requisitos)**: si se usa un recurso de cierto tipo, debe incluirse otro tipo complementario. Por ejemplo:
+   - `Maquinaria de asedio` requiere `Ingeniero de asedio`.
+   - `Fuego Valyrio` requiere `Piromante`.
+   - `Maestro de espías` requiere `Oro`.
+   - `Mercenarios` requiere `Oro`.
+   - `Dragón` requiere `Noble de sangre valyria`.
 
-Estas reglas obligan a que, si se usa un recurso de cierto tipo, también se incluyan otros tipos complementarios. He elegido estas cinco inclusiones porque reflejan necesidades logísticas y narrativas del mundo de *Canción de Hielo y Fuego*:
+   Estas reglas reflejan necesidades logísticas y narrativas (un dragón necesita un jinete, el fuego valyrio necesita un piromante para manejarlo, etc.).
 
-| Si usas... | también debes incluir... | Razón |
-|------------|--------------------------|-------|
-| `Maquinaria de asedio` | `Ingeniero de asedio` | Una máquina de asedio (ariete, torre, catapulta) no puede operarse sin un experto que la construya, la mantenga y la dirija. Es un co‑requisito técnico y táctico. |
-| `Fuego Valyrio` | `Piromante` | El fuego valyrio es una sustancia extremadamente volátil y peligrosa. Solo los piromantes de la Alquimia (como los de la Logia de los Piromantes) saben manejarlo con seguridad. Sin ellos, el recurso es inútil o incluso letal. |
-| `Maestro de espías` | `Oro` | Un maestro de espías necesita financiación para sobornar, pagar informantes y mantener una red de agentes. Sin oro, su labor es inviable. Esta regla conecta la inteligencia con la economía. |
-| `Mercenarios` | `Oro` | Las compañías de mercenarios (como la Compañía Dorada o los Segunda Espada) solo luchan por dinero. Sin pago, no hay contrato. Es una relación directa entre recurso humano y recurso monetario. |
-| `Dragón` | `Jinete de dragón` | Un dragón salvaje es incontrolable. Solo una persona con sangre valyria (y entrenamiento) puede montarlo y dirigirlo en batalla. Daenerys Targaryen es el ejemplo claro; por eso se le asigna el tipo `Jinete de dragón`. |
+2. **Exclusiones entre recursos**: impiden combinar ciertos tipos en un mismo evento. Por ejemplo:
+   - `Fuego Valyrio` no puede usarse con `Maquinaria de asedio` (riesgo de explosión).
+   - `Mercenarios` no pueden coincidir con `Caballero` (códigos opuestos).
+   - `Dragón` no se combina con `Maquinaria de asedio` (el dragón destruiría la maquinaria).
+   - `Maestro de espías` no puede estar con `Caballero` (sigilo vs. honor).
 
-Estas inclusiones no solo son lógicas, sino que añaden profundidad al juego, ya que fuerzan al usuario a planificar sus recursos con cuidado.
+3. **Exclusiones entre casas**: reflejan las enemistades históricas del universo. Por ejemplo, Lannister no se alía con Stark, Targaryen, Tully ni Martell; Stark no se alía con Lannister, Bolton ni Greyjoy; etc. Si un evento incluye recursos de dos casas enemigas, el sistema lo rechaza.
 
-#### 2.3.2 Exclusiones entre recursos
+4. **Restricciones por tipo de evento**: cada tipo de evento obliga a incluir ciertos recursos y prohíbe otros. Por ejemplo, un *Asedio* debe incluir `Maquinaria de asedio` e `Ingeniero de asedio`, y no puede usar caballería. Una *Batalla Naval* debe incluir `Almirante` y `Fuego Valyrio`, y no puede usar caballería. Estas reglas tienen sentido táctico y hacen que la planificación sea más realista.
 
-Impiden combinar ciertos tipos de recursos en un mismo evento. He definido cuatro exclusiones mutuas que reflejan conflictos temáticos y tácticos:
+No se implementaron restricciones entre personajes porque quedaban redundantes con las de casas (por ejemplo, si Stark y Lannister ya no pueden aliarse, no hace falta prohibir a Eddard Stark con Jaime Lannister).
 
-| No se pueden combinar... | Razón |
-|--------------------------|-------|
-| `Fuego Valyrio` con `Maquinaria de asedio` | Riesgo de explosión / combustión. |
-| `Mercenarios` con `Caballero` | Los mercenarios desconfían de los caballeros (códigos opuestos). |
-| `Dragón` con `Maquinaria de asedio` | Un dragón destruye fácilmente la maquinaria, no se combinan. |
-| `Maestro de espías` con `Caballero` | Los maestros de espías representan el sigilo y el engaño; los caballeros encarnan el honor y la lealtad. Son polos opuestos y rara vez colaboran en la saga. |
+Todas estas restricciones se aplican de forma genérica usando los tipos de recurso, lo que facilita la adición de nuevos recursos sin modificar el código de validación.
 
-He descartado otras combinaciones (como la de maestros de espías con mercenarios o almirantes) porque no eran tan representativas o se solapaban con otras reglas. La elección final busca variedad y coherencia narrativa.
-
-#### 2.3.3 Exclusiones entre casas
-
-Reflejan las enemistades históricas del universo:
-
-- **Lannister** no se alía con *Stark*, *Targaryen*, *Tully* ni *Martell*.
-- **Stark** no se alía con *Lannister*, *Bolton* ni *Greyjoy*.
-- **Targaryen** no se alía con *Baratheon* ni *Lannister*.
-- **Tully** no se alía con *Lannister* ni *Frey*.
-- **Martell** no se alía con *Lannister*.
-- **Greyjoy** no se alía con *Stark*.
-- **Bolton** no se alía con *Stark*.
-- **Frey** no se alía con *Stark* ni *Tully*.
-
-Si un evento incluye recursos de dos casas enemigas, el sistema lo rechaza. Esta regla es fundamental para mantener la coherencia del universo, donde las alianzas son complejas y cambiantes.
-
-#### 2.3.4 Exclusiones entre personajes
-
-Basadas en las relaciones personales de la saga:
-
-| Personaje | No puede coincidir con... |
-|-----------|---------------------------|
-| `Eddard Stark` | `Jaime Lannister`, `Cersei Lannister` |
-| `Robb Stark` | `Jaime Lannister` |
-| `Tywin Lannister` | `Robb Stark`, `Eddard Stark` |
-| `Jon Snow` | `Cersei Lannister` |
-| `Daenerys Targaryen` | `Cersei Lannister` |
-
-Estas exclusiones evitan que personajes enemigos compartan un mismo evento, reflejando conflictos personales que son clave en la trama.
-
-#### 2.3.5 Restricciones por tipo de evento
-
-Cada tipo de evento **obliga** a incluir ciertos recursos y **prohíbe** otros:
-
-**Inclusiones forzosas:**
-
-| Tipo de evento | Tipos de recurso obligatorios |
-|----------------|-------------------------------|
-| `Asedio` | `Maquinaria de asedio`, `Ingeniero de asedio` |
-| `Batalla Naval` | `Almirante`, `Fuego Valyrio` |
-| `Asalto` | `Infantería pesada`, `Caballería pesada` |
-| `Defensa` | `Infantería pesada`, `Arqueros` |
-| `Emboscada` | `Infantería ligera`, `Arqueros` |
-
-**Exclusiones obligatorias:**
-
-| Tipo de evento | Tipos de recurso prohibidos |
-|----------------|-----------------------------|
-| `Emboscada` | `Maquinaria de asedio` |
-| `Batalla Naval` | `Caballería pesada`, `Caballería ligera` |
-| `Asedio` | `Caballería pesada`, `Caballería ligera` |
-| `Defensa` | `Caballería pesada`, `Caballería ligera` |
-| `Asalto` | `Maquinaria de asedio` |
-
-Estas reglas tienen sentido táctico: una emboscada debe ser sigilosa y no puede llevar maquinaria pesada; una batalla naval no necesita caballería; un asedio es estático, no requiere caballería; una defensa es similar; y un asalto rápido no da tiempo a montar maquinaria de asedio.
-
-Todas estas restricciones se implementan mediante funciones de validación en `planner.py`, que recorren los tipos de los recursos seleccionados y los comparan con las tablas de restricciones. La ventaja de usar **tipos** (y no IDs) es que las reglas son genéricas y se aplican automáticamente a cualquier recurso de ese tipo, independientemente de la casa a la que pertenezca. Esto hace el sistema fácilmente extensible.
+[Volver al inicio](#tabla-de-contenidos)
 
 ---
 
-## 3. Arquitectura del software
+## 3. Flujo del programa
 
-La aplicación sigue una arquitectura en capas, con separación clara de responsabilidades.
+El programa comienza en `main_menu.py`, que muestra un panel de bienvenida y un menú con las opciones. Dependiendo de la tecla pulsada (`a`, `l`, `v`, `d`, `s`), se invoca al comando correspondiente.
 
-### 3.1 Capas y módulos
+### 3.1 Agregar evento (`command_add`)
 
-- **`src/models/`**: contiene las clases `Event` y `Resource`, que definen la estructura de los datos. No contienen lógica de negocio, solo métodos de conversión a/desde diccionarios para la persistencia. Esto sigue el principio de *Single Responsibility*.
-- **`src/services/`**: alberga la lógica de negocio.
-  - `data_manager.py`: gestiona la carga/guardado del estado global (recursos, eventos, restricciones, ID siguiente) y ofrece funciones CRUD (`add_event`, `delete_event`, `list_events`, etc.). Es el punto de acceso al estado.
-  - `planner.py`: contiene el motor de validación de restricciones (`validate_restrictions`), la comprobación de conflictos de recursos (`resources_conflict_check`) y el algoritmo de búsqueda de huecos (`find_next_available_time_slot`). Esta separación permite probar y modificar la lógica de planificación sin afectar a la persistencia.
-- **`src/interface/`**: comandos CLI y menú principal, utilizando la librería `rich` para interfaces enriquecidas (tablas, paneles, colores). Cada comando (`add`, `list`, `delete`, `view`) está en un archivo separado, facilitando el mantenimiento.
-- **`src/data/`**: contiene `default_data.py`, que define la configuración inicial de recursos y restricciones en caso de que no exista el archivo JSON. Esto proporciona un conjunto de datos de ejemplo para empezar a probar el sistema.
-- **Persistencia**: se gestiona directamente en `data_manager.py` con `json`. Se guarda todo el estado en un único archivo `war_planner.json`, cumpliendo con el requisito del enunciado.
+1. Se pide el nombre, descripción (opcional), tipo de evento (de una lista predefinida) y ubicación (opcional).
+2. Se listan todos los recursos disponibles con sus IDs, tipos y casas.
+3. El usuario introduce los IDs de los recursos separados por comas.
+4. Se solicitan la fecha y hora de inicio y fin. Se valida que la fecha final sea posterior a la inicial.
+5. Opcionalmente, el usuario puede pedir al sistema que busque un hueco disponible. Si se solicita, se llama a `find_next_available_time_slot` con los recursos, duración, fecha de inicio, el listado de eventos existentes, el diccionario de recursos y restricciones, y el tipo de evento. Si se encuentra un hueco, se muestra y se pregunta si se desea usar.
+6. Se llama a `add_event` en `data_manager.py`, que:
+   - Valida que todos los recursos existan.
+   - Elimina duplicados en la lista de recursos.
+   - Crea un objeto `Event`.
+   - Llama a `validate_restrictions` (que comprueba inclusiones, exclusiones, casas y restricciones por tipo de evento).
+   - Llama a `resources_conflict_check` para verificar que ningún recurso esté ocupado en ese horario.
+   - Si todo es correcto, inserta el evento en la lista ordenada, incrementa el ID y guarda en JSON.
+   - Devuelve `(True, id)` o `(False, mensaje_error)`.
+7. Se muestra el resultado al usuario.
 
-### 3.2 Decisiones de diseño
+### 3.2 Búsqueda de huecos (`find_next_available_time_slot`)
 
-#### 3.2.1 Uso de tipos de recurso en lugar de IDs
-Inicialmente, las restricciones se definían usando IDs de recursos específicos (ej. `recurso 3` y `recurso 7`). Esto obligaba a actualizar las reglas cada vez que se añadía un nuevo recurso de la misma clase (por ejemplo, una nueva maquinaria de asedio para otra casa). Decidí cambiar a **tipos de recurso** para que las reglas sean genéricas. Así, la restricción "Caballería pesada no se combina con Maquinaria de asedio" se aplica a todos los recursos que tengan esos tipos, sean de la casa que sean. Esto hace el sistema mucho más escalable y reduce el mantenimiento.
+Esta función, en `planner.py`, realiza los siguientes pasos:
 
-#### 3.2.2 Validación en el momento de agregar
-Todas las validaciones (restricciones y conflictos) se realizan en `add_event` antes de guardar el evento. Si algo falla, se devuelve un mensaje de error y el evento no se crea. Esto garantiza que el estado siempre sea consistente y evita tener que corregir datos incorrectos posteriormente.
+- Ordena los eventos existentes por fecha de inicio.
+- Inicia desde la fecha `start_from` y avanza hasta `max_days` días después.
+- Recorre los eventos en orden. Para cada evento, si hay un hueco entre el tiempo actual y el inicio del evento, comprueba si la duración del nuevo evento cabe y si no hay conflictos de recursos (usando `is_slot_valid`). Si todo está bien, **además** crea un evento temporal con los recursos y tipo solicitados y llama a `validate_restrictions` para asegurar que se cumplen todas las reglas. Si es válido, devuelve el intervalo `(start, end)`.
+- Si el hueco no es válido, avanza el tiempo actual al final del evento si el evento usa alguno de los recursos solicitados.
+- Al final del horizonte, comprueba si hay espacio suficiente y repite la validación.
+- Si no encuentra ningún hueco, devuelve `(None, None)`.
 
-#### 3.2.3 Búsqueda de huecos
-La función `find_next_available_time_slot` recorre los eventos ordenados cronológicamente y detecta los intervalos libres. Para cada intervalo candidato, comprueba que no haya conflictos con los recursos solicitados. Utiliza `is_slot_valid`, que verifica solapamiento con eventos existentes. Esta función es clave para la usabilidad, ya que permite al usuario encontrar rápidamente un momento disponible sin tener que probar manualmente. La búsqueda se limita a un número configurable de días hacia adelante (por defecto 30) para evitar bucles infinitos.
+### 3.3 Listar eventos (`command_list_planned_events`)
 
-#### 3.2.4 Persistencia automática
-Cada cambio en el estado (agregar, eliminar evento) se guarda inmediatamente en el archivo JSON. Esto evita pérdidas de datos y permite retomar la planificación en cualquier momento, cumpliendo con el requisito de persistencia del enunciado.
+Obtiene la lista de eventos con `list_events()` y la muestra en una tabla con ID, nombre, tipo, fechas y recursos (IDs).
 
-#### 3.2.5 Interfaz de consola enriquecida
-Se eligió la librería `rich` porque ofrece tablas, colores, paneles y prompts interactivos sin la complejidad de una GUI. La interfaz es clara y usable, y los mensajes de error se muestran en rojo para llamar la atención. Esto mejora la experiencia de usuario sin añadir dependencias pesadas.
+### 3.4 Ver detalles (`command_view_details`)
 
-### 3.3 Principios SOLID aplicados (de forma implícita)
-Aunque no se ha hecho un diseño explícito con interfaces y herencia, se han seguido buenas prácticas que se alinean con SOLID:
+Pide un ID, busca el evento con `get_event_by_id` y muestra todos sus atributos en una tabla.
 
-- **Single Responsibility**: cada módulo tiene una tarea: `data_manager` gestiona el estado, `planner` valida, `interface` se ocupa de la interacción con el usuario. Las clases `Event` y `Resource` solo representan datos.
-- **Open/Closed**: el sistema de restricciones es extensible: se pueden añadir nuevas reglas simplemente agregando nuevas entradas en los diccionarios de restricciones, sin modificar el código de validación (las funciones genéricas recorren los diccionarios). Esto permite añadir nuevas reglas sin tocar el código existente.
-- **Dependency Inversion**: la interfaz no depende de la implementación concreta de la persistencia; llama a funciones de `data_manager`, que podrían ser reemplazadas fácilmente si se decidiera usar otro sistema de almacenamiento.
+### 3.5 Eliminar evento (`command_delete_event`)
 
-### 3.4 Otras buenas prácticas
-- **Nomenclatura**: las variables, funciones y clases están en inglés, mientras que la interfaz de usuario se presenta en español para facilitar el uso.
-- **Type hints**: todas las funciones públicas incluyen anotaciones de tipo, lo que mejora la legibilidad y ayuda a detectar errores.
-- **Docstrings**: cada función y clase relevante tiene una breve documentación.
-- **Código limpio**: se evita la duplicación y se utilizan estructuras de datos y bucles de forma clara.
+Pide un ID, llama a `delete_event` que lo busca y lo elimina de la lista, guardando los cambios.
 
----
-
-## 4. Funcionamiento del planificador
-
-### 4.1 `add_event`
-
-La función principal de planificación es `add_event` en `data_manager.py`. Realiza los siguientes pasos:
-
-1. **Valida que los recursos existen** en el diccionario `RESOURCES`.
-2. **Comprueba que la fecha final sea posterior a la inicial**.
-3. **Elimina duplicados** en la lista de IDs de recursos (por si el usuario los repite).
-4. **Crea un objeto `Event`** con los datos proporcionados.
-5. **Valida restricciones** llamando a `validate_restrictions` (que a su vez evalúa todos los tipos de restricciones descritos anteriormente). Si alguna falla, devuelve un mensaje de error.
-6. **Valida conflictos de recursos** con `resources_conflict_check` (comprueba que ningún recurso esté ocupado en ese horario). Para ello, compara el nuevo evento con todos los existentes y detecta solapamientos.
-7. Si todo es correcto, inserta el evento en la lista ordenada (`bisect.insort`), incrementa el ID y guarda el estado en JSON.
-8. Devuelve `(True, id)` o `(False, mensaje_error)`.
-
-### 4.2 `find_next_available_time_slot`
-
-Esta función busca el próximo hueco libre para un conjunto de recursos y una duración dada:
-
-- Parte de una fecha `start_from` (por defecto, el momento actual) y mira hasta `max_days` días después.
-- Ordena los eventos existentes por inicio.
-- Recorre los eventos y, para cada espacio entre ellos, comprueba si la duración cabe y si no hay conflictos con los recursos. Si hay un hueco, lo devuelve.
-- Si no encuentra ningún hueco, devuelve `None`.
-
-### 4.3 `delete_event`
-
-Elimina un evento por su ID. Busca en la lista, lo elimina y guarda el estado. Libera automáticamente los recursos, ya que la lista de eventos se actualiza y el recurso ya no estará ocupado.
-
-### 4.4 Control de colisiones
-
-El conflicto se detecta mediante la función `overlap` (que comprueba solapamiento de intervalos) y luego se verifica que los recursos del nuevo evento no estén en los recursos del evento solapado. Si ambas condiciones se cumplen, se considera conflicto y se rechaza el nuevo evento.
+[Volver al inicio](#tabla-de-contenidos)
 
 ---
 
-## 5. Interfaz de usuario
+## 4. Cómo se usa el programa (ejemplos)
 
-La interfaz es de línea de comandos (CLI) con la librería `rich`. Al iniciar, se muestra un panel de bienvenida y un menú con los comandos:
-
-- **`a` (Agregar evento)**: asistente paso a paso que pregunta nombre, descripción, tipo de evento, ubicación, IDs de recursos (se muestra el inventario con sus tipos y casas), fechas de inicio y fin, y ofrece la opción de buscar hueco. Tras validar, muestra el resultado.
-- **`l` (Listar eventos)**: muestra una tabla con ID, nombre, tipo, fechas y recursos de todos los eventos planificados.
-- **`v` (Ver detalles)**: pide un ID y muestra toda la información del evento.
-- **`d` (Eliminar evento)**: pide un ID y lo elimina, liberando recursos.
-- **`s` (Salir)**: cierra la aplicación.
-
-Todos los comandos manejan errores de entrada (fechas inválidas, IDs no numéricos, recursos inexistentes) mostrando mensajes claros en rojo. La experiencia de usuario es fluida y los colores ayudan a distinguir información importante.
-
-### Ejemplo de uso
-
-Supongamos que el usuario quiere planificar un asedio. Tras iniciar la aplicación y elegir la opción `a`, se le irán pidiendo los datos. Si elige un tipo de evento que requiere ciertos recursos (ej. Asedio), el sistema validará que los incluya. Si además mezcla recursos de casas enemigas, se mostrará un error:
+### Ejemplo 1: Agregar un evento simple
 
 ```
-Error: Las casas 'Lannister' y 'Stark' no pueden aliarse
+¡War is Coming!
+¿Cuál es tu nombre? Arya
+Hola Arya!. A continuación los comandos para realizar acciones:
+a - agregar evento
+l - listar eventos
+d - eliminar evento
+v - ver detalles de un evento
+s - salir
+
+¿Qué acción desea realizar Arya? a
+
+Agregar nuevo evento
+Nombre del evento: 
+Defensa de Invernalia
+¿Desea agregar descripción al evento? 
+Sí
+Descripción del evento: 
+Defender las murallas de Invernalia contra los caminantes blancos
+
+Tipos de evento disponibles: Asedio, Batalla Naval, Asalto, Defensa, Emboscada, Batalla Campal, Misión diplomática
+Tipo de evento: Defensa
+
+¿Desea especificar una locación para el evento? Sí
+Ubicación: Invernalia
+
+Recursos disponibles:
+89: Infantería pesada Stark (tipo: Infantería pesada, casa: Stark)
+90: Infantería ligera Stark (tipo: Infantería ligera, casa: Stark)
+93: Arqueros Stark (tipo: Arqueros, casa: Stark)
+... (más recursos)
+
+Ingrese los IDs de los recursos que desea separados por comas: 89,93,101
+Año - Inicio: 302
+Mes - Inicio: 1
+Día - Inicio: 15
+Hora - Inicio: 8
+Minuto - Inicio: 0
+Año - Fin: 302
+Mes - Fin: 1
+Día - Fin: 15
+Hora - Fin: 20
+Minuto - Fin: 0
+
+¿Desea buscar el próximo hueco disponible para estos recursos? No
+Evento 'Defensa de Invernalia' agregado con ID: 1
 ```
 
-Si, por el contrario, todo es correcto, se mostrará un mensaje de éxito:
+### Ejemplo 2: Búsqueda de hueco
+
+Supongamos que queremos planificar un asedio pero no sabemos cuándo hay disponibilidad. Tras elegir `a`, introducimos los datos del evento, seleccionamos recursos (por ejemplo, maquinaria de asedio e ingeniero) y fechas de inicio y fin. Luego respondemos "Sí" a la pregunta de buscar hueco. El sistema analizará el calendario y sugerirá, por ejemplo:
 
 ```
-Evento 'Asedio a Invernalia' agregado con ID 1
+Hueco encontrado: 302-01-20 08:00 - 302-01-20 18:00
+¿Desea usar este hueco? Sí
+Evento 'Asedio a Harrenhal' agregado con ID: 2
 ```
 
-La búsqueda de huecos se activa opcionalmente, y si se encuentra un intervalo, se muestra al usuario y se le pregunta si desea usarlo.
+### Ejemplo 3: Listar eventos
+
+```
+¿Qué acción desea realizar Arya? l
+Lista de Eventos
+┌────┬─────────────────────┬──────────┬─────────────────────┬─────────────────────┬──────────┐
+│ ID │ Nombre              │ Tipo     │ Inicio              │ Fin                 │ Recursos │
+├────┼─────────────────────┼──────────┼─────────────────────┼─────────────────────┼──────────┤
+│ 1  │ Defensa de Invernalia│ Defensa  │ 302-01-15 08:00     │ 302-01-15 20:00     │ 89,93,101│
+│ 2  │ Asedio a Harrenhal  │ Asedio   │ 302-01-20 08:00     │ 302-01-20 18:00     │ 7,8      │
+└────┴─────────────────────┴──────────┴─────────────────────┴─────────────────────┴──────────┘
+```
+
+### Ejemplo 4: Ver detalles
+
+```
+¿Qué acción desea realizar Arya? v
+Introduzca el ID del evento para mostrar detalles o 's' para salir: 1
+Detalles del evento #1
+┌────────────┬──────────────────────────────┐
+│ Campo      │ Valor                        │
+├────────────┼──────────────────────────────┤
+│ Nombre     │ Defensa de Invernalia        │
+│ Descripción│ Defender las murallas...     │
+│ Tipo       │ Defensa                      │
+│ Ubicación  │ Invernalia                   │
+│ Inicio     │ 302-01-15 08:00              │
+│ Fin        │ 302-01-15 20:00              │
+│ Duración   │ 12:00:00                     │
+│ Recursos   │ 89, 93, 101                  │
+│ Estado     │ planned                      │
+└────────────┴──────────────────────────────┘
+```
+
+### Ejemplo 5: Eliminar evento
+
+```
+¿Qué acción desea realizar Arya? d
+Eventos existentes:
+ID: 1 - Defensa de Invernalia (302-01-15 08:00)
+ID: 2 - Asedio a Harrenhal (302-01-20 08:00)
+Introduzca el ID del evento a eliminar o 's' para salir: 2
+Evento 2 eliminado correctamente.
+```
+
+[Volver al inicio](#tabla-de-contenidos)
 
 ---
 
-## 6. Persistencia
+## 5. Dificultades encontradas y cómo las resolví
 
-El estado se guarda en un único archivo `war_planner.json` con el siguiente esquema:
+### 5.1 Gestión de fechas y validación de intervalos
+Al principio, el usuario introducía fechas como texto y era complejo validar el formato. Opté por pedir año, mes, día, hora y minuto por separado, con bucles que repiten la pregunta hasta que los datos sean válidos. Esto simplificó el código y mejoró la experiencia de usuario.
 
-- `"resources"`: diccionario {id: {id, name, type, house}}.
-- `"restrictions"`: diccionario con todas las reglas (inclusiones, exclusiones, por evento, casas, personajes).
-- `"events"`: lista de eventos serializados (con fechas en formato ISO).
-- `"next_event_id"`: entero autoincrementado.
+### 5.2 Restricciones genéricas vs. específicas
+Inicialmente definí las restricciones con IDs de recursos concretos. Al añadir una nueva casa (por ejemplo, Targaryen), tenía que duplicar todas las reglas. Decidí usar el campo `tipo` del recurso en lugar de su ID. Así, la restricción "Maquinaria de asedio requiere Ingeniero de asedio" se aplica a cualquier recurso que tenga ese tipo, sea de la casa que sea. Esto hizo el sistema más escalable.
 
-Al iniciar, `load_data()` busca el archivo; si no existe, crea uno con los datos por defecto de `default_data.py`. Tras cada operación que modifica el estado, se llama a `save_data()`, que sobrescribe el archivo. Esto asegura que la planificación sea persistente entre ejecuciones.
+### 5.3 Validación de restricciones durante la búsqueda de huecos
+El algoritmo inicial solo comprobaba conflictos de recursos, pero no restricciones. Podía sugerir un hueco donde, por ejemplo, se mezclaran casas enemigas. Añadí una llamada a `validate_restrictions` dentro de la búsqueda, creando un evento temporal con los recursos y tipo solicitados. Si fallaba, se descartaba el hueco y se seguía buscando.
 
----
+### 5.4 Indentación y typos en el código
+En `planner.py`, el bucle de búsqueda de huecos tenía una indentación incorrecta: solo evaluaba el último evento. Además, había un typo en la clave de las restricciones de exclusión (`rreesource_type_exclusion_restrictions`). Corregir estos detalles fue esencial para que el motor funcionara. También ajusté la función `validate_event_type_inclusion_restriction` para que recibiera el diccionario `resources` como argumento, ya que lo necesitaba para obtener los tipos de los recursos.
 
-## 7. Dificultades encontradas y soluciones
+### 5.5 Manejo de errores en la entrada de recursos
+Cuando el usuario introducía IDs que no existían, el sistema fallaba. Añadí una validación previa en `add_event` que comprueba que todos los IDs existen en el diccionario `RESOURCES`, y si no, devuelve un mensaje de error claro.
 
-### 7.1 Gestión de fechas y validación de intervalos
-Al principio, el usuario introducía fechas como texto y la validación era compleja. Opté por dividir la entrada en año, mes, día, hora y minuto, con bucles que repiten la pregunta hasta que los datos sean válidos. Esto simplificó el código y mejoró la experiencia de usuario.
+### 5.6 Persistencia y carga de datos por defecto
+Al principio, si no existía `war_planner.json`, el programa intentaba usar `default_data` como cadena, lo que provocaba un error. Cambié la lógica para cargar `default_data.json` con `json.load()` y, si fallaba, usar un diccionario vacío. También implementé una función `load_default_data()` auxiliar para manejar casos de error.
 
-### 7.2 Restricciones genéricas vs específicas
-Inicialmente definí restricciones con IDs de recursos concretos, lo que hacía que añadir un nuevo recurso de una casa diferente (por ejemplo, maquinaria de asedio Targaryen) requiriera actualizar todas las reglas. La solución fue **usar el campo `type`** del recurso en lugar de su ID. Esto permitió que las reglas se apliquen automáticamente a cualquier recurso con ese tipo.
+### 5.7 Interfaz de usuario con `rich`
+Aprender a usar `rich` (tablas, prompts, colores) llevó algo de tiempo, pero valió la pena porque la interfaz quedó mucho más atractiva y clara. Los mensajes de error en rojo y los textos en verde para éxito mejoran la usabilidad. Además, los paneles y tablas hacen que la información sea más legible.
 
-### 7.3 Validación de personajes
-Quería que los personajes (Eddard, Jaime, etc.) tuvieran exclusiones basadas en su nombre, pero no quería que el sistema filtrara por tipo `Personaje` porque Daenerys es `Jinete de dragón`. La solución fue modificar la función de validación para que recoja **todos los nombres** de los recursos seleccionados, sin importar su tipo, y los compare con las claves de la restricción. Así, Daenerys también participa en las exclusiones.
-
-### 7.4 Búsqueda de huecos
-El algoritmo inicial era demasiado simple y no consideraba correctamente los conflictos de recursos. Lo reescribí para que recorriera todos los eventos y, para cada hueco, verificara con `is_slot_valid` que ningún recurso estuviera ocupado. También tuve que asegurarme de que el candidato `end` no sobrepasara el límite de días.
-
-### 7.5 Interfaz de consola con `rich`
-Aprender a usar `rich` (tablas, prompts, colores) llevó algo de tiempo, pero valió la pena porque la interfaz quedó mucho más atractiva y clara. Los mensajes de error en rojo y los textos en verde para éxito mejoran la usabilidad.
-
-### 7.6 Gestión de errores en la entrada de recursos
-Cuando el usuario introducía IDs de recursos que no existían, el sistema fallaba. Añadí una validación previa en `add_event` que comprueba que todos los IDs existen en el diccionario de recursos, y si no, devuelve un mensaje de error claro.
+[Volver al inicio](#tabla-de-contenidos)
 
 ---
 
-## 8. Pruebas y validación
+## 6. Aprendizajes durante el desarrollo
 
-Aunque no se han desarrollado pruebas unitarias formales, se ha realizado una validación manual exhaustiva:
+Este proyecto me ha permitido adquirir y afianzar múltiples habilidades:
 
-- **Pruebas de restricciones**: se intentaron crear eventos con combinaciones prohibidas (ej. Asedio con caballería) y se comprobó que el sistema las rechazara con el mensaje adecuado.
-- **Pruebas de conflictos**: se crearon dos eventos con el mismo recurso en horarios solapados y se verificó que el segundo fuera rechazado.
-- **Pruebas de búsqueda de huecos**: con una agenda cargada, se pidió un hueco para un conjunto de recursos y se comprobó que el intervalo sugerido era realmente libre.
-- **Pruebas de persistencia**: se agregaron eventos, se cerró el programa y al volver a abrir los eventos seguían presentes.
+- **Modelado de dominios**: aprender a abstraer un problema real en entidades y reglas me ha enseñado la importancia de un buen diseño de datos. Un modelo claro simplifica el código y facilita la extensión.
 
-El sistema se comporta como se espera, y los mensajes de error guían al usuario para corregir las entradas.
+- **Validación en capas**: separar la lógica de validación (restricciones) de la gestión de datos y de la interfaz ha hecho que el código sea más mantenible y fácil de depurar. Pude probar el planificador de forma aislada.
 
----
+- **Algoritmos de búsqueda en intervalos**: la búsqueda de huecos me obligó a entender cómo manejar eficientemente listas ordenadas y comprobar solapamientos. Aprendí a usar `bisect` y a recorrer eventos de forma secuencial para encontrar espacios libres.
 
-## 9. Aprendizajes y reflexión personal
+- **Persistencia con JSON**: trabajar con archivos JSON me ha enseñado la importancia de la serialización y cómo manejar fechas y objetos complejos. Aprendí a estructurar el archivo de datos de forma coherente.
 
-Durante el desarrollo de *War is Coming* he adquirido una comprensión mucho más profunda de varios conceptos clave:
+- **Interacción con el usuario**: diseñar una CLI amigable con `rich` me ha mostrado que incluso una consola puede ofrecer una experiencia atractiva si se cuidan los detalles. Los colores y tablas mejoran la legibilidad.
 
-- **Modelado de dominios**: aprender a abstraer un problema real (planificación militar) en entidades (eventos, recursos) y reglas ha sido muy enriquecedor. Me he dado cuenta de que un buen modelo de datos simplifica enormemente el código.
-- **Validación en capas**: separar la lógica de validación (restricciones) de la gestión de datos y de la interfaz ha hecho que el código sea más mantenible y fácil de depurar.
-- **Algoritmos de búsqueda en intervalos**: la búsqueda de huecos me obligó a entender cómo manejar eficientemente listas ordenadas y comprobar solapamientos, una habilidad muy útil para cualquier sistema de planificación.
-- **Persistencia con JSON**: trabajar con archivos JSON me ha enseñado la importancia de la serialización y cómo manejar fechas y objetos complejos.
-- **Interacción con el usuario**: diseñar una CLI amigable con `rich` me ha mostrado que incluso una consola puede ofrecer una experiencia atractiva si se cuidan los detalles.
 - **Iteración y refinamiento**: he ido mejorando el proyecto paso a paso, añadiendo restricciones, corrigiendo errores y puliendo la interfaz. Esto me ha enseñado a no buscar la perfección desde el principio, sino a construir de forma incremental.
-- **Importancia de las restricciones**: entender cómo las reglas de negocio pueden hacer que un sistema sea mucho más interesante y desafiante. Las restricciones no solo son requisitos, sino que añaden profundidad al dominio.
+
+- **Importancia de las restricciones**: entender cómo las reglas de negocio pueden hacer que un sistema sea mucho más interesante y desafiante. Las restricciones no solo son requisitos, sino que añaden profundidad al dominio y lo hacen más realista.
+
+- **Manejo de errores**: he aprendido a anticipar entradas incorrectas del usuario (fechas inválidas, IDs inexistentes) y a mostrar mensajes claros en lugar de dejar que el programa falle. Esto mejora la robustez de la aplicación.
 
 Además, el hecho de haber elegido un dominio que me apasiona (el universo de ASOIAF) ha hecho que el proceso sea mucho más divertido y motivador. Cada nueva restricción que añadía me recordaba una escena de los libros o la serie, lo que daba coherencia al proyecto.
 
+[Volver al inicio](#tabla-de-contenidos)
+
 ---
 
-## 10. Conclusión
+## 7. Conclusión
 
 *War is Coming* es un sistema funcional y coherente que cumple con todos los requisitos mínimos del proyecto:
 
 - **Planificación de eventos** con recursos limitados.
-- **Validación de restricciones** (co‑requisitos, exclusiones, por tipo de evento, por casas y por personajes).
-- **Búsqueda automática de huecos** para facilitar la organización.
+- **Validación de restricciones** (co‑requisitos, exclusiones, por tipo de evento y por casas).
+- **Búsqueda automática de huecos** que respeta conflictos y restricciones.
 - **Interfaz de consola** completa y usable.
 - **Persistencia** en JSON para guardar y cargar el estado.
 
 El sistema es extensible: se pueden añadir nuevos recursos, nuevas casas, nuevas restricciones sin modificar el núcleo de la lógica. El uso de tipos en lugar de IDs hace que las reglas sean genéricas y escalables.
 
-En el futuro, me gustaría implementar algunas de las funcionalidades opcionales, como **recursos con cantidad** (ej. tener 5 unidades de Infantería pesada en lugar de una única) o **eventos recurrentes** (planificar una serie de escaramuzas diarias). También podría explorar una interfaz web con Streamlit para hacerla más visual y accesible.
+En el futuro, me gustaría implementar funcionalidades opcionales como **recursos con cantidad** (ej. tener 5 unidades de Infantería pesada) o **eventos recurrentes** (planificar una serie de escaramuzas diarias). También podría explorar una interfaz web con Streamlit para hacerla más visual y accesible.
 
 En definitiva, este proyecto me ha permitido poner en práctica todos los conocimientos adquiridos durante el curso y me ha dado la confianza para abordar sistemas más complejos en el futuro.
+
+[Volver al inicio](#tabla-de-contenidos)

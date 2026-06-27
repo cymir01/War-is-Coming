@@ -10,7 +10,7 @@ from src.services.planner import resources_conflict_check
 #implementar try-except blocks en el comando add event
 #implenmentar filtrado de eventos por atributo con funciones
 
-FILEPATH = "src/services/war_planner.json"
+FILEPATH = "data/war_planner.json"
 
 EVENTS = [] #cambiar el codigo que gestiona events para que opere con lista y no dict
 RESOURCES = {} #diccionario {id: Resource}
@@ -144,7 +144,7 @@ def delete_event(event_id):
             del EVENTS[index] #INVESTIGAR SOBRE POP PARA USARLO SI ES MEJOR
             save_data()
             return True
-        return False
+    return False
 
 def get_event_by_id(event_id):
     for event in EVENTS:

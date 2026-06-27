@@ -15,22 +15,21 @@ def resources_conflict_check(new_event, existing_events):
 
 def validate_restrictions(new_event, resources, restrictions):
     """funcion que valida las restricciones de inclusion y exclusion entre recursos"""
-    inclusion_restrictions = restrictions.get("resource_type_inclusion_restrictions", {})
-    exclusion_restrictions = restrictions.get("rreesource_type_exclusion_restrictions", {})
+    resource_type_inclusion_restrictions = restrictions.get("resource_type_inclusion_restrictions", {})
+    resource_type_exclusion_restrictions = restrictions.get("resource_type_exclusion_restrictions", {})
     event_type_exclusion_restrictions = restrictions.get("event_type_exclusion_restrictions", {})
     event_type_inclusion_restrictions = restrictions.get("event_type_inclusion_restrictions", {})
     houses_exclusion_restrictions = restrictions.get("house_exclusion_restrictions", {})
-    character_exclusion_restrictions = restrictions.get("character_exclusion_restrictions", {})
 
-    valid, mesage = validate_resource_type_inclusion_restrictions(new_event, inclusion_restrictions)
+    valid, mesage = validate_resource_type_inclusion_restrictions(new_event, resource_type_inclusion_restrictions)
     if not valid:
         return False, mesage
 
-    valid, mesage = validate_resource_type_exclusion_restrictions(new_event, exclusion_restrictions)
+    valid, mesage = validate_resource_type_exclusion_restrictions(new_event, resource_type_exclusion_restrictions)
     if not valid:
         return False, mesage
 
-    valid, mesage = validate_event_type_inclusion_restriction(new_event, event_type_inclusion_restrictions)
+    valid, mesage = validate_event_type_inclusion_restriction(new_event, resources, event_type_inclusion_restrictions)
     if not valid:
         return False, mesage
 
@@ -42,9 +41,6 @@ def validate_restrictions(new_event, resources, restrictions):
     if not valid:
         return False, mesage
     
-    valid, mesage = character_exclusion_restrictions()
-    if not valid:
-        return False
     return True, ''
 
 def validate_resource_type_inclusion_restrictions(new_event, resource_type_inclusion_restrictions):

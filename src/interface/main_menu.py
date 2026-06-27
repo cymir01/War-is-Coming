@@ -13,7 +13,7 @@ console = Console()
 def main():
     panel = Panel(Text("¡War is Coming!", justify="center"), style="deep_sky_blue4")
     console.print(panel)
-    user_name = Prompt.ask("¿Cuál es tu nombre?")
+    user_name = Prompt.ask("¿Cuál es su nombre, milord?")
     console.print(f"Hola {user_name}!. A continuación los comandos para realizar acciones:")
     console.print(
         "[bold cyan]a[/bold cyan] - agregar evento\n"
