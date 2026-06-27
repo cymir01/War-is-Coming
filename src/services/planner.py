@@ -115,9 +115,6 @@ def validate_houses_exclusion_restrictions(new_event, resources, houses_exclusio
                     return False, f"error: la casa {house} no puede aliarse con la casa {enemy_house}"
     return True, ""
 
-def character_exclusion_restrictions():
-    pass
-
 # Debes implementar una función inteligente que, dado un evento y los recursos que necesita, sea capaz de analizar el calendario y 
 # sugerir el próximo intervalo de tiempo disponible donde se pueda realizar sin conflictos ni violaciones de restricciones.
 def get_event_start(event):
@@ -127,6 +124,7 @@ def get_event_start(event):
 # y ademas chequear conflicto de recrusos llamando a conflict_resoruces_check
 # la validacion del hueco estaria separada de la busqueda del hueco
 def is_slot_valid(start_time, end_time, resources_ids, sorted_events):
+    """comprueba que ningún recurso esté ocupado en el intervalo"""
     for event in sorted_events:
         if max(start_time, event.start) < min(end_time, event.end):
             for resource_id in resources_ids:
@@ -135,40 +133,71 @@ def is_slot_valid(start_time, end_time, resources_ids, sorted_events):
     return True
 
 #usar la fecha de inicio que pide el usuario, no now() porque el calendario que debe usar el programa es ficticio
-def find_next_available_time_slot(resource_ids, duration_hours, start_from, max_days=30, existing_events=None, event_type=None, step_minutes=5):
+def find_next_available_time_slot(resource_ids, duration_hours, start_from, max_days=30, existing_events=None, resources=None, restrictions=None, event_type=None):
     if existing_events is None:
         existing_events = []
     if start_from is None:
         start_from = DEFAULT_START_DATE
 
     sorted_events = sorted(existing_events, key=get_event_start)
-
     end_limit = start_from + timedelta(days=max_days)
     current_time = start_from
 
+    #si el evento ya termino lo saltamos
     for event in sorted_events:
         if event.end <= current_time:
             continue
     
+    #si hay un hueco entre current_time y event.start
     if event.start > current_time:
         gap_hours = (event.start - current_time).total_seconds() / 3600.0
         if gap_hours >= duration_hours:
             candidate_end = current_time + timedelta(hours=duration_hours)
             if candidate_end <= event.start:
                 if is_slot_valid(current_time, candidate_end, resource_ids, sorted_events):
-                    return current_time, candidate_end
-    
-    for rid in resource_ids:
-        if rid in event.resources_ids:
-            current_time = max(current_time, event.end)
-            break
+                    if resources is not None and restrictions is not None and event_type is not None:
+                        from src.models.event import Event
+                        temporal_event = Event(
+                            id=-1,
+                            name="temp",
+                            start=current_time,
+                            end=candidate_end,
+                            event_type=event_type,
+                            resources_ids=resource_ids
+                        )
+                        valid, mesage = validate_restrictions(temporal_event, resources, restrictions)
+                        if not valid:
+                            pass #seguimos buscando si no cumple...
+                        else:
+                            return current_time, candidate_end
+                    else:
+                        return current_time, candidate_end
+                    
+        for rid in resource_ids:
+            if rid in event.resources_ids:
+                current_time = max(current_time, event.end)
+                break
+
     if (end_limit - current_time).total_seconds() / 3600.0 >= duration_hours:
         candidate_end = current_time + timedelta(hours=duration_hours)
         if candidate_end <= end_limit:
             if is_slot_valid(current_time, candidate_end, resource_ids, sorted_events):
-                return current_time, candidate_end
-
-    return None
+                if resources is not None and restrictions is not None and event_type is not None:
+                    from src.models.event import Event
+                    temporal_event = Event(
+                        id=-1,
+                        name="temp",
+                        start=current_time,
+                        end=candidate_end,
+                        event_type=event_type,
+                        resources_ids=resource_ids
+                    )
+                    valid, mesage = validate_restrictions(temporal_event, resources, restrictions)
+                    if valid:
+                        return current_time, candidate_end
+                else:
+                    return current_time, candidate_end
+    return None,
 
 def overlap(event1, event2):
     '''
