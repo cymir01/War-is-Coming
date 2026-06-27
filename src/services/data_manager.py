@@ -6,7 +6,6 @@ from src.models.event import Event
 from src.models.resource import Resource
 from src.services.planner import validate_restrictions
 from src.services.planner import resources_conflict_check
-from data.default_data import default_data_function
 
 #implementar try-except blocks en el comando add event
 #implenmentar filtrado de eventos por atributo con funciones
@@ -20,9 +19,9 @@ NEXT_EVENT_ID = 1
 
 def load_data():
     global EVENTS, RESOURCES, RESTRICTIONS, NEXT_EVENT_ID
-
+#ARREGLAR
     if not os.path.exists(FILEPATH): #revisar bien este bloque
-        default_data = default_data_function() #corregir el idioma y el diseño de recursos
+        default_data = "data/default_data.json" #corregir el idioma y el diseño de recursos
         resources_dict = default_data["resources"]
         RESOURCES = {int(id): Resource.create_robject_from_dict(r_data) for id, r_data in resources_dict.items()}
         RESTRICTIONS = default_data["restrictions"]

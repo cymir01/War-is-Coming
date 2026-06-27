@@ -1,5 +1,4 @@
-def default_data_function():
-    return {
+{
     "resources": {
         "1": {"id": 1, "name": "Infantería pesada Arryn", "type": "Infantería pesada", "house": "Arryn"},
         "2": {"id": 2, "name": "Infantería ligera Arryn", "type": "Infantería ligera", "house": "Arryn"},
