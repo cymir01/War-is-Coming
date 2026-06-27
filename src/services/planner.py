@@ -13,6 +13,7 @@ def resources_conflict_check(new_event, existing_events):
                     return True
     return False
 
+#UNIFICAR TODAS LAS FUNCIONES DE VALIDACION EN ESTA FUNCION
 def validate_restrictions(new_event, resources, restrictions):
     """funcion que valida las restricciones de inclusion y exclusion entre recursos"""
     inclusion_restrictions = restrictions.get("resource_type_inclusion_restrictions", {})
@@ -66,8 +67,8 @@ def validate_event_type_inclusion_restriction(new_event, resources, event_type_i
     for resource_id in resources_ids_new_event:
         if resource_id in resources:
             resource_type = resources[resource_id].resource_type
-            if house:
-                resources_type_new_event.add(house)
+            if resource_type:
+                resources_type_new_event.add(resource_type)
         
     if event_type in event_type_inclusion_restrictions:
         required_resources_type = event_type_inclusion_restrictions[event_type]

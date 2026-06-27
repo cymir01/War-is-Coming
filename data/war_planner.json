@@ -107,23 +107,15 @@
         "104": {"id": 104, "name": "Fuego Valyrio", "type": "Fuego Valyrio", "house": "Targaryen"},
         "105": {"id": 105, "name": "Piromante", "type": "Piromante", "house": "Targaryen"},
         "106": {"id": 106, "name": "Eddard Stark", "type": "Personaje", "house": "Stark"},
-        "107": {"id": 107, "name": "Robb Stark", "type": "Personaje", "house": "Stark"},
+        "107": {"id": 107, "name": "Robb Stark", "type": "Guerrero de linaje noble", "house": "Stark"},
         "108": {"id": 108, "name": "Tywin Lannister", "type": "Personaje", "house": "Lannister"},
         "109": {"id": 109, "name": "Jaime Lannister", "type": "Personaje", "house": "Lannister"},
         "110": {"id": 110, "name": "Cersei Lannister", "type": "Personaje", "house": "Lannister"},
         "111": {"id": 111, "name": "Daenerys Targaryen", "type": "Jinete de dragón", "house": "Targaryen"},
         "112": {"id": 112, "name": "Jon Snow", "type": "Personaje", "house": "Stark"},
-        "113": {"id": 113, "name": "Jinete de dragón", "type": "Jinete de dragón", "house": null},
-        "114": {"id": 114, "name": "Infantería pesada", "type": "Infantería pesada", "house": null},
-        "115": {"id": 115, "name": "Infantería ligera", "type": "Infantería ligera", "house": null},
-        "116": {"id": 116, "name": "Caballería pesada", "type": "Caballería pesada", "house": null},
-        "117": {"id": 117, "name": "Caballería ligera", "type": "Caballería ligera", "house": null},
-        "118": {"id": 118, "name": "Arqueros", "type": "Arqueros", "house": null},
         "119": {"id": 119, "name": "Maestro de espías", "type": "Maestro de espías", "house": null},
         "120": {"id": 120, "name": "Caballero", "type": "Caballero", "house": null},
         "121": {"id": 121, "name": "Almirante", "type": "Almirante", "house": null},
-        "122": {"id": 122, "name": "Caballo", "type": "Caballo", "house": null},
-        "123": {"id": 123, "name": "Arakh", "type": "Arakh", "house": null},
         "124": {"id": 124, "name": "Jinete de sangre valyria", "type": "Jinete de dragón", "house": "Targaryen"},
         "125": {"id": 125, "name": "Maquinaria de asedio", "type": "Maquinaria de asedio", "house": null},
         "126": {"id": 126, "name": "Ingeniero de asedio", "type": "Ingeniero de asedio", "house": null},
@@ -154,7 +146,7 @@
             "Asalto": ["Infantería pesada", "Caballería pesada"],
             "Defensa": ["Infantería pesada", "Arqueros"],
             "Emboscada": ["Infantería ligera", "Arqueros"],
-            "Misión diplomática": ["Embajador", ]
+            "Misión diplomática": ["Embajador"]
         },
                
         "event_type_exclusion_restrictions": {
@@ -163,7 +155,6 @@
             "Asedio": ["Caballería pesada", "Caballería ligera"],
             "Defensa": ["Caballería pesada", "Caballería ligera"],
             "Asalto": ["Maquinaria de asedio"]
-            "Mis"
         },
 
         "house_exclusion_restrictions": {
@@ -189,12 +180,3 @@
     "events": [],
     "next_event_id": 1
 }
-
-inclusive_resources = {
-        "Maquinaria de Asedio": ["Hijo del Lecho de Pulgas"],
-        "Fuego Valyrio": ["Piromante"],
-        "Dragón": ["Jinete de sangre valyria"],
-        "Espada de acero valyrio": ["Caballero de linaje noble"],
-        "Dothraki": ["Arakh", "Caballo"],
-        "Mercenarios": ["Oro"]
-    }

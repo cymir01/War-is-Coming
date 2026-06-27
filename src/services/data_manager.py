@@ -119,11 +119,16 @@ def add_event(name, description, start, end, event_type, location, resources_ids
 
     #en la funcion validate_restrictions en planner.py retorna mensajes de error para cada uno de los 3 casos
     #corregir este bloque condicional
-    if not validate_restrictions(new_event, RESOURCES, RESTRICTIONS):
-        raise ValueError("El evento incumple alguna restriccion de recursos o tipo de")
     
-    if resources_conflict_check(new_event, EVENTS):
-        raise ValueError("El evento pide recursos ya ocupados por otro evento programado")
+    
+    #ARREGLAR PLANNER.PY
+    bool_restrictions, mesage = validate_restrictions(new_event, RESOURCES, RESTRICTIONS)
+    if not bool_restrictions:
+        return False, mesage
+    
+    bool_conflict, mesage_conlfict = resources_conflict_check(new_event, EVENTS)
+    if not bool_conflict:
+        return False, mesage_conlfict
 
     bisect.insort(EVENTS, new_event) #terminar de agregar __lt__ en Event
     NEXT_EVENT_ID += 1
