@@ -291,9 +291,9 @@ Este proyecto me ha permitido en general desarrollar habilidades de manejo de er
 
 - **`datetime` y `timedelta`**: Aprendí a manejar fechas y horas, a calcular diferencias entre instantes (duraciones) y a formatear fechas para mostrarlas al usuario. Estos conocimientos eran esenciales para validar intervalos, detectar solapamientos y calcular la duración de los eventos.
 
-- **`bisect`**: Descubrí cómo mantener una lista ordenada de forma eficiente usando `bisect.insort` en lugar de usar un algoritmo de búsqueda para la inserción, lo que me permitió insertar nuevos eventos en la posición cronológica correcta sin tener que reordenar toda la lista cada vez.
+- **`bisect`**: Descubrí cómo mantener una lista ordenada de forma eficiente usando `bisect.insort` en lugar de usar un algoritmo de búsqueda para la inserción (como originalmente había considerado), lo que me permitió insertar nuevos eventos en la posición cronológica correcta sin tener que reordenar toda la lista cada vez.
 
-- **Método especial `__lt__`**: Implementé este método en la clase `Event` para definir el criterio de ordenación (por fecha de inicio). Esto me permitió usar `sort()` y `bisect` sin necesidad de especificar una clave de ordenación cada vez, haciendo el código más limpio y legible.
+- **Método mágico `__lt__`**: Aprendí a usar este método (el cual conocí por recomendación de una Inteligencia Artificial al consultarle) estudiándolo por GeeksforGeeks y finalmente implementándolo en la clase `Event` para definir el criterio de ordenación de los eventos (por fecha de inicio). Este método me permitió usar `sort()` y `bisect` sin necesidad de especificar una clave de ordenación cada vez, haciendo el código más limpio y legible, y facilitándome el ordenamiento cronológico de los eventos.
 
 - **`enumerate`**: Descubrí esta función en la documentación oficial de Python y la usé para iterar sobre listas obteniendo tanto el índice como el elemento, lo cual me facilitó la tarea de buscar y eliminar eventos por su posición.
 
@@ -305,9 +305,9 @@ Este proyecto me ha permitido en general desarrollar habilidades de manejo de er
 
 - **Desempaquetado de tuplas**: Esta función que descubrí en clase y luego estudié por GeeksforGeeks me permitió asignar varios valores a la vez, en una sola línea, como en `start, end = slot`, lo que hace el código más conciso y legible al trabajar con funciones que devuelven múltiples valores.
 
-- **List Comprehension**: Aprendí a usar la sintaxis de comprensión de listas que ofrece Python para crear nuevas listas en una sola línea de código mediante la aplicación de una expresión a cada elemento en un iterable como una lista, tupla o rango. Esta funcionalidad de Python es mucho más útil para escribir código limpio, legible y eficiente en comparación con los bucles tradicionales. La estudié en GeeksforGeeks y luego la usé a lo largo del proyecto.
+- **Comprensión de listas en Python**: Aprendí a usar la sintaxis de comprensión de listas que ofrece Python para crear nuevas listas en una sola línea de código mediante la aplicación de una expresión a cada elemento en un iterable como una lista, tupla o rango. Esta funcionalidad de Python es mucho más útil para escribir código limpio, legible y eficiente en comparación con los bucles tradicionales. La estudié en GeeksforGeeks y luego la usé a lo largo del proyecto.
 
-- **Ternary Operator in Python**: Conocí y aprendí a usar el operador ternario de Python, o expresión condicional, que es una forma compacta (en una sola línea de código) de escribir una instrucción if-else simple. Se usa para asignar un valor a una variable en función de una condición. Uso operadores ternarios a lo largo de todo el proyecto.
+- **Operador ternario en Python**: Conocí y aprendí a usar el operador ternario de Python, o expresión condicional, que es una forma compacta (en una sola línea de código) de escribir una instrucción if-else simple. Se usa para asignar un valor a una variable en función de una condición. Uso operadores ternarios a lo largo de todo el proyecto.
 
 - **Manejo de errores con `try-except`**: Implementé bloques de captura de excepciones para gestionar entradas inválidas del usuario (fechas mal formadas, IDs no numéricos) y errores de archivo, mostrando mensajes claros sin que el programa colapse. Los conocimientos que desarrollé sobre manejo de excepciones los debo al libro Curso Intensivo de Python, de Eric Matthes.
 

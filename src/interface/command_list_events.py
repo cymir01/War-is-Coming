@@ -5,22 +5,39 @@ from src.services.data_manager import list_events
 
 def command_list_planned_events():
     console = Console()
+    events = list_events()
+    if not events:
+        console.print("[yellow]No hay eventos programados[/yellow]")
+        return
+    
     table = Table(title="Lista de Eventos") 
-    table.add_column("ID", style="cyan") 
-    table.add_column("Descripción", style="magenta") 
-    table.add_column("Estado", style="green")
+    table.add_column("ID", style="cyan")
+    table.add_column("Nombre", style="white")
+    table.add_column("Tipo", style="magenta")
+    table.add_column("Descripción", style="magenta")
+    table.add_column("Estado", style="magenta") 
+    table.add_column("Inicio", style="green")
+    table.add_column("Fin", style="green")
+    table.add_column("Recursos", style="yellow")
 
-    for id, event in events.items(): 
-        table.add_row(str(id), event['desc'], event['estado'])
+#este bloque convierte la lista de ids en una cadena de texto porque la funcion table.add_row() espera cadenas de texto
+    for event in events:
+        resources_str = ""
+        for i, rid in enumerate(event.resources_ids):
+            if i == 0:
+                resources_str = str(rid)
+            else:
+                resources_str = resources_str + ", " + str(rid)
+
+        table.add_row(
+            str(event.id),
+            event.name,
+            event.event_type,
+            event.description,
+            event.status,
+            event.start.strftime("%Y-%m-%d %H:%M"),
+            event.end.strftime("%Y-%m-%d %H:%M"),
+            resources_str
+        )
 
     console.print(table)
-    #!agregar mas info de los eventos a la tabla
-
-#!usar estas tablas para listar el inventario de recursos y eventos y demas
-# tabla = Table(title="Ejércitos de Poniente")
-# tabla.add_column("Casa", style="cyan")
-# tabla.add_column("Líder", style="magenta")
-# tabla.add_column("Tropas", justify="right")
-# tabla.add_row("Stark", "Robb Stark", "20,000")
-# tabla.add_row("Lannister", "Tywin Lannister", "35,000")
-# console.print(tabla)
