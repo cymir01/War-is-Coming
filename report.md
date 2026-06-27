@@ -3,6 +3,13 @@
 **Autor:** Cynthia Moreno Miranda  
 **Curso:** MATCOM, 2025-26
 
+
+    Qué hace tu programa
+    Cómo lo diseñaste y por qué tomaste las decisiones que tomaste
+    Qué aprendiste durante el desarrollo
+    Cómo se usa el programa (con ejemplos)
+    Dificultades que encontraste y cómo las resolviste
+
 ---
 
 ## 1. Introducción y dominio elegido

@@ -13,7 +13,6 @@ def resources_conflict_check(new_event, existing_events):
                     return True
     return False
 
-#UNIFICAR TODAS LAS FUNCIONES DE VALIDACION EN ESTA FUNCION
 def validate_restrictions(new_event, resources, restrictions):
     """funcion que valida las restricciones de inclusion y exclusion entre recursos"""
     inclusion_restrictions = restrictions.get("resource_type_inclusion_restrictions", {})
@@ -23,13 +22,29 @@ def validate_restrictions(new_event, resources, restrictions):
     houses_exclusion_restrictions = restrictions.get("house_exclusion_restrictions", {})
     character_exclusion_restrictions = restrictions.get("character_exclusion_restrictions", {})
 
-#terminar los strings de error. Ademas puedo referir los recursos especificos con problemas
-    exc_rest_bool, exclusive_resource = validate_event_type_exclusion_restriction(new_event, exclusion_restrictions)
-    inc_rest_bool, required_resource = validate_event_type_inclusion_restriction(new_event, inclusion_restrictions)
-    et_inc_rest_bool, needed_resource = validate_event_type_inclusion_restriction(new_event, event_type_inclusion_restrictions)
-    et_exc_rest_bool, forbbiden_resource = validate_event_type_exclusion_restriction(new_event, event_type_exclusion_restrictions)
-    houses_exc_bool, exclusive_house = validate_houses_exclusion_restrictions(new_event, resources, houses_exclusion_restrictions)
+    valid, mesage = validate_resource_type_inclusion_restrictions(new_event, inclusion_restrictions)
+    if not valid:
+        return False, mesage
 
+    valid, mesage = validate_resource_type_exclusion_restrictions(new_event, exclusion_restrictions)
+    if not valid:
+        return False, mesage
+
+    valid, mesage = validate_event_type_inclusion_restriction(new_event, event_type_inclusion_restrictions)
+    if not valid:
+        return False, mesage
+
+    valid, mesage = validate_event_type_exclusion_restriction(new_event, event_type_exclusion_restrictions)
+    if not valid:
+        return False, mesage
+
+    valid, mesage = validate_houses_exclusion_restrictions(new_event, resources, houses_exclusion_restrictions)
+    if not valid:
+        return False, mesage
+    
+    valid, mesage = character_exclusion_restrictions()
+    if not valid:
+        return False
     
     return True, ''
 
@@ -104,6 +119,9 @@ def validate_houses_exclusion_restrictions(new_event, resources, houses_exclusio
                 if enemy_house in houses_new_event:
                     return False, f"error: la casa {house} no puede aliarse con la casa {enemy_house}"
     return True, ""
+
+def character_exclusion_restrictions():
+    pass
 
 # Debes implementar una función inteligente que, dado un evento y los recursos que necesita, sea capaz de analizar el calendario y 
 # sugerir el próximo intervalo de tiempo disponible donde se pueda realizar sin conflictos ni violaciones de restricciones.

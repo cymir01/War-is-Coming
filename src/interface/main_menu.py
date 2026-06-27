@@ -44,8 +44,7 @@ def main():
         else:
             console.print("[red]Comando no reconocido. Inténtelo de nuevo :)[/red]")
 
-if __name__ == "__main__":
-    main()
+
 # from rich.console import Console
 # from rich.panel import Panel
 # from rich.prompt import Prompt
