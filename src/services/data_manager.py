@@ -28,7 +28,6 @@ def load_data():
         except FileNotFoundError:
             print("No se encontró default_data.json. Usando datos vacíos...")
             default_data = {"resources": {}, "restrictions": {}, "events": [], "next_event_id": 1}
-
         resources_dict = default_data.get("resources", {})
         RESOURCES = {int(id): Resource.create_robject_from_dict(r_data) for id, r_data in resources_dict.items()}
         RESTRICTIONS = default_data.get("restrictions", {})
@@ -40,25 +39,36 @@ def load_data():
     try:
         with open(FILEPATH, 'r', encoding='utf-8') as f:
             data = json.load(f)
-
             recursos_data = data.get('resources', {})
             RESOURCES = {int(resource_id): Resource.create_robject_from_dict(resource_data) for resource_id, resource_data in recursos_data.items()}
-
             RESTRICTIONS = data.get('restrictions', {})
-
             events_data = data.get('events', [])
             EVENTS = [Event.create_event_from_dict(event_data) for event_data in events_data]
             EVENTS.sort()  #ordena cronológicamente usando __lt__ de Event
-
             NEXT_EVENT_ID = data.get('next_event_id', 1)
-
     except Exception as e:
         print(f"Error al cargar los datos: {e}")
         load_default_data()
+        return
         #cargar datos por defecto en caso de error
 
 def load_default_data():
-    pass
+    global EVENTS, RESOURCES, RESTRICTIONS, NEXT_EVENT_ID
+    try:
+        with open(DEFAULT_DATA, 'r', encoding='utf-8') as f:
+            default_data = json.load(f)
+        resources_dict = default_data.get("resources", {})
+        RESOURCES = {int(id): Resource.create_robject_from_dict(r_data) for id, r_data in resources_dict.items()}
+        RESTRICTIONS = default_data.get("restrictions", {})
+        EVENTS = []
+        NEXT_EVENT_ID = default_data.get("next_event_id", 1)
+        save_data()
+    except Exception as e:
+        print(f"Error al cargar datos por defecto: {e}")
+        RESOURCES = {}
+        RESTRICTIONS = {}
+        EVENTS = []
+        NEXT_EVENT_ID = 1
 
 def save_data():
     #no necesito global aqui porque solo se leen las variables sin reasignar
