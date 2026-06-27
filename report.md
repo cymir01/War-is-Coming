@@ -7,7 +7,7 @@
 
 ## 1. Introducción y dominio elegido
 
-*War is Coming* es un sistema de planificación de eventos bélicos ambientado en el universo de *Canción de Hielo y Fuego* (la saga de George R. R. Martin). El objetivo principal es gestionar campañas militares –asedios, batallas navales, asaltos, defensas, emboscadas y batallas campales– asignando recursos limitados (tropas de distintas casas, maquinaria de asedio, elementos especiales como Fuego Valyrio, personajes clave y recursos económicos) de forma que no se produzcan conflictos temporales ni violaciones de las reglas del universo.
+*War is Coming* es un sistema de planificación de eventos bélicos ambientado en el universo de *A Song of Ice and Fire* (la saga de George R. R. Martin). El objetivo principal es gestionar campañas militares (asedios, batallas navales, asaltos, defensas, emboscadas, misiones diplomáticas y batallas campales) asignando recursos limitados (tropas de distintas casas, maquinaria de asedio, elementos especiales como Fuego Valyrio, personajes clave y recursos económicos) de forma que no se produzcan conflictos temporales ni violaciones de las reglas del universo.
 
 Se eligió este dominio porque permite modelar con claridad las nociones de **eventos** (acciones bélicas), **recursos** (unidades, personajes, suministros) y **restricciones** (co‑requisitos, exclusiones, enemistades entre casas) de una manera rica y coherente. Además, el trasfondo de la saga proporciona un conjunto de reglas narrativas que hacen el proyecto más atractivo y fácil de entender para cualquier aficionado a la serie.
 

@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 #qgestionar en add_event() cuando el usuario pide un recurso (id) que no existe
 #para que el usuario escoja los recursos tengo que listarlos con sus corresondientes id para que seleccione por id
+DEFAULT_START_DATE = datetime(301, 1, 1, 0, 0)
 
 def resources_conflict_check(new_event, existing_events):
     """funcion que devuelve False si no hay conflicto y True de haber"""
@@ -14,11 +15,13 @@ def resources_conflict_check(new_event, existing_events):
 
 def validate_restrictions(new_event, resources, restrictions):
     """funcion que valida las restricciones de inclusion y exclusion entre recursos"""
-    inclusion_restrictions = restrictions.get("inclusion_restrictions", {})
-    exclusion_restrictions = restrictions.get("exclusion_restrictions", {})
+    inclusion_restrictions = restrictions.get("resource_type_inclusion_restrictions", {})
+    exclusion_restrictions = restrictions.get("rreesource_type_exclusion_restrictions", {})
     event_type_exclusion_restrictions = restrictions.get("event_type_exclusion_restrictions", {})
     event_type_inclusion_restrictions = restrictions.get("event_type_inclusion_restrictions", {})
-    houses_exclusion_restrictions = restrictions.get("houses_exclusion_restrictions", {})
+    houses_exclusion_restrictions = restrictions.get("house_exclusion_restrictions", {})
+    character_exclusion_restrictions = restrictions.get("character_exclusion_restrictions", {})
+
 #terminar los strings de error. Ademas puedo referir los recursos especificos con problemas
     exc_rest_bool, exclusive_resource = validate_event_type_exclusion_restriction(new_event, exclusion_restrictions)
     inc_rest_bool, required_resource = validate_event_type_inclusion_restriction(new_event, inclusion_restrictions)
@@ -29,11 +32,11 @@ def validate_restrictions(new_event, resources, restrictions):
     
     return True, ''
 
-def validate_inclusion_restrictions_between_resources(new_event, inclusion_restrictions):
+def validate_resource_type_inclusion_restrictions(new_event, resource_type_inclusion_restrictions):
     """devuelve True si se cumplen las restricciones de inclusion y False si no"""
     new_event_resources_ids = set(new_event.resources_ids)
     
-    for resource, required_resources in inclusion_restrictions.items():
+    for resource, required_resources in resource_type_inclusion_restrictions.items():
         resource = int(resource)
         if resource in new_event_resources_ids:
             for required_id in required_resources:
@@ -42,10 +45,10 @@ def validate_inclusion_restrictions_between_resources(new_event, inclusion_restr
                     return False, f"error! el recurso {resource} requiere el recurso {required_id}"
     return True, ""
 
-def validate_exclusion_restrictions_between_resources(new_event, exclusion_restrictions):
+def validate_resource_type_exclusion_restrictions(new_event, resource_type_exclusion_restrictions):
     """True si no se viola ninguna restriccion, False en caso contrario"""
     new_event_resources_ids = set(new_event.resources_ids)
-    for resource, exclusive_resources in exclusion_restrictions.items():
+    for resource, exclusive_resources in resource_type_exclusion_restrictions.items():
         resource = int(resource)
         if resource in new_event_resources_ids:
             for exclusive_resource in exclusive_resources:
@@ -54,19 +57,26 @@ def validate_exclusion_restrictions_between_resources(new_event, exclusion_restr
                     return False, f"error: el evento incluye recursos excluyentes: {resource} y {exclusive_resource}"
     return True, ''
 
-def validate_event_type_inclusion_restriction(new_event, event_type_inclusion_restrictions):
+#la funcion debe usar el atributo tipo de los recursos
+def validate_event_type_inclusion_restriction(new_event, resources, event_type_inclusion_restrictions):
     event_type = new_event.even_type
     resources_ids_new_event = set(new_event.resources_ids)
+    resources_type_new_event = set()
 
+    for resource_id in resources_ids_new_event:
+        if resource_id in resources:
+            resource_type = resources[resource_id].resource_type
+            if house:
+                resources_type_new_event.add(house)
+        
     if event_type in event_type_inclusion_restrictions:
-        required_resources = event_type_inclusion_restrictions[event_type]
-        for required_resource in required_resources:
-            required_resource = int(required_resource)
-            if required_resource not in resources_ids_new_event:
-                return False, f"Error: el evento tipo {event_type} requiere el recurso {required_resource}"
+        required_resources_type = event_type_inclusion_restrictions[event_type]
+        for required_r_type in required_resources_type:
+            if required_r_type not in resources_ids_new_event:
+                return False, f"Error: el evento tipo {event_type} requiere el tipo de recurso {required_r_type}"
     return True, ""
 
-
+#idem
 def validate_event_type_exclusion_restriction(new_event, event_type_exclusion_restrictions):
     event_type = new_event.event_type
     resources_ids_new_event = set(new_event.resources_ids)
@@ -99,6 +109,9 @@ def validate_houses_exclusion_restrictions(new_event, resources, houses_exclusio
 def get_event_start(event):
     return event.start
 
+#en esta funcion tengo que validar las restricciones llamando a validate_restrictions 
+# y ademas chequear conflicto de recrusos llamando a conflict_resoruces_check
+# la validacion del hueco estaria separada de la busqueda del hueco
 def is_slot_valid(start_time, end_time, resources_ids, sorted_events):
     for event in sorted_events:
         if max(start_time, event.start) < min(end_time, event.end):
@@ -107,11 +120,12 @@ def is_slot_valid(start_time, end_time, resources_ids, sorted_events):
                     return False
     return True
 
-def find_next_available_time_slot(resource_ids, duration_hours, start_from=None, max_days=30, existing_events=None):
+#usar la fecha de inicio que pide el usuario, no now() porque el calendario que debe usar el programa es ficticio
+def find_next_available_time_slot(resource_ids, duration_hours, start_from, max_days=30, existing_events=None, event_type=None, step_minutes=5):
     if existing_events is None:
         existing_events = []
     if start_from is None:
-        start_from = datetime.now()
+        start_from = DEFAULT_START_DATE
 
     sorted_events = sorted(existing_events, key=get_event_start)
 

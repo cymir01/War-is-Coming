@@ -15,7 +15,7 @@ def command_add():
     
     event_types = ["Asedio", "Batalla Naval", "Asalto", "Defensa", "Emboscada", "Batalla Campal"]
     console.print("\nTipos de evento disponibles: Asedio, Batalla Naval, Asalto, Defensa, Emboscada, Batalla Campal")
-    event_type = Prompt.ask("Tipo de evento:", choices=event_types, default="Batalla campal")
+    event_type = Prompt.ask("Tipo de evento:", choices=event_types) #ver como manejar el default
     
     location = None
     if Confirm.ask("Desea especificar una locación para el evento?"):
@@ -27,7 +27,7 @@ def command_add():
         house = resoruce_data.house if resoruce_data.house is not None else "sin casa"
         console.print(f"{resource_id}: {resoruce_data.name} (tipo: {type}, casa: {house})")
 
-    resources_input = Prompt.ask("ids de recursos (separados por comas)", default = "")
+    resources_input = Prompt.ask("Ingrese los ids de los recursos que desea separados por comas", default = "")
     resources_ids = []
     if resources_input.strip():
         try:
@@ -71,7 +71,7 @@ def command_add():
             continue
 
     while True:
-        if end_date <= start_date:
+        if end_date <= start_date: #UnboundLocalError: cannot access local variable 'end_date' where it is not associated with a value
             console.print("[red]Error: la fecha final debe ser posterior a la inicial[/red]")
             console.print("\n[red] Reingrese la fecha y hora de fin[red]")
             while True:
@@ -115,7 +115,7 @@ def command_add():
         if slot:
             start_date, end_date = slot
             console.print(f"[green]Hueco encontrado: {start_date} - {end_date}[/green]")
-            if not Confirm.ask("Usar este hueco?"):
+            if not Confirm.ask("Desea usar este hueco?"):
                 return
         else:
             console.print("[red]No se encontró un hueco disponible en los próximos días[/red]")
