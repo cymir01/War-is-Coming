@@ -1,7 +1,7 @@
 from rich.console import Console
 from rich.prompt import Prompt, Confirm
 from datetime import datetime
-from src.services.data_manager import add_event, RESOURCES
+from src.services.data_manager import add_event, RESOURCES, RESTRICTIONS, list_events
 from src.services.planner import find_next_available_time_slot
 
 def command_add():
@@ -13,12 +13,12 @@ def command_add():
     if Confirm.ask("Desea agregar descripción al evento? \n"):
         desc = console.input("Descripción del evento: \n")
     
-    event_types = ["Asedio", "Batalla Naval", "Asalto", "Defensa", "Emboscada", "Batalla Campal"]
-    console.print("\nTipos de evento disponibles: Asedio, Batalla Naval, Asalto, Defensa, Emboscada, Batalla Campal")
-    event_type = Prompt.ask("Tipo de evento:", choices=event_types) #ver como manejar el default
+    event_types = ["Asedio", "Batalla naval", "Asalto", "Defensa", "Emboscada", "Batalla campal", "Misión diplomática"]
+    console.print("\nTipos de evento disponibles: Asedio, Batalla naval, Asalto, Defensa, Emboscada, Batalla campal y Misión diplomática")
+    event_type = Prompt.ask("Tipo de evento:", choices=event_types)
     
     location = None
-    if Confirm.ask("Desea especificar una locación para el evento?"):
+    if Confirm.ask("¿Desea especificar una locación para el evento?"):
         location = console.input("Ubicación:")
 
     console.print("\n[bold cyan]Recursos dsiponibles:[/bold cyan]")
@@ -27,7 +27,7 @@ def command_add():
         house = resoruce_data.house if resoruce_data.house is not None else "sin casa"
         console.print(f"{resource_id}: {resoruce_data.name} (tipo: {type}, casa: {house})")
 
-    resources_input = Prompt.ask("Ingrese los ids de los recursos que desea separados por comas", default = "")
+    resources_input = Prompt.ask("Ingrese los ids de los recursos que desea, separados por comas", default="")
     resources_ids = []
     if resources_input.strip():
         try:
@@ -39,42 +39,39 @@ def command_add():
             console.print("[red]ids inválidos. Deben ser números[/red]")
             return
     
-    def ask_datetime(prompt):
+    def ask_datetime(prompt_text):
         while True:
             try:
-                year = int(Prompt.ask(f"Año - {prompt}"))
-                month = int(Prompt.ask(f"Mes - {prompt}"))
-                day = int(Prompt.ask(f"Día - {prompt}"))
-                hour = int(Prompt.ask(f"Hora - {prompt}"))
-                minute = int(Prompt.ask(f"Minuto - {prompt}"))
+                year = int(Prompt.ask(f"Año - {prompt_text}"))
+                month = int(Prompt.ask(f"Mes - {prompt_text}"))
+                day = int(Prompt.ask(f"Día - {prompt_text}"))
+                hour = int(Prompt.ask(f"Hora - {prompt_text}"))
+                minute = int(Prompt.ask(f"Minuto - {prompt_text}"))
                 return datetime(year, month, day, hour, minute)
             except ValueError:
                 console.print("[red]ups! error en la fecha. Inténtelo de nuevo[/red]")
-            start = ask_datetime("Inicio")
-            end = ask_datetime("Fin")
-            if end <= start:
-                console.print("[red]La fecha final debe ser posterior a la inicial[/red]")
-                return
+            
+    start_date = ask_datetime("Inicio")
+    end_date = ask_datetime("Fin")
+    if end_date <= start_date:
+        console.print("[red]La fecha final debe ser posterior a la inicial[/red]")
+        return
         
     if Confirm.ask("Desea buscar el próximo hueco disponible para estos recursos?"):
-        duration = (end_date - start_date).total_seconds() / 3600.0
-        slot = find_next_available_time_slot(resources_ids, duration, start_from=start_date)
-        if slot:
-            start_date, end_date = slot
-            console.print(f"[green]Hueco encontrado: {start_date} - {end_date}[/green]")
-            if not Confirm.ask("Desea usar este hueco?"):
+        duration_hours = (end_date - start_date).total_seconds() / 3600.0
+        slot_start, slot_end = find_next_available_time_slot(resources_ids=resources_ids, duration_hours=duration_hours, start_from=start_date, max_days=30, existing_events=list_events(), resources=RESOURCES, restrictions=RESTRICTIONS, event_type=event_type)
+        if slot_start and slot_end:
+            console.print(f"[green]Hueco encontrado: {slot_start} - {slot_end}[/green]")
+            if Confirm.ask("Desea usar este hueco?"):
+                start_date, end_date = slot_start, slot_end
+            else:
                 return
         else:
             console.print("[red]No se encontró un hueco disponible en los próximos días[/red]")
             return
-#UnboundLocalError: cannot access local variable 'start_date' where it is not associated with a value
+
     valid, result = add_event(name, desc, start_date, end_date, event_type, location, resources_ids)
     if valid:
         console.print(f"[green]Evento '{name}' agregado con ID: {result}[/green]")
     else:
         console.print(f"[red]Error: {result}[/red]")
-        
-    # add_event(name=name, description=desc, start=start_date, end=end_date)
-    # console.print(f"[green]Evento '{name}' agregado[/green]")
-
-#AGREGAR LA LLAMADA A LA FUNCION FIND_NEXT_AVAILABLE_TIME_SLOT()

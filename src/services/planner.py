@@ -198,7 +198,7 @@ def find_next_available_time_slot(resource_ids, duration_hours, start_from, max_
                         return current_time, candidate_end
                 else:
                     return current_time, candidate_end
-    return None,
+    return None, None
 
 def overlap(event1, event2):
     '''
