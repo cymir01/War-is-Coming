@@ -193,17 +193,6 @@
             "Bolton": ["Stark"],
             "Frey": ["Stark", "Tully"],
             "Arryn": ["Lannister"]
-        },
-        "character_exclusion_restrictions": {
-            "Eddard Stark": ["Jaime Lannister", "Tywin Lannister"],
-            "Robb Stark": ["Jaime Lannister", "Tywin Lannister", "Theon Greyjoy"],
-            "Tywin Lannister": ["Eddard Stark", "Robb Stark", "Oberyn Martell"],
-            "Jaime Lannister": ["Eddard Stark", "Robb Stark", "Oberyn Martell"],
-            "Daenerys Targaryen": ["Jaime Lannister", "Tywin Lannister"],
-            "Jon Snow": ["Theon Greyjoy", "Jaime Lannister", "Tywin Lannister"],
-            "Theon Greyjoy": ["Robb Stark", "Jon Snow", "Arya Stark"],
-            "Oberyn Martell": ["Tywin Lannister", "Jaime Lannister"],
-            "Arya Stark": ["Theon Greyjoy", "Jaime Lannister", "Tywin Lannister"]
         }
     },
 

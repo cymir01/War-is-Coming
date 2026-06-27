@@ -45,7 +45,6 @@ def validate_restrictions(new_event, resources, restrictions):
     valid, mesage = character_exclusion_restrictions()
     if not valid:
         return False
-    
     return True, ''
 
 def validate_resource_type_inclusion_restrictions(new_event, resource_type_inclusion_restrictions):

@@ -67,7 +67,7 @@ def command_add():
         else:
             console.print("[red]No se encontró un hueco disponible en los próximos días[/red]")
             return
-
+#UnboundLocalError: cannot access local variable 'start_date' where it is not associated with a value
     ok, result = add_event(name, desc, start_date, end_date, event_type, location, resources_ids)
     if ok:
         console.print(f"[green]Evento '{name}' agregado con ID: {result}[/green]")
