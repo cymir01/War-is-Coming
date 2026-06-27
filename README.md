@@ -4,7 +4,7 @@
   <img src="https://img.icons8.com/color/96/sword.png" alt="Espada">
   <img src="https://img.icons8.com/color/96/dragon.png" alt="Dragón">
   <img src="https://img.icons8.com/color/96/castle.png" alt="Castillo">
-  <h1>War is coming</h1>
+  <h1>War is Coming</h1>
   <p><em>Planificador de Eventos Bélicos – Universo de A Song of Ice and Fire</em></p>
 </div>
 
@@ -98,8 +98,6 @@ El código se organiza en capas modulares siguiendo principios de separación de
 - **Datetime**: gestión de fechas, duraciones y comparaciones temporales.
 - **Bisect**: mantenimiento de la lista de eventos ordenada cronológicamente.
 - **JSON**: persistencia de datos en archivo.
-- **Pytest** (pendiente de implementación): pruebas unitarias planificadas.
-
 ---
 
 ## 🚀 Cómo Empezar
