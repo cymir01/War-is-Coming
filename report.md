@@ -305,6 +305,8 @@ Este proyecto me ha permitido en general desarrollar habilidades de manejo de er
 
 - **Desempaquetado de tuplas**: Esta función que descubrí en clase y luego estudié por GeeksforGeeks me permitió asignar varios valores a la vez, en una sola línea, como en `start, end = slot`, lo que hace el código más conciso y legible al trabajar con funciones que devuelven múltiples valores.
 
+- **List Comprehension**: Aprendí a usar la sintaxis de comprensión de listas que ofrece Python para crear nuevas listas en una sola línea de código mediante la aplicación de una expresión a cada elemento en un iterable como una lista, tupla o rango. Esta funcionalidad de Python es mucho más útil para escribir código limpio, legible y eficiente en comparación con los bucles tradicionales. La estudié en GeeksforGeeks y luego la usé a lo largo del proyecto.
+
 - **Manejo de errores con `try-except`**: Implementé bloques de captura de excepciones para gestionar entradas inválidas del usuario (fechas mal formadas, IDs no numéricos) y errores de archivo, mostrando mensajes claros sin que el programa colapse. Los conocimientos que desarrollé sobre manejo de excepciones los debo al libro Curso Intensivo de Python, de Eric Matthes.
 
 - **Persistencia con JSON**: Aprendí a serializar objetos complejos (con fechas y listas) a un formato estándar y a guardarlos en un archivo, así como a cargarlos de vuelta. Esto me permitió que el estado de la aplicación se mantuviera entre ejecuciones. De nuevo el libro de Eric Matthes fue un gran apoyo en el proceso de aprender a trabajar con archivos en Python.

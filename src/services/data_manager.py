@@ -139,19 +139,31 @@ def delete_event(event_id):
             return True
     return False
 
+#>>>>>>>FUNCIONES AUXILIARES POTENCIALMENTE UTILES>>>>>>
 def get_event_by_id(event_id):
     for event in EVENTS:
         if event.id == event_id:
             return event
     return None
 
-def get_event_by_type():
-    pass
+def get_event_by_type(event_type):
+    """filtra eventos por tipo"""
+    return [event for event in EVENTS if event.event_type == event_type]
 
-def get_event_by_resource():
-    pass
+def get_event_by_resource(resource_id):
+    """filtra eventos que usan cierto recurso específico"""
+    return [event for event in EVENTS if resource_id in event.resources_ids]
 
-def get_events_in_range():
-    pass
+#puedo usarla para:
+#OPTIMIZAR LA BUSQUEDA DE HUECOS
+#nuevos comandos como 'events of the week ', etc
+#geenerar reportes y estadisiticas
+#verificar disponibilidad de un recurso en un rango dado
+#ver que eventos hay en un periodo especifico
+#etc
+def get_events_in_range(start, end):
+    """devuelve eventos que solapan el rango [start, end]"""
+    return [event for event in EVENTS if max(event.start, start) < min(event.end, end)]
+#>>>>>>>>>>>>>>>>>
 
 load_data()
