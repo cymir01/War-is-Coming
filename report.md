@@ -285,25 +285,55 @@ Aprender a usar `rich` (tablas, prompts, colores) llevó algo de tiempo, pero va
 
 ## 6. Aprendizajes durante el desarrollo
 
-Este proyecto me ha permitido adquirir y afianzar múltiples habilidades:
+Este proyecto me ha permitido en general desarrollar habilidades de manejo de errores y gestión del tiempo, así como me ha permitido adquirir conocimientos de programación en Python. A continuación, agrupo los aprendizajes en dos categorías: las herramientas y módulos específicos que aprendí a usar, y las habilidades y conceptos generales que adquirí.
 
-- **Modelado de dominios**: aprender a abstraer un problema real en entidades y reglas me ha enseñado la importancia de un buen diseño de datos. Un modelo claro simplifica el código y facilita la extensión.
+### Herramientas y módulos de Python que aprendí a usar
 
-- **Validación en capas**: separar la lógica de validación (restricciones) de la gestión de datos y de la interfaz ha hecho que el código sea más mantenible y fácil de depurar. Pude probar el planificador de forma aislada.
+- **`datetime` y `timedelta`**: Aprendí a manejar fechas y horas, a calcular diferencias entre instantes (duraciones) y a formatear fechas para mostrarlas al usuario. Estos conocimientos eran esenciales para validar intervalos, detectar solapamientos y calcular la duración de los eventos.
 
-- **Algoritmos de búsqueda en intervalos**: la búsqueda de huecos me obligó a entender cómo manejar eficientemente listas ordenadas y comprobar solapamientos. Aprendí a usar `bisect` y a recorrer eventos de forma secuencial para encontrar espacios libres.
+- **`bisect`**: Descubrí cómo mantener una lista ordenada de forma eficiente usando `bisect.insort` en lugar de usar un algoritmo de búsqueda para la inserción, lo que me permitió insertar nuevos eventos en la posición cronológica correcta sin tener que reordenar toda la lista cada vez.
 
-- **Persistencia con JSON**: trabajar con archivos JSON me ha enseñado la importancia de la serialización y cómo manejar fechas y objetos complejos. Aprendí a estructurar el archivo de datos de forma coherente.
+- **Método especial `__lt__`**: Implementé este método en la clase `Event` para definir el criterio de ordenación (por fecha de inicio). Esto me permitió usar `sort()` y `bisect` sin necesidad de especificar una clave de ordenación cada vez, haciendo el código más limpio y legible.
 
-- **Interacción con el usuario**: diseñar una CLI amigable con `rich` me ha mostrado que incluso una consola puede ofrecer una experiencia atractiva si se cuidan los detalles. Los colores y tablas mejoran la legibilidad.
+- **`enumerate`**: Descubrí esta función en la documentación oficial de Python y la usé para iterar sobre listas obteniendo tanto el índice como el elemento, lo cual me facilitó la tarea de buscar y eliminar eventos por su posición.
 
-- **Iteración y refinamiento**: he ido mejorando el proyecto paso a paso, añadiendo restricciones, corrigiendo errores y puliendo la interfaz. Esto me ha enseñado a no buscar la perfección desde el principio, sino a construir de forma incremental.
+- **`isinstance`**: Aprendí a comprobar el tipo de una variable en tiempo de ejecución, lo que me ayudó a manejar entradas del usuario que podían ser cadenas o fechas, y a convertirlas adecuadamente para evitar potenciales errores. Esta función la conocí por recomendación de una Inteligencia Artificial.
 
-- **Importancia de las restricciones**: entender cómo las reglas de negocio pueden hacer que un sistema sea mucho más interesante y desafiante. Las restricciones no solo son requisitos, sino que añaden profundidad al dominio y lo hacen más realista.
+- **`rich`**: Esta librería me permitió crear una interfaz de consola atractiva y funcional, con tablas, colores, paneles y prompts interactivos. Aprender a usarla mejoró notablemente la experiencia de usuario de mi programa. Esta librería se usó en la cp08 de programación, de donde pude conocerla y empezar a aprender a usarla.
 
-- **Manejo de errores**: he aprendido a anticipar entradas incorrectas del usuario (fechas inválidas, IDs inexistentes) y a mostrar mensajes claros en lugar de dejar que el programa falle. Esto mejora la robustez de la aplicación.
+- **`datetime.fromisoformat`**: Utilicé este método para convertir cadenas con formato ISO en objetos `datetime`, lo que facilitó la carga de fechas desde el archivo JSON y la validación de fechas introducidas por el usuario. Este recurso también lo descubrí por recomendación de una Inteligencia Artificial.
 
-Además, el hecho de haber elegido un dominio que me apasiona (el universo de ASOIAF) ha hecho que el proceso sea mucho más divertido y motivador. Cada nueva restricción que añadía me recordaba una escena de los libros o la serie, lo que daba coherencia al proyecto.
+- **Desempaquetado de tuplas**: Esta función que descubrí en clase y luego estudié por GeeksforGeeks me permitió asignar varios valores a la vez, en una sola línea, como en `start, end = slot`, lo que hace el código más conciso y legible al trabajar con funciones que devuelven múltiples valores.
+
+- **Manejo de errores con `try-except`**: Implementé bloques de captura de excepciones para gestionar entradas inválidas del usuario (fechas mal formadas, IDs no numéricos) y errores de archivo, mostrando mensajes claros sin que el programa colapse. Los conocimientos que desarrollé sobre manejo de excepciones los debo al libro Curso Intensivo de Python, de Eric Matthes.
+
+- **Persistencia con JSON**: Aprendí a serializar objetos complejos (con fechas y listas) a un formato estándar y a guardarlos en un archivo, así como a cargarlos de vuelta. Esto me permitió que el estado de la aplicación se mantuviera entre ejecuciones. De nuevo el libro de Eric Matthes fue un gran apoyo en el proceso de aprender a trabajar con archivos en Python.
+
+- **Manejo de intervalos de tiempo**: Comprendí a base de prueba y error cómo comparar y solapar intervalos ([inicio, fin]) usando la condición `max(start1, start2) < min(end1, end2)`, una técnica clave para detectar conflictos de recursos y buscar huecos disponibles. Esta funcionalidad fue de las primeras en las que trabajé, el primer código que escribí no cubría todos los casos y fui puliéndolo (de forma asistida) hasta llegar a la línea de arriba.
+
+### Habilidades y conceptos generales de programación
+
+- **Encapsulamiento y modularización**: Dividí el código en módulos y funciones con responsabilidades claras (modelos, servicios, interfaz). Esto me enseñó la importancia de separar la lógica de negocio de la presentación y la persistencia, lo que facilita el mantenimiento y la extensión del proyecto.
+
+- **Diseño de datos y modelado de dominio**: Aprendí a abstraer un dominio real en entidades (eventos, recursos) y relaciones (restricciones), definiendo atributos y métodos que reflejan fielmente el problema a resolver. Un buen modelo de datos simplifica el código y evita complejidades innecesarias. El mismo flujo natural de funciones que iba necesitando en el proyecto fue imponiendo la necesidad de organizar mejor los archivos del proyecto y modelar mejor el dominio.
+
+- **Validación en capas**: Aprendí que es más estratégico para el funcionamiento del programa aplicar reglas de validación sobre los datos en diferentes niveles del programa. Al principio lo encontré redundante pero después entendí la necesidad de esa redundancia para evitar errores imprevistos, de modo que he ido tratando de implementar y consolidar poco a poco una arquitectura sólida de validación en capas.
+
+- **Algoritmos de búsqueda en listas ordenadas**: la búsqueda de huecos me obligó a entender cómo manejar eficientemente listas ordenadas y comprobar solapamientos. Esto me enseñó a aprovechar el orden de los datos para optimizar la búsqueda, a manejar condiciones de extremo (huecos al principio, al final, entre eventos) y a recorrer eventos de forma secuencial para encontrar espacios libres. Tratar de desarrollar esta función me hizo pensar que debía ordenar cronológicamente los eventos para operar con ellos más fácilmente.
+
+- **Manejo de errores y robustez**: Aprendí a anticipar entradas incorrectas del usuario y a gestionar situaciones excepcionales (archivos faltantes, datos corruptos) de forma controlada, mostrando mensajes informativos en lugar de dejar que el programa falle.
+
+- **Iteración y refinamiento**: Desarrollé el proyecto de forma incremental: primero una versión básica que funcionaba, luego añadí restricciones, después la búsqueda de huecos, y finalmente estoy puliendo la interfaz y corrigiendo errores. Esto me enseñó a no buscar la perfección desde el principio, sino a construir sobre una base sólida y mejorar paso a paso.
+
+- **Importancia de la documentación**: Escribir docstrings (para algunas funciones), comentarios y el propio informe me ayudó a esclarecer mi pensamiento y entender mejor lo que estaba haciendo y lo que no debía. Comprendí que un código bien documentado es más fácil de mantener, leer y de compartir. Tanto así que he tratado de escribir código autodocumento (self-documenting code) en todo el proyecto desde que descubrí qué era, aunque no conociendo del todo todavía las prácticas estándar al respecto.
+
+- **Pensamiento crítico y resolución de problemas**: Enfrentarme a errores como typos en nombres de claves, indentaciones incorrectas o funciones que no retornaban lo esperado, me obligó a depurar meticulosamente y a desarrollar una actitud de análisis sistemático.
+
+- **Trabajo con Git y control de versiones**: Utilicé Git para gestionar los cambios, lo que me permitió experimentar con seguridad y volver atrás si algo salía mal. Aprendí varios comandos al enfrentar diversas situaciones en el control de versiones de mi proyecto y entendí la necesidad del uso de sistemas de control de versiones en reemplazo de carpetas con nombre "proyecto final final - ahora si".
+
+- **Interacción con el usuario**: Diseñar una CLI amigable con `rich` me ha mostrado que incluso una consola puede ofrecer una experiencia atractiva. Los colores y tablas mejoran la legibilidad.
+
+En resumen, este proyecto me ha servido como un campo de prácticas para aprender habiliades esenciales de la programación, de la gestión del tiempo y de la programación en Python y me ha enseñado a abordar problemas complejos de manera estructurada y modular, pensando en la escalabilidad, la usabilidad y la robustez desde el diseño inicial.
 
 [Volver al inicio](#tabla-de-contenidos)
 
@@ -321,8 +351,8 @@ Además, el hecho de haber elegido un dominio que me apasiona (el universo de AS
 
 El sistema es extensible: se pueden añadir nuevos recursos, nuevas casas, nuevas restricciones sin modificar el núcleo de la lógica. El uso de tipos en lugar de IDs hace que las reglas sean genéricas y escalables.
 
-En el futuro, me gustaría implementar funcionalidades opcionales como **recursos con cantidad** (ej. tener 5 unidades de Infantería pesada) o **eventos recurrentes** (planificar una serie de escaramuzas diarias). También podría explorar una interfaz web con Streamlit para hacerla más visual y accesible.
+En el futuro, me gustaría implementar funcionalidades opcionales como **recursos con cantidad** (ej. tener 5 unidades de Infantería pesada) o **eventos recurrentes** (planificar mesiones diplomáticas con cierta regularidad). 
 
-En definitiva, este proyecto me ha permitido poner en práctica todos los conocimientos adquiridos durante el curso y me ha dado la confianza para abordar sistemas más complejos en el futuro.
+En definitiva, este proyecto me ha permitido poner en práctica todos los conocimientos adquiridos durante el curso, vía clase o internet, y me ha dado la confianza para abordar sistemas más complejos en el futuro.
 
 [Volver al inicio](#tabla-de-contenidos)
