@@ -141,6 +141,7 @@ def is_slot_valid(start_time, end_time, resources_ids, sorted_events):
                     return False
     return True
 
+
 def find_next_available_time_slot(resources_ids, duration_hours, start_from, max_days=30, existing_events=None, resources=None, restrictions=None, event_type=None):
     if existing_events is None:
         existing_events = []
@@ -155,9 +156,6 @@ def find_next_available_time_slot(resources_ids, duration_hours, start_from, max
     for event in sorted_events:
         if event.end <= current_time:
             continue
-    
-    #si hay un hueco entre current_time y event.start
-    #UnboundLocalError: cannot access local variable 'event' where it is not associated with a value
         if event.start > current_time:
             gap_hours = (event.start - current_time).total_seconds() / 3600.0
             if gap_hours >= duration_hours:
@@ -180,8 +178,7 @@ def find_next_available_time_slot(resources_ids, duration_hours, start_from, max
                             else:
                                 return current_time, candidate_end
                         else:
-                            return current_time, candidate_end
-                    
+                            return current_time, candidate_end  
         for rid in resources_ids:
             if rid in event.resources_ids:
                 current_time = max(current_time, event.end)

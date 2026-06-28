@@ -96,7 +96,11 @@ def command_add():
         
     if Confirm.ask("\nDesea buscar el próximo hueco disponible para estos recursos?"):
         duration_hours = (end_date - start_date).total_seconds() / 3600.0
-        slot_start, slot_end = find_next_available_time_slot(resources_ids=resources_ids, duration_hours=duration_hours, start_from=start_date, max_days=30, existing_events=list_events(), resources=RESOURCES, restrictions=RESTRICTIONS, event_type=event_type)
+        max_days = max(30, int(duration_hours / 24) + 10)
+
+        console.print(f"[cyan]Buscando hueco en los próximos {max_days} días...[/cyan]")
+
+        slot_start, slot_end = find_next_available_time_slot(resources_ids=resources_ids, duration_hours=duration_hours, start_from=start_date, max_days=max_days, existing_events=list_events(), resources=RESOURCES, restrictions=RESTRICTIONS, event_type=event_type)
         if slot_start and slot_end:
             console.print(f"[green]Hueco encontrado: {slot_start} - {slot_end}[/green]")
             if Confirm.ask("Desea usar este hueco?"):
@@ -104,7 +108,7 @@ def command_add():
             else:
                 return
         else:
-            console.print("[red]No se encontró un hueco disponible en los próximos días[/red]")
+            console.print("[red]No se encontró un hueco disponible en los próximos días sin conflicto de recursos o restricciones[/red]")
             return
 
     valid, result = add_event(name=name, description=desc, start=start_date, end=end_date, event_type=event_type, location=location, resources_ids=resources_ids, era=era)
