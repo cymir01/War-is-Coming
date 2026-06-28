@@ -7,7 +7,6 @@ from src.services.planner import find_next_available_time_slot
 #AGREGAR DESPUES DEL TIPO DE EVENTO LA LISTA DE RECURSOS QUE REQUIERE
 #MEJORAR LA VISUALIZACION DE RECURSOS, EN LUGAR DE LISTARLOS TODOS, PEDIR CASA Y LISTAR LOS RECURSOS POR CASA, ETC
 
-#TypeError: find_next_available_time_slot() got an unexpected keyword argument 'resources_ids'
 
 def command_add():
     console = Console()

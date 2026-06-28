@@ -141,7 +141,7 @@ def is_slot_valid(start_time, end_time, resources_ids, sorted_events):
                     return False
     return True
 
-def find_next_available_time_slot(resource_ids, duration_hours, start_from, max_days=30, existing_events=None, resources=None, restrictions=None, event_type=None):
+def find_next_available_time_slot(resources_ids, duration_hours, start_from, max_days=30, existing_events=None, resources=None, restrictions=None, event_type=None):
     if existing_events is None:
         existing_events = []
     if start_from is None:
@@ -157,31 +157,32 @@ def find_next_available_time_slot(resource_ids, duration_hours, start_from, max_
             continue
     
     #si hay un hueco entre current_time y event.start
-    if event.start > current_time:
-        gap_hours = (event.start - current_time).total_seconds() / 3600.0
-        if gap_hours >= duration_hours:
-            candidate_end = current_time + timedelta(hours=duration_hours)
-            if candidate_end <= event.start:
-                if is_slot_valid(current_time, candidate_end, resource_ids, sorted_events):
-                    if resources is not None and restrictions is not None and event_type is not None:
-                        from src.models.event import Event
-                        temporal_event = Event(
-                            id=-1,
-                            name="temp",
-                            start=current_time,
-                            end=candidate_end,
-                            event_type=event_type,
-                            resources_ids=resource_ids
-                        )
-                        valid, mesage = validate_restrictions(temporal_event, resources, restrictions)
-                        if not valid:
-                            pass #seguimos buscando si no cumple...
+    #UnboundLocalError: cannot access local variable 'event' where it is not associated with a value
+        if event.start > current_time:
+            gap_hours = (event.start - current_time).total_seconds() / 3600.0
+            if gap_hours >= duration_hours:
+                candidate_end = current_time + timedelta(hours=duration_hours)
+                if candidate_end <= event.start:
+                    if is_slot_valid(current_time, candidate_end, resources_ids, sorted_events):
+                        if resources is not None and restrictions is not None and event_type is not None:
+                            from src.models.event import Event
+                            temporal_event = Event(
+                                id=-1,
+                                name="temp",
+                                start=current_time,
+                                end=candidate_end,
+                                event_type=event_type,
+                                resources_ids=resources_ids
+                            )
+                            valid, mesage = validate_restrictions(temporal_event, resources, restrictions)
+                            if not valid:
+                                pass #seguimos buscando si no cumple...
+                            else:
+                                return current_time, candidate_end
                         else:
                             return current_time, candidate_end
-                    else:
-                        return current_time, candidate_end
                     
-        for rid in resource_ids:
+        for rid in resources_ids:
             if rid in event.resources_ids:
                 current_time = max(current_time, event.end)
                 break
@@ -189,7 +190,7 @@ def find_next_available_time_slot(resource_ids, duration_hours, start_from, max_
     if (end_limit - current_time).total_seconds() / 3600.0 >= duration_hours:
         candidate_end = current_time + timedelta(hours=duration_hours)
         if candidate_end <= end_limit:
-            if is_slot_valid(current_time, candidate_end, resource_ids, sorted_events):
+            if is_slot_valid(current_time, candidate_end, resources_ids, sorted_events):
                 if resources is not None and restrictions is not None and event_type is not None:
                     from src.models.event import Event
                     temporal_event = Event(
@@ -198,7 +199,7 @@ def find_next_available_time_slot(resource_ids, duration_hours, start_from, max_
                         start=current_time,
                         end=candidate_end,
                         event_type=event_type,
-                        resources_ids=resource_ids
+                        resources_ids=resources_ids
                     )
                     valid, mesage = validate_restrictions(temporal_event, resources, restrictions)
                     if valid:

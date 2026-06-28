@@ -950,24 +950,6 @@
             ]
         }
     },
-    "events": [
-        {
-            "id": 1,
-            "name": "Evento Test",
-            "description": null,
-            "start": "0400-03-03T00:00:00",
-            "end": "0400-04-04T00:00:00",
-            "event_type": "Asedio",
-            "location": null,
-            "resources_ids": [
-                122,
-                124,
-                125,
-                118
-            ],
-            "status": "planned",
-            "era": "DC"
-        }
-    ],
-    "next_event_id": 2
+    "events": [],
+    "next_event_id": 1
 }
