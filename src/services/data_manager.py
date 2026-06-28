@@ -7,21 +7,21 @@ from src.models.resource import Resource
 from src.services.planner import validate_restrictions
 from src.services.planner import resources_conflict_check
 
-#implementar try-except blocks en el comando add event
+#IMPLEMENTAR LA FUNCION update_event_status()
 #implenmentar filtrado de eventos por atributo con funciones
 
 FILEPATH = "data/war_planner.json"
 DEFAULT_DATA = "data/default_data.json"
 
-EVENTS = [] #cambiar el codigo que gestiona events para que opere con lista y no dict
+EVENTS = []
 RESOURCES = {}
 RESTRICTIONS = {}
 NEXT_EVENT_ID = 1
 
 def load_data():
     global EVENTS, RESOURCES, RESTRICTIONS, NEXT_EVENT_ID
-#ARREGLAR
-    if not os.path.exists(FILEPATH): #revisar bien este bloque
+
+    if not os.path.exists(FILEPATH):
         try:
             with open(DEFAULT_DATA, 'r', encoding='utf-8') as f:
                 default_data = json.load(f)
@@ -50,7 +50,6 @@ def load_data():
         print(f"Error al cargar los datos: {e}")
         load_default_data()
         return
-        #cargar datos por defecto en caso de error
 
 def load_default_data():
     global EVENTS, RESOURCES, RESTRICTIONS, NEXT_EVENT_ID
@@ -82,7 +81,7 @@ def save_data():
         json.dump(data, f, indent=4, ensure_ascii=False, default=str) #default=str para evitar fallo
 
 #VERIFICAR QUE SE COMUNIQUE BIEN CON EL COMANDO ADD_EVENT
-def add_event(name, description, start, end, event_type, location, resources_ids, status="planned"):
+def add_event(name, description, start, end, event_type, location, resources_ids, status="planned", era="DC"):
     global NEXT_EVENT_ID
 
     for resource_id in resources_ids:
@@ -111,6 +110,7 @@ def add_event(name, description, start, end, event_type, location, resources_ids
         location=location,
         status=status,
         resources_ids=resources_ids,
+        era=era
     )
     
     bool_restrictions, mesage = validate_restrictions(new_event, RESOURCES, RESTRICTIONS)
@@ -139,20 +139,23 @@ def delete_event(event_id):
             return True
     return False
 
-#>>>>>>>FUNCIONES AUXILIARES POTENCIALMENTE UTILES>>>>>>
+def update_event_status():
+    pass
+
 def get_event_by_id(event_id):
     for event in EVENTS:
         if event.id == event_id:
             return event
     return None
 
-def get_event_by_type(event_type):
-    """filtra eventos por tipo"""
-    return [event for event in EVENTS if event.event_type == event_type]
-
 def get_event_by_resource(resource_id):
     """filtra eventos que usan cierto recurso específico"""
     return [event for event in EVENTS if resource_id in event.resources_ids]
+
+#>>>>>>>FUNCIONES AUXILIARES POTENCIALMENTE UTILES>>>>>>
+def get_event_by_type(event_type):
+    """filtra eventos por tipo"""
+    return [event for event in EVENTS if event.event_type == event_type]
 
 #puedo usarla para:
 #OPTIMIZAR LA BUSQUEDA DE HUECOS

@@ -1,201 +1,973 @@
 {
     "resources": {
-        "1": {"id": 1, "name": "Infantería pesada Arryn", "type": "Infantería pesada", "house": "Arryn"},
-        "2": {"id": 2, "name": "Infantería ligera Arryn", "type": "Infantería ligera", "house": "Arryn"},
-        "3": {"id": 3, "name": "Caballería pesada Arryn", "type": "Caballería pesada", "house": "Arryn"},
-        "4": {"id": 4, "name": "Caballería ligera Arryn", "type": "Caballería ligera", "house": "Arryn"},
-        "5": {"id": 5, "name": "Arqueros Arryn", "type": "Arqueros", "house": "Arryn"},
-        "6": {"id": 6, "name": "Maestro de espías Arryn", "type": "Maestro de espías", "house": "Arryn"},
-        "7": {"id": 7, "name": "Maquinaria de asedio Arryn", "type": "Maquinaria de asedio", "house": "Arryn"},
-        "8": {"id": 8, "name": "Ingeniero de asedio Arryn", "type": "Ingeniero de asedio", "house": "Arryn"},
-        "9": {"id": 9, "name": "Almirante Arryn", "type": "Almirante", "house": "Arryn"},
-        "10": {"id": 10, "name": "Caballero Arryn", "type": "Caballero", "house": "Arryn"},
-        "11": {"id": 11, "name": "Embajador Arryn", "type": "Embajador", "house": "Arryn"},
-        "12": {"id": 12, "name": "Flota Arryn", "type": "Flota", "house": "Arryn"},
-
-        "13": {"id": 13, "name": "Infantería pesada Baratheon", "type": "Infantería pesada", "house": "Baratheon"},
-        "14": {"id": 14, "name": "Infantería ligera Baratheon", "type": "Infantería ligera", "house": "Baratheon"},
-        "15": {"id": 15, "name": "Caballería pesada Baratheon", "type": "Caballería pesada", "house": "Baratheon"},
-        "16": {"id": 16, "name": "Caballería ligera Baratheon", "type": "Caballería ligera", "house": "Baratheon"},
-        "17": {"id": 17, "name": "Arqueros Baratheon", "type": "Arqueros", "house": "Baratheon"},
-        "18": {"id": 18, "name": "Maestro de espías Baratheon", "type": "Maestro de espías", "house": "Baratheon"},
-        "19": {"id": 19, "name": "Maquinaria de asedio Baratheon", "type": "Maquinaria de asedio", "house": "Baratheon"},
-        "20": {"id": 20, "name": "Ingeniero de asedio Baratheon", "type": "Ingeniero de asedio", "house": "Baratheon"},
-        "21": {"id": 21, "name": "Almirante Baratheon", "type": "Almirante", "house": "Baratheon"},
-        "22": {"id": 22, "name": "Caballero Baratheon", "type": "Caballero", "house": "Baratheon"},
-        "23": {"id": 23, "name": "Embajador Baratheon", "type": "Embajador", "house": "Baratheon"},
-        "24": {"id": 24, "name": "Flota Baratheon", "type": "Flota", "house": "Baratheon"},
-
-        "25": {"id": 25, "name": "Infantería pesada Bolton", "type": "Infantería pesada", "house": "Bolton"},
-        "26": {"id": 26, "name": "Infantería ligera Bolton", "type": "Infantería ligera", "house": "Bolton"},
-        "27": {"id": 27, "name": "Caballería pesada Bolton", "type": "Caballería pesada", "house": "Bolton"},
-        "28": {"id": 28, "name": "Caballería ligera Bolton", "type": "Caballería ligera", "house": "Bolton"},
-        "29": {"id": 29, "name": "Arqueros Bolton", "type": "Arqueros", "house": "Bolton"},
-        "30": {"id": 30, "name": "Maestro de espías Bolton", "type": "Maestro de espías", "house": "Bolton"},
-        "31": {"id": 31, "name": "Maquinaria de asedio Bolton", "type": "Maquinaria de asedio", "house": "Bolton"},
-        "32": {"id": 32, "name": "Ingeniero de asedio Bolton", "type": "Ingeniero de asedio", "house": "Bolton"},
-        "33": {"id": 33, "name": "Almirante Bolton", "type": "Almirante", "house": "Bolton"},
-        "34": {"id": 34, "name": "Caballero Bolton", "type": "Caballero", "house": "Bolton"},
-        "35": {"id": 35, "name": "Embajador Bolton", "type": "Embajador", "house": "Bolton"},
-        "36": {"id": 36, "name": "Flota Bolton", "type": "Flota", "house": "Bolton"},
-
-        "37": {"id": 37, "name": "Infantería pesada Frey", "type": "Infantería pesada", "house": "Frey"},
-        "38": {"id": 38, "name": "Infantería ligera Frey", "type": "Infantería ligera", "house": "Frey"},
-        "39": {"id": 39, "name": "Caballería pesada Frey", "type": "Caballería pesada", "house": "Frey"},
-        "40": {"id": 40, "name": "Caballería ligera Frey", "type": "Caballería ligera", "house": "Frey"},
-        "41": {"id": 41, "name": "Arqueros Frey", "type": "Arqueros", "house": "Frey"},
-        "42": {"id": 42, "name": "Maestro de espías Frey", "type": "Maestro de espías", "house": "Frey"},
-        "43": {"id": 43, "name": "Maquinaria de asedio Frey", "type": "Maquinaria de asedio", "house": "Frey"},
-        "44": {"id": 44, "name": "Ingeniero de asedio Frey", "type": "Ingeniero de asedio", "house": "Frey"},
-        "45": {"id": 45, "name": "Almirante Frey", "type": "Almirante", "house": "Frey"},
-        "46": {"id": 46, "name": "Caballero Frey", "type": "Caballero", "house": "Frey"},
-        "47": {"id": 47, "name": "Embajador Frey", "type": "Embajador", "house": "Frey"},
-        "48": {"id": 48, "name": "Flota Frey", "type": "Flota", "house": "Frey"},
-
-        "49": {"id": 49, "name": "Infantería pesada Greyjoy", "type": "Infantería pesada", "house": "Greyjoy"},
-        "50": {"id": 50, "name": "Infantería ligera Greyjoy", "type": "Infantería ligera", "house": "Greyjoy"},
-        "51": {"id": 51, "name": "Caballería pesada Greyjoy", "type": "Caballería pesada", "house": "Greyjoy"},
-        "52": {"id": 52, "name": "Caballería ligera Greyjoy", "type": "Caballería ligera", "house": "Greyjoy"},
-        "53": {"id": 53, "name": "Arqueros Greyjoy", "type": "Arqueros", "house": "Greyjoy"},
-        "54": {"id": 54, "name": "Maestro de espías Greyjoy", "type": "Maestro de espías", "house": "Greyjoy"},
-        "55": {"id": 55, "name": "Maquinaria de asedio Greyjoy", "type": "Maquinaria de asedio", "house": "Greyjoy"},
-        "56": {"id": 56, "name": "Ingeniero de asedio Greyjoy", "type": "Ingeniero de asedio", "house": "Greyjoy"},
-        "57": {"id": 57, "name": "Almirante Greyjoy", "type": "Almirante", "house": "Greyjoy"},
-        "58": {"id": 58, "name": "Caballero Greyjoy", "type": "Caballero", "house": "Greyjoy"},
-        "59": {"id": 59, "name": "Embajador Greyjoy", "type": "Embajador", "house": "Greyjoy"},
-        "60": {"id": 60, "name": "Flota Greyjoy", "type": "Flota", "house": "Greyjoy"},
-        "61": {"id": 61, "name": "Theon Greyjoy", "type": "Noble", "house": "Greyjoy"},
-
-        "62": {"id": 62, "name": "Infantería pesada Lannister", "type": "Infantería pesada", "house": "Lannister"},
-        "63": {"id": 63, "name": "Infantería ligera Lannister", "type": "Infantería ligera", "house": "Lannister"},
-        "64": {"id": 64, "name": "Caballería pesada Lannister", "type": "Caballería pesada", "house": "Lannister"},
-        "65": {"id": 65, "name": "Caballería ligera Lannister", "type": "Caballería ligera", "house": "Lannister"},
-        "66": {"id": 66, "name": "Arqueros Lannister", "type": "Arqueros", "house": "Lannister"},
-        "67": {"id": 67, "name": "Maestro de espías Lannister", "type": "Maestro de espías", "house": "Lannister"},
-        "68": {"id": 68, "name": "Maquinaria de asedio Lannister", "type": "Maquinaria de asedio", "house": "Lannister"},
-        "69": {"id": 69, "name": "Ingeniero de asedio Lannister", "type": "Ingeniero de asedio", "house": "Lannister"},
-        "70": {"id": 70, "name": "Almirante Lannister", "type": "Almirante", "house": "Lannister"},
-        "71": {"id": 71, "name": "Caballero Lannister", "type": "Caballero", "house": "Lannister"},
-        "72": {"id": 72, "name": "Embajador Lannister", "type": "Embajador", "house": "Lannister"},
-        "73": {"id": 73, "name": "Flota Lannister", "type": "Flota", "house": "Lannister"},
-        "74": {"id": 74, "name": "Tywin Lannister", "type": "Noble", "house": "Lannister"},
-        "75": {"id": 75, "name": "Jaime Lannister", "type": "Noble", "house": "Lannister"},
-
-        "76": {"id": 76, "name": "Infantería pesada Martell", "type": "Infantería pesada", "house": "Martell"},
-        "77": {"id": 77, "name": "Infantería ligera Martell", "type": "Infantería ligera", "house": "Martell"},
-        "78": {"id": 78, "name": "Caballería pesada Martell", "type": "Caballería pesada", "house": "Martell"},
-        "79": {"id": 79, "name": "Caballería ligera Martell", "type": "Caballería ligera", "house": "Martell"},
-        "80": {"id": 80, "name": "Arqueros Martell", "type": "Arqueros", "house": "Martell"},
-        "81": {"id": 81, "name": "Maestro de espías Martell", "type": "Maestro de espías", "house": "Martell"},
-        "82": {"id": 82, "name": "Maquinaria de asedio Martell", "type": "Maquinaria de asedio", "house": "Martell"},
-        "83": {"id": 83, "name": "Ingeniero de asedio Martell", "type": "Ingeniero de asedio", "house": "Martell"},
-        "84": {"id": 84, "name": "Almirante Martell", "type": "Almirante", "house": "Martell"},
-        "85": {"id": 85, "name": "Caballero Martell", "type": "Caballero", "house": "Martell"},
-        "86": {"id": 86, "name": "Embajador Martell", "type": "Embajador", "house": "Martell"},
-        "87": {"id": 87, "name": "Flota Martell", "type": "Flota", "house": "Martell"},
-        "88": {"id": 88, "name": "Oberyn Martell", "type": "Noble", "house": "Martell"},
-
-        "89": {"id": 89, "name": "Infantería pesada Stark", "type": "Infantería pesada", "house": "Stark"},
-        "90": {"id": 90, "name": "Infantería ligera Stark", "type": "Infantería ligera", "house": "Stark"},
-        "91": {"id": 91, "name": "Caballería pesada Stark", "type": "Caballería pesada", "house": "Stark"},
-        "92": {"id": 92, "name": "Caballería ligera Stark", "type": "Caballería ligera", "house": "Stark"},
-        "93": {"id": 93, "name": "Arqueros Stark", "type": "Arqueros", "house": "Stark"},
-        "94": {"id": 94, "name": "Maestro de espías Stark", "type": "Maestro de espías", "house": "Stark"},
-        "95": {"id": 95, "name": "Maquinaria de asedio Stark", "type": "Maquinaria de asedio", "house": "Stark"},
-        "96": {"id": 96, "name": "Ingeniero de asedio Stark", "type": "Ingeniero de asedio", "house": "Stark"},
-        "97": {"id": 97, "name": "Almirante Stark", "type": "Almirante", "house": "Stark"},
-        "98": {"id": 98, "name": "Caballero Stark", "type": "Caballero", "house": "Stark"},
-        "99": {"id": 99, "name": "Embajador Stark", "type": "Embajador", "house": "Stark"},
-        "100": {"id": 100, "name": "Flota Stark", "type": "Flota", "house": "Stark"},
-        "101": {"id": 101, "name": "Eddard Stark", "type": "Noble", "house": "Stark"},
-        "102": {"id": 102, "name": "Robb Stark", "type": "Noble", "house": "Stark"},
-        "103": {"id": 103, "name": "Jon Snow", "type": "Personaje", "house": "Stark"},
-        "104": {"id": 104, "name": "Arya Stark", "type": "Noble", "house": "Stark"},
-
-        "105": {"id": 105, "name": "Infantería pesada Targaryen", "type": "Infantería pesada", "house": "Targaryen"},
-        "106": {"id": 106, "name": "Infantería ligera Targaryen", "type": "Infantería ligera", "house": "Targaryen"},
-        "107": {"id": 107, "name": "Caballería pesada Targaryen", "type": "Caballería pesada", "house": "Targaryen"},
-        "108": {"id": 108, "name": "Caballería ligera Targaryen", "type": "Caballería ligera", "house": "Targaryen"},
-        "109": {"id": 109, "name": "Arqueros Targaryen", "type": "Arqueros", "house": "Targaryen"},
-        "110": {"id": 110, "name": "Maestro de espías Targaryen", "type": "Maestro de espías", "house": "Targaryen"},
-        "111": {"id": 111, "name": "Maquinaria de asedio Targaryen", "type": "Maquinaria de asedio", "house": "Targaryen"},
-        "112": {"id": 112, "name": "Ingeniero de asedio Targaryen", "type": "Ingeniero de asedio", "house": "Targaryen"},
-        "113": {"id": 113, "name": "Almirante Targaryen", "type": "Almirante", "house": "Targaryen"},
-        "114": {"id": 114, "name": "Caballero Targaryen", "type": "Caballero", "house": "Targaryen"},
-        "115": {"id": 115, "name": "Embajador Targaryen", "type": "Embajador", "house": "Targaryen"},
-        "116": {"id": 116, "name": "Flota Targaryen", "type": "Flota", "house": "Targaryen"},
-        "117": {"id": 117, "name": "Daenerys Targaryen", "type": "Noble de sangre valyria", "house": "Targaryen"},
-
-        "118": {"id": 118, "name": "Infantería pesada Tully", "type": "Infantería pesada", "house": "Tully"},
-        "119": {"id": 119, "name": "Infantería ligera Tully", "type": "Infantería ligera", "house": "Tully"},
-        "120": {"id": 120, "name": "Caballería pesada Tully", "type": "Caballería pesada", "house": "Tully"},
-        "121": {"id": 121, "name": "Caballería ligera Tully", "type": "Caballería ligera", "house": "Tully"},
-        "122": {"id": 122, "name": "Arqueros Tully", "type": "Arqueros", "house": "Tully"},
-        "123": {"id": 123, "name": "Maestro de espías Tully", "type": "Maestro de espías", "house": "Tully"},
-        "124": {"id": 124, "name": "Maquinaria de asedio Tully", "type": "Maquinaria de asedio", "house": "Tully"},
-        "125": {"id": 125, "name": "Ingeniero de asedio Tully", "type": "Ingeniero de asedio", "house": "Tully"},
-        "126": {"id": 126, "name": "Almirante Tully", "type": "Almirante", "house": "Tully"},
-        "127": {"id": 127, "name": "Caballero Tully", "type": "Caballero", "house": "Tully"},
-        "128": {"id": 128, "name": "Embajador Tully", "type": "Embajador", "house": "Tully"},
-        "129": {"id": 129, "name": "Flota Tully", "type": "Flota", "house": "Tully"},
-
-        "130": {"id": 130, "name": "Mercenarios", "type": "Mercenarios", "house": null},
-        "131": {"id": 131, "name": "Oro", "type": "Oro", "house": null},
-        "132": {"id": 132, "name": "Dragón", "type": "Dragón", "house": null},
-        "133": {"id": 133, "name": "Fuego valyrio", "type": "Fuego valyrio", "house": null},
-        "134": {"id": 134, "name": "Piromante", "type": "Piromante", "house": null},
-        "135": {"id": 135, "name": "Espada de acero valyrio", "type": "Espada de acero valyrio", "house": null}
-    },
-
-    "restrictions": {
-        "resource_type_inclusion_restrictions": {
-            "Maquinaria de asedio": ["Ingeniero de asedio"],
-            "Fuego valyrio": ["Piromante"],
-            "Maestro de espías": ["Oro"],
-            "Mercenarios": ["Oro"],
-            "Dragón": ["Noble de sangre valyria"],
-            "Espada de acero valyrio": ["Noble"],
-            "Flota": ["Almirante"]
+        "1": {
+            "id": 1,
+            "name": "Infantería pesada Arryn",
+            "resource_type": "Infantería pesada",
+            "house": "Arryn"
         },
-        "resource_type_exclusion_restrictions": {
-            "Fuego valyrio": ["Maquinaria de asedio"],
-            "Mercenarios": ["Caballero"],
-            "Dragón": ["Maquinaria de asedio"],
-            "Maestro de espías": ["Caballero"]
+        "2": {
+            "id": 2,
+            "name": "Infantería ligera Arryn",
+            "resource_type": "Infantería ligera",
+            "house": "Arryn"
         },
-        "event_type_inclusion_restrictions": {
-            "Asedio": ["Maquinaria de asedio", "Ingeniero de asedio", "Arqueros", "Infantería pesada"],
-            "Batalla naval": ["Almirante", "Flota", "Fuego valyrio"],
-            "Batalla campal": ["Infantería pesada", "Caballería pesada", "Arqueros"],
-            "Asalto": ["Infantería pesada", "Caballería pesada"],
-            "Defensa": ["Infantería pesada", "Arqueros"],
-            "Emboscada": ["Infantería ligera", "Arqueros"],
-            "Misión diplomática": ["Embajador"]
+        "3": {
+            "id": 3,
+            "name": "Caballería pesada Arryn",
+            "resource_type": "Caballería pesada",
+            "house": "Arryn"
         },
-
-        "event_type_exclusion_restrictions": {
-            "Emboscada": ["Maquinaria de asedio"],
-            "Batalla naval": ["Caballería pesada", "Caballería ligera"],
-            "Batalla campal": ["Maestro de espías", "Flota"],
-            "Asedio": ["Caballería pesada", "Caballería ligera"],
-            "Defensa": ["Caballería pesada", "Caballería ligera"],
-            "Asalto": ["Maquinaria de asedio"],
-            "Misión diplomática": ["Maquinaria de asedio"]
+        "4": {
+            "id": 4,
+            "name": "Caballería ligera Arryn",
+            "resource_type": "Caballería ligera",
+            "house": "Arryn"
         },
-        "house_exclusion_restrictions": {
-            "Lannister": ["Stark", "Targaryen", "Tully", "Martell"],
-            "Stark": ["Lannister", "Bolton", "Greyjoy"],
-            "Targaryen": ["Baratheon", "Lannister"],
-            "Baratheon": ["Targaryen"],
-            "Tully": ["Lannister", "Frey"],
-            "Martell": ["Lannister"],
-            "Greyjoy": ["Stark"],
-            "Bolton": ["Stark"],
-            "Frey": ["Stark", "Tully"],
-            "Arryn": ["Lannister"]
+        "5": {
+            "id": 5,
+            "name": "Arqueros Arryn",
+            "resource_type": "Arqueros",
+            "house": "Arryn"
+        },
+        "6": {
+            "id": 6,
+            "name": "Maestro de espías Arryn",
+            "resource_type": "Maestro de espías",
+            "house": "Arryn"
+        },
+        "7": {
+            "id": 7,
+            "name": "Maquinaria de asedio Arryn",
+            "resource_type": "Maquinaria de asedio",
+            "house": "Arryn"
+        },
+        "8": {
+            "id": 8,
+            "name": "Ingeniero de asedio Arryn",
+            "resource_type": "Ingeniero de asedio",
+            "house": "Arryn"
+        },
+        "9": {
+            "id": 9,
+            "name": "Almirante Arryn",
+            "resource_type": "Almirante",
+            "house": "Arryn"
+        },
+        "10": {
+            "id": 10,
+            "name": "Caballero Arryn",
+            "resource_type": "Caballero",
+            "house": "Arryn"
+        },
+        "11": {
+            "id": 11,
+            "name": "Embajador Arryn",
+            "resource_type": "Embajador",
+            "house": "Arryn"
+        },
+        "12": {
+            "id": 12,
+            "name": "Flota Arryn",
+            "resource_type": "Flota",
+            "house": "Arryn"
+        },
+        "13": {
+            "id": 13,
+            "name": "Infantería pesada Baratheon",
+            "resource_type": "Infantería pesada",
+            "house": "Baratheon"
+        },
+        "14": {
+            "id": 14,
+            "name": "Infantería ligera Baratheon",
+            "resource_type": "Infantería ligera",
+            "house": "Baratheon"
+        },
+        "15": {
+            "id": 15,
+            "name": "Caballería pesada Baratheon",
+            "resource_type": "Caballería pesada",
+            "house": "Baratheon"
+        },
+        "16": {
+            "id": 16,
+            "name": "Caballería ligera Baratheon",
+            "resource_type": "Caballería ligera",
+            "house": "Baratheon"
+        },
+        "17": {
+            "id": 17,
+            "name": "Arqueros Baratheon",
+            "resource_type": "Arqueros",
+            "house": "Baratheon"
+        },
+        "18": {
+            "id": 18,
+            "name": "Maestro de espías Baratheon",
+            "resource_type": "Maestro de espías",
+            "house": "Baratheon"
+        },
+        "19": {
+            "id": 19,
+            "name": "Maquinaria de asedio Baratheon",
+            "resource_type": "Maquinaria de asedio",
+            "house": "Baratheon"
+        },
+        "20": {
+            "id": 20,
+            "name": "Ingeniero de asedio Baratheon",
+            "resource_type": "Ingeniero de asedio",
+            "house": "Baratheon"
+        },
+        "21": {
+            "id": 21,
+            "name": "Almirante Baratheon",
+            "resource_type": "Almirante",
+            "house": "Baratheon"
+        },
+        "22": {
+            "id": 22,
+            "name": "Caballero Baratheon",
+            "resource_type": "Caballero",
+            "house": "Baratheon"
+        },
+        "23": {
+            "id": 23,
+            "name": "Embajador Baratheon",
+            "resource_type": "Embajador",
+            "house": "Baratheon"
+        },
+        "24": {
+            "id": 24,
+            "name": "Flota Baratheon",
+            "resource_type": "Flota",
+            "house": "Baratheon"
+        },
+        "25": {
+            "id": 25,
+            "name": "Infantería pesada Bolton",
+            "resource_type": "Infantería pesada",
+            "house": "Bolton"
+        },
+        "26": {
+            "id": 26,
+            "name": "Infantería ligera Bolton",
+            "resource_type": "Infantería ligera",
+            "house": "Bolton"
+        },
+        "27": {
+            "id": 27,
+            "name": "Caballería pesada Bolton",
+            "resource_type": "Caballería pesada",
+            "house": "Bolton"
+        },
+        "28": {
+            "id": 28,
+            "name": "Caballería ligera Bolton",
+            "resource_type": "Caballería ligera",
+            "house": "Bolton"
+        },
+        "29": {
+            "id": 29,
+            "name": "Arqueros Bolton",
+            "resource_type": "Arqueros",
+            "house": "Bolton"
+        },
+        "30": {
+            "id": 30,
+            "name": "Maestro de espías Bolton",
+            "resource_type": "Maestro de espías",
+            "house": "Bolton"
+        },
+        "31": {
+            "id": 31,
+            "name": "Maquinaria de asedio Bolton",
+            "resource_type": "Maquinaria de asedio",
+            "house": "Bolton"
+        },
+        "32": {
+            "id": 32,
+            "name": "Ingeniero de asedio Bolton",
+            "resource_type": "Ingeniero de asedio",
+            "house": "Bolton"
+        },
+        "33": {
+            "id": 33,
+            "name": "Almirante Bolton",
+            "resource_type": "Almirante",
+            "house": "Bolton"
+        },
+        "34": {
+            "id": 34,
+            "name": "Caballero Bolton",
+            "resource_type": "Caballero",
+            "house": "Bolton"
+        },
+        "35": {
+            "id": 35,
+            "name": "Embajador Bolton",
+            "resource_type": "Embajador",
+            "house": "Bolton"
+        },
+        "36": {
+            "id": 36,
+            "name": "Flota Bolton",
+            "resource_type": "Flota",
+            "house": "Bolton"
+        },
+        "37": {
+            "id": 37,
+            "name": "Infantería pesada Frey",
+            "resource_type": "Infantería pesada",
+            "house": "Frey"
+        },
+        "38": {
+            "id": 38,
+            "name": "Infantería ligera Frey",
+            "resource_type": "Infantería ligera",
+            "house": "Frey"
+        },
+        "39": {
+            "id": 39,
+            "name": "Caballería pesada Frey",
+            "resource_type": "Caballería pesada",
+            "house": "Frey"
+        },
+        "40": {
+            "id": 40,
+            "name": "Caballería ligera Frey",
+            "resource_type": "Caballería ligera",
+            "house": "Frey"
+        },
+        "41": {
+            "id": 41,
+            "name": "Arqueros Frey",
+            "resource_type": "Arqueros",
+            "house": "Frey"
+        },
+        "42": {
+            "id": 42,
+            "name": "Maestro de espías Frey",
+            "resource_type": "Maestro de espías",
+            "house": "Frey"
+        },
+        "43": {
+            "id": 43,
+            "name": "Maquinaria de asedio Frey",
+            "resource_type": "Maquinaria de asedio",
+            "house": "Frey"
+        },
+        "44": {
+            "id": 44,
+            "name": "Ingeniero de asedio Frey",
+            "resource_type": "Ingeniero de asedio",
+            "house": "Frey"
+        },
+        "45": {
+            "id": 45,
+            "name": "Almirante Frey",
+            "resource_type": "Almirante",
+            "house": "Frey"
+        },
+        "46": {
+            "id": 46,
+            "name": "Caballero Frey",
+            "resource_type": "Caballero",
+            "house": "Frey"
+        },
+        "47": {
+            "id": 47,
+            "name": "Embajador Frey",
+            "resource_type": "Embajador",
+            "house": "Frey"
+        },
+        "48": {
+            "id": 48,
+            "name": "Flota Frey",
+            "resource_type": "Flota",
+            "house": "Frey"
+        },
+        "49": {
+            "id": 49,
+            "name": "Infantería pesada Greyjoy",
+            "resource_type": "Infantería pesada",
+            "house": "Greyjoy"
+        },
+        "50": {
+            "id": 50,
+            "name": "Infantería ligera Greyjoy",
+            "resource_type": "Infantería ligera",
+            "house": "Greyjoy"
+        },
+        "51": {
+            "id": 51,
+            "name": "Caballería pesada Greyjoy",
+            "resource_type": "Caballería pesada",
+            "house": "Greyjoy"
+        },
+        "52": {
+            "id": 52,
+            "name": "Caballería ligera Greyjoy",
+            "resource_type": "Caballería ligera",
+            "house": "Greyjoy"
+        },
+        "53": {
+            "id": 53,
+            "name": "Arqueros Greyjoy",
+            "resource_type": "Arqueros",
+            "house": "Greyjoy"
+        },
+        "54": {
+            "id": 54,
+            "name": "Maestro de espías Greyjoy",
+            "resource_type": "Maestro de espías",
+            "house": "Greyjoy"
+        },
+        "55": {
+            "id": 55,
+            "name": "Maquinaria de asedio Greyjoy",
+            "resource_type": "Maquinaria de asedio",
+            "house": "Greyjoy"
+        },
+        "56": {
+            "id": 56,
+            "name": "Ingeniero de asedio Greyjoy",
+            "resource_type": "Ingeniero de asedio",
+            "house": "Greyjoy"
+        },
+        "57": {
+            "id": 57,
+            "name": "Almirante Greyjoy",
+            "resource_type": "Almirante",
+            "house": "Greyjoy"
+        },
+        "58": {
+            "id": 58,
+            "name": "Caballero Greyjoy",
+            "resource_type": "Caballero",
+            "house": "Greyjoy"
+        },
+        "59": {
+            "id": 59,
+            "name": "Embajador Greyjoy",
+            "resource_type": "Embajador",
+            "house": "Greyjoy"
+        },
+        "60": {
+            "id": 60,
+            "name": "Flota Greyjoy",
+            "resource_type": "Flota",
+            "house": "Greyjoy"
+        },
+        "61": {
+            "id": 61,
+            "name": "Theon Greyjoy",
+            "resource_type": "Noble",
+            "house": "Greyjoy"
+        },
+        "62": {
+            "id": 62,
+            "name": "Infantería pesada Lannister",
+            "resource_type": "Infantería pesada",
+            "house": "Lannister"
+        },
+        "63": {
+            "id": 63,
+            "name": "Infantería ligera Lannister",
+            "resource_type": "Infantería ligera",
+            "house": "Lannister"
+        },
+        "64": {
+            "id": 64,
+            "name": "Caballería pesada Lannister",
+            "resource_type": "Caballería pesada",
+            "house": "Lannister"
+        },
+        "65": {
+            "id": 65,
+            "name": "Caballería ligera Lannister",
+            "resource_type": "Caballería ligera",
+            "house": "Lannister"
+        },
+        "66": {
+            "id": 66,
+            "name": "Arqueros Lannister",
+            "resource_type": "Arqueros",
+            "house": "Lannister"
+        },
+        "67": {
+            "id": 67,
+            "name": "Maestro de espías Lannister",
+            "resource_type": "Maestro de espías",
+            "house": "Lannister"
+        },
+        "68": {
+            "id": 68,
+            "name": "Maquinaria de asedio Lannister",
+            "resource_type": "Maquinaria de asedio",
+            "house": "Lannister"
+        },
+        "69": {
+            "id": 69,
+            "name": "Ingeniero de asedio Lannister",
+            "resource_type": "Ingeniero de asedio",
+            "house": "Lannister"
+        },
+        "70": {
+            "id": 70,
+            "name": "Almirante Lannister",
+            "resource_type": "Almirante",
+            "house": "Lannister"
+        },
+        "71": {
+            "id": 71,
+            "name": "Caballero Lannister",
+            "resource_type": "Caballero",
+            "house": "Lannister"
+        },
+        "72": {
+            "id": 72,
+            "name": "Embajador Lannister",
+            "resource_type": "Embajador",
+            "house": "Lannister"
+        },
+        "73": {
+            "id": 73,
+            "name": "Flota Lannister",
+            "resource_type": "Flota",
+            "house": "Lannister"
+        },
+        "74": {
+            "id": 74,
+            "name": "Tywin Lannister",
+            "resource_type": "Noble",
+            "house": "Lannister"
+        },
+        "75": {
+            "id": 75,
+            "name": "Jaime Lannister",
+            "resource_type": "Noble",
+            "house": "Lannister"
+        },
+        "76": {
+            "id": 76,
+            "name": "Infantería pesada Martell",
+            "resource_type": "Infantería pesada",
+            "house": "Martell"
+        },
+        "77": {
+            "id": 77,
+            "name": "Infantería ligera Martell",
+            "resource_type": "Infantería ligera",
+            "house": "Martell"
+        },
+        "78": {
+            "id": 78,
+            "name": "Caballería pesada Martell",
+            "resource_type": "Caballería pesada",
+            "house": "Martell"
+        },
+        "79": {
+            "id": 79,
+            "name": "Caballería ligera Martell",
+            "resource_type": "Caballería ligera",
+            "house": "Martell"
+        },
+        "80": {
+            "id": 80,
+            "name": "Arqueros Martell",
+            "resource_type": "Arqueros",
+            "house": "Martell"
+        },
+        "81": {
+            "id": 81,
+            "name": "Maestro de espías Martell",
+            "resource_type": "Maestro de espías",
+            "house": "Martell"
+        },
+        "82": {
+            "id": 82,
+            "name": "Maquinaria de asedio Martell",
+            "resource_type": "Maquinaria de asedio",
+            "house": "Martell"
+        },
+        "83": {
+            "id": 83,
+            "name": "Ingeniero de asedio Martell",
+            "resource_type": "Ingeniero de asedio",
+            "house": "Martell"
+        },
+        "84": {
+            "id": 84,
+            "name": "Almirante Martell",
+            "resource_type": "Almirante",
+            "house": "Martell"
+        },
+        "85": {
+            "id": 85,
+            "name": "Caballero Martell",
+            "resource_type": "Caballero",
+            "house": "Martell"
+        },
+        "86": {
+            "id": 86,
+            "name": "Embajador Martell",
+            "resource_type": "Embajador",
+            "house": "Martell"
+        },
+        "87": {
+            "id": 87,
+            "name": "Flota Martell",
+            "resource_type": "Flota",
+            "house": "Martell"
+        },
+        "88": {
+            "id": 88,
+            "name": "Oberyn Martell",
+            "resource_type": "Noble",
+            "house": "Martell"
+        },
+        "89": {
+            "id": 89,
+            "name": "Infantería pesada Stark",
+            "resource_type": "Infantería pesada",
+            "house": "Stark"
+        },
+        "90": {
+            "id": 90,
+            "name": "Infantería ligera Stark",
+            "resource_type": "Infantería ligera",
+            "house": "Stark"
+        },
+        "91": {
+            "id": 91,
+            "name": "Caballería pesada Stark",
+            "resource_type": "Caballería pesada",
+            "house": "Stark"
+        },
+        "92": {
+            "id": 92,
+            "name": "Caballería ligera Stark",
+            "resource_type": "Caballería ligera",
+            "house": "Stark"
+        },
+        "93": {
+            "id": 93,
+            "name": "Arqueros Stark",
+            "resource_type": "Arqueros",
+            "house": "Stark"
+        },
+        "94": {
+            "id": 94,
+            "name": "Maestro de espías Stark",
+            "resource_type": "Maestro de espías",
+            "house": "Stark"
+        },
+        "95": {
+            "id": 95,
+            "name": "Maquinaria de asedio Stark",
+            "resource_type": "Maquinaria de asedio",
+            "house": "Stark"
+        },
+        "96": {
+            "id": 96,
+            "name": "Ingeniero de asedio Stark",
+            "resource_type": "Ingeniero de asedio",
+            "house": "Stark"
+        },
+        "97": {
+            "id": 97,
+            "name": "Almirante Stark",
+            "resource_type": "Almirante",
+            "house": "Stark"
+        },
+        "98": {
+            "id": 98,
+            "name": "Caballero Stark",
+            "resource_type": "Caballero",
+            "house": "Stark"
+        },
+        "99": {
+            "id": 99,
+            "name": "Embajador Stark",
+            "resource_type": "Embajador",
+            "house": "Stark"
+        },
+        "100": {
+            "id": 100,
+            "name": "Flota Stark",
+            "resource_type": "Flota",
+            "house": "Stark"
+        },
+        "101": {
+            "id": 101,
+            "name": "Eddard Stark",
+            "resource_type": "Noble",
+            "house": "Stark"
+        },
+        "102": {
+            "id": 102,
+            "name": "Robb Stark",
+            "resource_type": "Noble",
+            "house": "Stark"
+        },
+        "103": {
+            "id": 103,
+            "name": "Jon Snow",
+            "resource_type": "Personaje",
+            "house": "Stark"
+        },
+        "104": {
+            "id": 104,
+            "name": "Arya Stark",
+            "resource_type": "Noble",
+            "house": "Stark"
+        },
+        "105": {
+            "id": 105,
+            "name": "Infantería pesada Targaryen",
+            "resource_type": "Infantería pesada",
+            "house": "Targaryen"
+        },
+        "106": {
+            "id": 106,
+            "name": "Infantería ligera Targaryen",
+            "resource_type": "Infantería ligera",
+            "house": "Targaryen"
+        },
+        "107": {
+            "id": 107,
+            "name": "Caballería pesada Targaryen",
+            "resource_type": "Caballería pesada",
+            "house": "Targaryen"
+        },
+        "108": {
+            "id": 108,
+            "name": "Caballería ligera Targaryen",
+            "resource_type": "Caballería ligera",
+            "house": "Targaryen"
+        },
+        "109": {
+            "id": 109,
+            "name": "Arqueros Targaryen",
+            "resource_type": "Arqueros",
+            "house": "Targaryen"
+        },
+        "110": {
+            "id": 110,
+            "name": "Maestro de espías Targaryen",
+            "resource_type": "Maestro de espías",
+            "house": "Targaryen"
+        },
+        "111": {
+            "id": 111,
+            "name": "Maquinaria de asedio Targaryen",
+            "resource_type": "Maquinaria de asedio",
+            "house": "Targaryen"
+        },
+        "112": {
+            "id": 112,
+            "name": "Ingeniero de asedio Targaryen",
+            "resource_type": "Ingeniero de asedio",
+            "house": "Targaryen"
+        },
+        "113": {
+            "id": 113,
+            "name": "Almirante Targaryen",
+            "resource_type": "Almirante",
+            "house": "Targaryen"
+        },
+        "114": {
+            "id": 114,
+            "name": "Caballero Targaryen",
+            "resource_type": "Caballero",
+            "house": "Targaryen"
+        },
+        "115": {
+            "id": 115,
+            "name": "Embajador Targaryen",
+            "resource_type": "Embajador",
+            "house": "Targaryen"
+        },
+        "116": {
+            "id": 116,
+            "name": "Flota Targaryen",
+            "resource_type": "Flota",
+            "house": "Targaryen"
+        },
+        "117": {
+            "id": 117,
+            "name": "Daenerys Targaryen",
+            "resource_type": "Noble de sangre valyria",
+            "house": "Targaryen"
+        },
+        "118": {
+            "id": 118,
+            "name": "Infantería pesada Tully",
+            "resource_type": "Infantería pesada",
+            "house": "Tully"
+        },
+        "119": {
+            "id": 119,
+            "name": "Infantería ligera Tully",
+            "resource_type": "Infantería ligera",
+            "house": "Tully"
+        },
+        "120": {
+            "id": 120,
+            "name": "Caballería pesada Tully",
+            "resource_type": "Caballería pesada",
+            "house": "Tully"
+        },
+        "121": {
+            "id": 121,
+            "name": "Caballería ligera Tully",
+            "resource_type": "Caballería ligera",
+            "house": "Tully"
+        },
+        "122": {
+            "id": 122,
+            "name": "Arqueros Tully",
+            "resource_type": "Arqueros",
+            "house": "Tully"
+        },
+        "123": {
+            "id": 123,
+            "name": "Maestro de espías Tully",
+            "resource_type": "Maestro de espías",
+            "house": "Tully"
+        },
+        "124": {
+            "id": 124,
+            "name": "Maquinaria de asedio Tully",
+            "resource_type": "Maquinaria de asedio",
+            "house": "Tully"
+        },
+        "125": {
+            "id": 125,
+            "name": "Ingeniero de asedio Tully",
+            "resource_type": "Ingeniero de asedio",
+            "house": "Tully"
+        },
+        "126": {
+            "id": 126,
+            "name": "Almirante Tully",
+            "resource_type": "Almirante",
+            "house": "Tully"
+        },
+        "127": {
+            "id": 127,
+            "name": "Caballero Tully",
+            "resource_type": "Caballero",
+            "house": "Tully"
+        },
+        "128": {
+            "id": 128,
+            "name": "Embajador Tully",
+            "resource_type": "Embajador",
+            "house": "Tully"
+        },
+        "129": {
+            "id": 129,
+            "name": "Flota Tully",
+            "resource_type": "Flota",
+            "house": "Tully"
+        },
+        "130": {
+            "id": 130,
+            "name": "Mercenarios",
+            "resource_type": "Mercenarios",
+            "house": null
+        },
+        "131": {
+            "id": 131,
+            "name": "Oro",
+            "resource_type": "Oro",
+            "house": null
+        },
+        "132": {
+            "id": 132,
+            "name": "Dragón",
+            "resource_type": "Dragón",
+            "house": null
+        },
+        "133": {
+            "id": 133,
+            "name": "Fuego valyrio",
+            "resource_type": "Fuego valyrio",
+            "house": null
+        },
+        "134": {
+            "id": 134,
+            "name": "Piromante",
+            "resource_type": "Piromante",
+            "house": null
+        },
+        "135": {
+            "id": 135,
+            "name": "Espada de acero valyrio",
+            "resource_type": "Espada de acero valyrio",
+            "house": null
         }
     },
-
-    "events": [],
-    "next_event_id": 1
+    "restrictions": {
+        "resource_type_inclusion_restrictions": {
+            "Maquinaria de asedio": [
+                "Ingeniero de asedio"
+            ],
+            "Fuego valyrio": [
+                "Piromante"
+            ],
+            "Maestro de espías": [
+                "Oro"
+            ],
+            "Mercenarios": [
+                "Oro"
+            ],
+            "Dragón": [
+                "Noble de sangre valyria"
+            ],
+            "Espada de acero valyrio": [
+                "Noble"
+            ],
+            "Flota": [
+                "Almirante"
+            ]
+        },
+        "resource_type_exclusion_restrictions": {
+            "Fuego valyrio": [
+                "Maquinaria de asedio"
+            ],
+            "Mercenarios": [
+                "Caballero"
+            ],
+            "Dragón": [
+                "Maquinaria de asedio"
+            ],
+            "Maestro de espías": [
+                "Caballero"
+            ]
+        },
+        "event_type_inclusion_restrictions": {
+            "Asedio": [
+                "Maquinaria de asedio",
+                "Ingeniero de asedio",
+                "Arqueros",
+                "Infantería pesada"
+            ],
+            "Batalla naval": [
+                "Almirante",
+                "Flota",
+                "Fuego valyrio"
+            ],
+            "Batalla campal": [
+                "Infantería pesada",
+                "Caballería pesada",
+                "Arqueros"
+            ],
+            "Asalto": [
+                "Infantería pesada",
+                "Caballería pesada"
+            ],
+            "Defensa": [
+                "Infantería pesada",
+                "Arqueros"
+            ],
+            "Emboscada": [
+                "Infantería ligera",
+                "Arqueros"
+            ],
+            "Misión diplomática": [
+                "Embajador"
+            ]
+        },
+        "event_type_exclusion_restrictions": {
+            "Emboscada": [
+                "Maquinaria de asedio"
+            ],
+            "Batalla naval": [
+                "Caballería pesada",
+                "Caballería ligera"
+            ],
+            "Batalla campal": [
+                "Maestro de espías",
+                "Flota"
+            ],
+            "Asedio": [
+                "Caballería pesada",
+                "Caballería ligera"
+            ],
+            "Defensa": [
+                "Caballería pesada",
+                "Caballería ligera"
+            ],
+            "Asalto": [
+                "Maquinaria de asedio"
+            ],
+            "Misión diplomática": [
+                "Maquinaria de asedio"
+            ]
+        },
+        "house_exclusion_restrictions": {
+            "Lannister": [
+                "Stark",
+                "Targaryen",
+                "Tully",
+                "Martell"
+            ],
+            "Stark": [
+                "Lannister",
+                "Bolton",
+                "Greyjoy"
+            ],
+            "Targaryen": [
+                "Baratheon",
+                "Lannister"
+            ],
+            "Baratheon": [
+                "Targaryen"
+            ],
+            "Tully": [
+                "Lannister",
+                "Frey"
+            ],
+            "Martell": [
+                "Lannister"
+            ],
+            "Greyjoy": [
+                "Stark"
+            ],
+            "Bolton": [
+                "Stark"
+            ],
+            "Frey": [
+                "Stark",
+                "Tully"
+            ],
+            "Arryn": [
+                "Lannister"
+            ]
+        }
+    },
+    "events": [
+        {
+            "id": 1,
+            "name": "Evento Test",
+            "description": null,
+            "start": "0400-03-03T00:00:00",
+            "end": "0400-04-04T00:00:00",
+            "event_type": "Asedio",
+            "location": null,
+            "resources_ids": [
+                122,
+                124,
+                125,
+                118
+            ],
+            "status": "planned",
+            "era": "DC"
+        }
+    ],
+    "next_event_id": 2
 }

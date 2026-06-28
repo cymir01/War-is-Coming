@@ -4,13 +4,18 @@ from datetime import datetime
 from src.services.data_manager import add_event, RESOURCES, RESTRICTIONS, list_events
 from src.services.planner import find_next_available_time_slot
 
+#AGREGAR DESPUES DEL TIPO DE EVENTO LA LISTA DE RECURSOS QUE REQUIERE
+#MEJORAR LA VISUALIZACION DE RECURSOS, EN LUGAR DE LISTARLOS TODOS, PEDIR CASA Y LISTAR LOS RECURSOS POR CASA, ETC
+
+#TypeError: find_next_available_time_slot() got an unexpected keyword argument 'resources_ids'
+
 def command_add():
     console = Console()
     console.print("\n[bold cyan]Agregar nuevo evento[/bold cyan]")
     
     name = console.input("Nombre del evento: \n")
     desc = None
-    if Confirm.ask("Desea agregar descripción al evento? \n"):
+    if Confirm.ask("\nDesea agregar descripción al evento? \n"):
         desc = console.input("Descripción del evento: \n")
     
     event_types = ["Asedio", "Batalla naval", "Asalto", "Defensa", "Emboscada", "Batalla campal", "Misión diplomática"]
@@ -18,35 +23,68 @@ def command_add():
     event_type = Prompt.ask("Tipo de evento:", choices=event_types)
     
     location = None
-    if Confirm.ask("¿Desea especificar una locación para el evento?"):
+    if Confirm.ask("\n¿Desea especificar una locación para el evento?"):
         location = console.input("Ubicación:")
+
+    console.print("\n[bold cyan]Era histórica[/bold cyan]")
+    console.print("[yellow]DC[/yellow] - Después de la Conquista")
+    console.print("[yellow]AC[/yellow] - Antes de la Conquista")
+    era = Prompt.ask("Seleccione la era historica en que ocurrirá el evento:", choices=["DC", "AC"])
 
     console.print("\n[bold cyan]Recursos dsiponibles:[/bold cyan]")
     for resource_id, resoruce_data in RESOURCES.items():
         type = resoruce_data.resource_type if resoruce_data.resource_type is not None else "sin tipo"
         house = resoruce_data.house if resoruce_data.house is not None else "sin casa"
         console.print(f"{resource_id}: {resoruce_data.name} (tipo: {type}, casa: {house})")
+    
+    while True:
+        resources_input = Prompt.ask("\nIngrese los ids de los recursos que desea agregar (separados por comas)")
+        resources_ids = []
+        ids_invalidos = []
 
-    resources_input = Prompt.ask("Ingrese los ids de los recursos que desea, separados por comas", default="")
-    resources_ids = []
-    if resources_input.strip():
+        if not resources_input.strip():
+            console.print("[yellow]No ingresó ningún recurso. Debe seleccionar al menos uno[/yellow]")
+            continue
+
         try:
             separated_ids = resources_input.split(",")
             for id in separated_ids:
                 if id.strip():
-                    resources_ids.append(int(id.strip()))
+                    rid = int(id.strip())
+                    if rid in RESOURCES:
+                        resources_ids.append(rid)
+                    else:
+                        ids_invalidos.append(str(rid))
         except ValueError:
-            console.print("[red]ids inválidos. Deben ser números[/red]")
-            return
+            console.print("[red]ids inválidos (deben ser números y estar separados por coma)[/red]")
+            continue
+
+        if ids_invalidos:
+            ids_str = ''
+            for i, id_invalido in enumerate(ids_invalidos):
+                if i == 0:
+                    ids_str = id_invalido
+                else:
+                    ids_str = ids_str + ", " + id_invalido
+            
+            console.print(f"[red]Error: Los siguientes ids no existen: {ids_str}[/red]")
+            console.print("[yellow]Por favor, revise la lista de recursos disponibles e intente nuevamente[/yellow]")
+            continue
+
+        if not resources_ids:
+            console.print("[yellow]Debe seleccionar al menos un recurso valido[/yellow]")
+            continue
+        
+        break
     
     def ask_datetime(prompt_text):
         while True:
             try:
-                year = int(Prompt.ask(f"Año - {prompt_text}"))
-                month = int(Prompt.ask(f"Mes - {prompt_text}"))
+                year = int(Prompt.ask(f"\nAño - {prompt_text}"))
+                month = int(Prompt.ask(f"Mes - {prompt_text} [1-12]"))
                 day = int(Prompt.ask(f"Día - {prompt_text}"))
-                hour = int(Prompt.ask(f"Hora - {prompt_text}"))
-                minute = int(Prompt.ask(f"Minuto - {prompt_text}"))
+                hour = int(Prompt.ask(f"Hora - {prompt_text} [0-23]"))
+                minute = int(Prompt.ask(f"Minuto - {prompt_text} [0-59]"))
                 return datetime(year, month, day, hour, minute)
             except ValueError:
                 console.print("[red]ups! error en la fecha. Inténtelo de nuevo[/red]")
@@ -57,7 +95,7 @@ def command_add():
         console.print("[red]La fecha final debe ser posterior a la inicial[/red]")
         return
         
-    if Confirm.ask("Desea buscar el próximo hueco disponible para estos recursos?"):
+    if Confirm.ask("\nDesea buscar el próximo hueco disponible para estos recursos?"):
         duration_hours = (end_date - start_date).total_seconds() / 3600.0
         slot_start, slot_end = find_next_available_time_slot(resources_ids=resources_ids, duration_hours=duration_hours, start_from=start_date, max_days=30, existing_events=list_events(), resources=RESOURCES, restrictions=RESTRICTIONS, event_type=event_type)
         if slot_start and slot_end:
@@ -70,8 +108,8 @@ def command_add():
             console.print("[red]No se encontró un hueco disponible en los próximos días[/red]")
             return
 
-    valid, result = add_event(name, desc, start_date, end_date, event_type, location, resources_ids)
+    valid, result = add_event(name=name, description=desc, start=start_date, end=end_date, event_type=event_type, location=location, resources_ids=resources_ids, era=era)
     if valid:
         console.print(f"[green]Evento '{name}' agregado con ID: {result}[/green]")
     else:
-        console.print(f"[red]Error: {result}[/red]")
+        console.print(f"[red]{result}[/red]")

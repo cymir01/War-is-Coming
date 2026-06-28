@@ -14,6 +14,7 @@ def command_list_planned_events():
     table.add_column("ID", style="cyan")
     table.add_column("Nombre", style="white")
     table.add_column("Tipo", style="magenta")
+    table.add_column("Era", style="yellow")
     table.add_column("Descripción", style="magenta")
     table.add_column("Estado", style="magenta") 
     table.add_column("Inicio", style="green")
@@ -33,6 +34,7 @@ def command_list_planned_events():
             str(event.id),
             event.name,
             event.event_type,
+            event.era,
             event.description,
             event.status,
             event.start.strftime("%Y-%m-%d %H:%M"),

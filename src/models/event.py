@@ -1,8 +1,9 @@
 from datetime import datetime
 
+#AGREGAR EL ATRIBUTO ERA (AC, DC) PARA IMPRIMIR SOLO
 #usar encapsulamiento
 class Event:
-    def __init__(self, id: str, name: str, start: datetime, end: datetime, event_type: str, location: str = None, resources_ids: list = [], description: str = None, status: str = "planned"):
+    def __init__(self, id: str, name: str, start: datetime, end: datetime, event_type: str, location: str = None, resources_ids: list = [], description: str = None, status: str = "planned", era: str = "DC"):
         self.id = id
         self.name = name
         self.description = description
@@ -12,6 +13,7 @@ class Event:
         self.location = location
         self.resources_ids = resources_ids
         self.status  = status
+        self.era = era
     
     def __lt__(self, other):
         return self.start < other.start
@@ -38,7 +40,8 @@ class Event:
         'event_type': self.event_type,
         'location': self.location,
         'resources_ids': self.resources_ids,
-        'status': self.status
+        'status': self.status,
+        'era': self.era
         }
 
     @classmethod
@@ -53,6 +56,7 @@ class Event:
             event_type=data['event_type'],
             location=data['location'],
             resources_ids=data['resources_ids'],
-            status=data.get('status', 'planned')
+            status=data.get('status', 'planned'),
+            era=data.get('era', "DC")
         )
 

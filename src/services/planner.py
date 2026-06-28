@@ -1,9 +1,6 @@
 from datetime import datetime, timedelta
-
-#ARREGLAR LA LOGICA DE VALIDACION
-#qgestionar en add_event() cuando el usuario pide un recurso (id) que no existe
-#para que el usuario escoja los recursos tengo que listarlos con sus corresondientes id para que seleccione por id
 DEFAULT_START_DATE = datetime(301, 1, 1, 0, 0)
+#qgestionar en add_event() cuando el usuario pide un recurso (id) que no existe (lanza error)
 
 def resources_conflict_check(new_event, existing_events):
     """funcion que devuelve False si no hay conflicto y True de haber"""
@@ -15,18 +12,18 @@ def resources_conflict_check(new_event, existing_events):
     return False
 
 def validate_restrictions(new_event, resources, restrictions):
-    """funcion que valida las restricciones de inclusion y exclusion entre recursos"""
+    """funcion que valida todas las restricciones (por tipo de recurso, tipo de eventp y casas)"""
     resource_type_inclusion_restrictions = restrictions.get("resource_type_inclusion_restrictions", {})
     resource_type_exclusion_restrictions = restrictions.get("resource_type_exclusion_restrictions", {})
     event_type_exclusion_restrictions = restrictions.get("event_type_exclusion_restrictions", {})
     event_type_inclusion_restrictions = restrictions.get("event_type_inclusion_restrictions", {})
     houses_exclusion_restrictions = restrictions.get("house_exclusion_restrictions", {})
 
-    valid, mesage = validate_resource_type_inclusion_restrictions(new_event, resource_type_inclusion_restrictions)
+    valid, mesage = validate_resource_type_inclusion_restrictions(new_event, resources, resource_type_inclusion_restrictions)
     if not valid:
         return False, mesage
 
-    valid, mesage = validate_resource_type_exclusion_restrictions(new_event, resource_type_exclusion_restrictions)
+    valid, mesage = validate_resource_type_exclusion_restrictions(new_event, resources, resource_type_exclusion_restrictions)
     if not valid:
         return False, mesage
 
@@ -34,7 +31,7 @@ def validate_restrictions(new_event, resources, restrictions):
     if not valid:
         return False, mesage
 
-    valid, mesage = validate_event_type_exclusion_restriction(new_event, event_type_exclusion_restrictions)
+    valid, mesage = validate_event_type_exclusion_restriction(new_event, resources, event_type_exclusion_restrictions)
     if not valid:
         return False, mesage
 
@@ -44,34 +41,41 @@ def validate_restrictions(new_event, resources, restrictions):
     
     return True, ''
 
-def validate_resource_type_inclusion_restrictions(new_event, resource_type_inclusion_restrictions):
+def validate_resource_type_inclusion_restrictions(new_event, resources, resource_type_inclusion_restrictions):
     """devuelve True si se cumplen las restricciones de inclusion y False si no"""
-    new_event_resources_ids = set(new_event.resources_ids)
-    
-    for resource, required_resources in resource_type_inclusion_restrictions.items():
-        resource = int(resource)
-        if resource in new_event_resources_ids:
-            for required_id in required_resources:
-                required_id = int(required_id)
-                if required_id not in new_event_resources_ids:
-                    return False, f"error! el recurso {resource} requiere el recurso {required_id}"
+    resource_types = set()
+    for rid in new_event.resources_ids:
+        if rid in resources:
+            r_type = resources[rid].resource_type
+            if r_type:
+                resource_types.add(r_type)
+
+    for required_type, required_with in resource_type_inclusion_restrictions.items():
+        if required_type in resource_types:
+            for req_type in required_with:
+                if req_type not in resource_types:
+                    return False, f"Error: el recurso tipo '{required_type}' requiere el tipo '{req_type}'"
     return True, ""
 
-def validate_resource_type_exclusion_restrictions(new_event, resource_type_exclusion_restrictions):
+def validate_resource_type_exclusion_restrictions(new_event, resources, resource_type_exclusion_restrictions):
     """True si no se viola ninguna restriccion, False en caso contrario"""
-    new_event_resources_ids = set(new_event.resources_ids)
-    for resource, exclusive_resources in resource_type_exclusion_restrictions.items():
-        resource = int(resource)
-        if resource in new_event_resources_ids:
-            for exclusive_resource in exclusive_resources:
-                exclusive_resource = int(exclusive_resource)
-                if exclusive_resource in new_event_resources_ids:
-                    return False, f"error: el evento incluye recursos excluyentes: {resource} y {exclusive_resource}"
+    resource_types = set()
+    for rid in new_event.resources_ids:
+        if rid in resources:
+            r_type = resources[rid].resource_type
+            if r_type:
+                resource_types.add(r_type)
+    
+    for type_a, excluded_types in resource_type_exclusion_restrictions.items():
+        if type_a in resource_types:
+            for type_b in excluded_types:
+                if type_b in resource_types:
+                    return False, f"Error: los tipos '{type_a}' y '{type_b}' son excluyentes"
     return True, ''
 
-#la funcion debe usar el atributo tipo de los recursos
+#DA PROBLEMAS
 def validate_event_type_inclusion_restriction(new_event, resources, event_type_inclusion_restrictions):
-    event_type = new_event.even_type
+    event_type = new_event.event_type
     resources_ids_new_event = set(new_event.resources_ids)
     resources_type_new_event = set()
 
@@ -84,30 +88,39 @@ def validate_event_type_inclusion_restriction(new_event, resources, event_type_i
     if event_type in event_type_inclusion_restrictions:
         required_resources_type = event_type_inclusion_restrictions[event_type]
         for required_r_type in required_resources_type:
-            if required_r_type not in resources_ids_new_event:
+            if required_r_type not in resources_type_new_event:
                 return False, f"Error: el evento tipo {event_type} requiere el tipo de recurso {required_r_type}"
     return True, ""
 
-#idem
-def validate_event_type_exclusion_restriction(new_event, event_type_exclusion_restrictions):
+
+def validate_event_type_exclusion_restriction(new_event, resources, event_type_exclusion_restrictions):
     event_type = new_event.event_type
     resources_ids_new_event = set(new_event.resources_ids)
+    resources_type_new_event = set()
+
+    for rid in resources_ids_new_event:
+        if rid in resources:
+            r_type = resources[rid].resource_type
+            if r_type:
+                resources_type_new_event.add(r_type)
 
     if event_type in event_type_exclusion_restrictions:
-        forbbiden_resources = event_type_exclusion_restrictions[event_type]
-        for forbbiden_resource in forbbiden_resources:
-            forbbiden_resource = int(forbbiden_resource)
-            if forbbiden_resource in resources_ids_new_event:
-                return False, f"Error: el evento tipo {event_type} no puede usar el recurso {forbbiden_resource}"
+        forbidden_types = event_type_exclusion_restrictions[event_type]
+        for forbidden_type in forbidden_types:
+            if forbidden_type in resources_type_new_event:
+                return False, f"Error: el evento tipo '{event_type}' no puede usar el tipo de recurso '{forbidden_type}'"
     return True, ''
 
 def validate_houses_exclusion_restrictions(new_event, resources, houses_exclusion_restrictions):
     houses_new_event = set()
-    for resource_id in new_event.resources_ids:
+    new_event_resources_ids = set(new_event.resources_ids)
+
+    for resource_id in new_event_resources_ids:
         if resource_id in resources:
             house = resources[resource_id].house
             if house:
                 houses_new_event.add(house)
+            
     for house in houses_new_event:
         if house in houses_exclusion_restrictions:
             enemy_houses = houses_exclusion_restrictions[house]
@@ -116,14 +129,9 @@ def validate_houses_exclusion_restrictions(new_event, resources, houses_exclusio
                     return False, f"error: la casa {house} no puede aliarse con la casa {enemy_house}"
     return True, ""
 
-# Debes implementar una función inteligente que, dado un evento y los recursos que necesita, sea capaz de analizar el calendario y 
-# sugerir el próximo intervalo de tiempo disponible donde se pueda realizar sin conflictos ni violaciones de restricciones.
 def get_event_start(event):
     return event.start
 
-#en esta funcion tengo que validar las restricciones llamando a validate_restrictions 
-# y ademas chequear conflicto de recrusos llamando a conflict_resoruces_check
-# la validacion del hueco estaria separada de la busqueda del hueco
 def is_slot_valid(start_time, end_time, resources_ids, sorted_events):
     """comprueba que ningún recurso esté ocupado en el intervalo"""
     for event in sorted_events:
@@ -133,7 +141,6 @@ def is_slot_valid(start_time, end_time, resources_ids, sorted_events):
                     return False
     return True
 
-#usar la fecha de inicio que pide el usuario, no now() porque el calendario que debe usar el programa es ficticio
 def find_next_available_time_slot(resource_ids, duration_hours, start_from, max_days=30, existing_events=None, resources=None, restrictions=None, event_type=None):
     if existing_events is None:
         existing_events = []
