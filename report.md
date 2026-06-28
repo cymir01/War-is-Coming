@@ -203,15 +203,15 @@ Estas funciones no se usan directamente en la interfaz actual, pero están dispo
 
 ```
 ¡War is Coming!
-¿Cuál es su nombre, milord? Arya
-Hola Arya!. A continuación los comandos para realizar acciones:
+¿Cuál es su nombre, milord? Juan
+Hola Juan!. A continuación los comandos para realizar acciones:
 a - agregar evento
 l - listar eventos
 d - eliminar evento
 v - ver detalles de un evento
 s - salir
 
-¿Qué acción desea realizar Arya? a
+¿Qué acción desea realizar Juan? a
 
 Agregar nuevo evento
 Nombre del evento: 
@@ -266,7 +266,7 @@ Si no encuentra hueco, muestra: `No se encontró un hueco disponible en los pró
 ### Ejemplo 3: Listar eventos
 
 ```
-¿Qué acción desea realizar Arya? l
+¿Qué acción desea realizar Juan? l
 Lista de Eventos
 ┌────┬─────────────────────┬──────────┬─────────────────────┬─────────────────────┬──────────┐
 │ ID │ Nombre              │ Tipo     │ Inicio              │ Fin                 │ Recursos │
@@ -279,7 +279,7 @@ Lista de Eventos
 ### Ejemplo 4: Ver detalles de un evento
 
 ```
-¿Qué acción desea realizar Arya? v
+¿Qué acción desea realizar Juan? v
 Seleccione una acción:
   e - ver detalles de un evento
   r - ver agenda de un recurso
@@ -319,7 +319,7 @@ Agenda del recurso: Infantería pesada Stark (ID: 89)
 ### Ejemplo 6: Eliminar evento
 
 ```
-¿Qué acción desea realizar Arya? d
+¿Qué acción desea realizar Juan? d
 Eventos existentes:
 ID: 1 - Defensa de Invernalia (302-01-15 08:00)
 ID: 2 - Asedio a Harrenhal (302-01-20 08:00)

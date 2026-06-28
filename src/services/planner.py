@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from src.models.event import Event
 DEFAULT_START_DATE = datetime(301, 1, 1, 0, 0)
 #qgestionar en add_event() cuando el usuario pide un recurso (id) que no existe (lanza error)
 
@@ -141,7 +142,7 @@ def is_slot_valid(start_time, end_time, resources_ids, sorted_events):
                     return False
     return True
 
-
+#ARREGLAR PROBLEMAS FUNCIONALES
 def find_next_available_time_slot(resources_ids, duration_hours, start_from, max_days=30, existing_events=None, resources=None, restrictions=None, event_type=None):
     if existing_events is None:
         existing_events = []
@@ -152,7 +153,7 @@ def find_next_available_time_slot(resources_ids, duration_hours, start_from, max
     end_limit = start_from + timedelta(days=max_days)
     current_time = start_from
 
-    #si el evento ya termino lo saltamos
+
     for event in sorted_events:
         if event.end <= current_time:
             continue
@@ -163,7 +164,6 @@ def find_next_available_time_slot(resources_ids, duration_hours, start_from, max
                 if candidate_end <= event.start:
                     if is_slot_valid(current_time, candidate_end, resources_ids, sorted_events):
                         if resources is not None and restrictions is not None and event_type is not None:
-                            from src.models.event import Event
                             temporal_event = Event(
                                 id=-1,
                                 name="temp",
@@ -173,12 +173,10 @@ def find_next_available_time_slot(resources_ids, duration_hours, start_from, max
                                 resources_ids=resources_ids
                             )
                             valid, mesage = validate_restrictions(temporal_event, resources, restrictions)
-                            if not valid:
-                                pass #seguimos buscando si no cumple...
-                            else:
+                            if valid:
                                 return current_time, candidate_end
-                        else:
-                            return current_time, candidate_end  
+                            else:
+                                return current_time, candidate_end  
         for rid in resources_ids:
             if rid in event.resources_ids:
                 current_time = max(current_time, event.end)
@@ -189,9 +187,8 @@ def find_next_available_time_slot(resources_ids, duration_hours, start_from, max
         if candidate_end <= end_limit:
             if is_slot_valid(current_time, candidate_end, resources_ids, sorted_events):
                 if resources is not None and restrictions is not None and event_type is not None:
-                    from src.models.event import Event
                     temporal_event = Event(
-                        id=-1,
+                        id=0,
                         name="temp",
                         start=current_time,
                         end=candidate_end,
