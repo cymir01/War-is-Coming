@@ -31,10 +31,10 @@ def command_add():
     era = Prompt.ask("Seleccione la era historica en que ocurrirá el evento:", choices=["DC", "AC"])
 
     console.print("\n[bold cyan]Recursos dsiponibles:[/bold cyan]")
-    for resource_id, resoruce_data in RESOURCES.items():
-        type = resoruce_data.resource_type if resoruce_data.resource_type is not None else "sin tipo"
-        house = resoruce_data.house if resoruce_data.house is not None else "sin casa"
-        console.print(f"{resource_id}: {resoruce_data.name} (tipo: {type}, casa: {house})")
+    for resource_id, resource_data in RESOURCES.items():
+        type = resource_data.resource_type if resource_data.resource_type is not None else "sin tipo"
+        house = resource_data.house if resource_data.house is not None else "sin casa"
+        console.print(f"{resource_id}: {resource_data.name} (tipo: {type}, casa: {house})")
     
     while True:
         resources_input = Prompt.ask("\nIngrese los ids de los recursos que desea agregar (separados por comas)")

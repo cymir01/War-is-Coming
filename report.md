@@ -271,7 +271,7 @@ Lista de Eventos
 ┌────┬─────────────────────┬──────────┬─────────────────────┬─────────────────────┬──────────┐
 │ ID │ Nombre              │ Tipo     │ Inicio              │ Fin                 │ Recursos │
 ├────┼─────────────────────┼──────────┼─────────────────────┼─────────────────────┼──────────┤
-│ 1  │ Defensa de Invernalia│ Defensa  │ 302-01-15 08:00     │ 302-01-15 20:00     │ 89,93,101│
+│ 1  │Defensa de Invernalia│ Defensa  │ 302-01-15 08:00     │ 302-01-15 20:00     │ 89,93,101│
 │ 2  │ Asedio a Harrenhal  │ Asedio   │ 302-01-20 08:00     │ 302-01-20 18:00     │ 7,8      │
 └────┴─────────────────────┴──────────┴─────────────────────┴─────────────────────┴──────────┘
 ```
@@ -312,7 +312,7 @@ Agenda del recurso: Infantería pesada Stark (ID: 89)
 ┌───────────┬─────────────────────┬──────────┬──────┬─────────────────────┬─────────────────────┬─────────┐
 │ Evento ID │ Nombre              │ Tipo     │ Era  │ Inicio              │ Fin                 │ Estado  │
 ├───────────┼─────────────────────┼──────────┼──────┼─────────────────────┼─────────────────────┼─────────┤
-│ 1         │ Defensa de Invernalia│ Defensa  │ DC   │ 302-01-15 08:00     │ 302-01-15 20:00     │ planned │
+│ 1         │Defensa de Invernalia│ Defensa  │ DC   │ 302-01-15 08:00     │ 302-01-15 20:00     │ planned │
 └───────────┴─────────────────────┴──────────┴──────┴─────────────────────┴─────────────────────┴─────────┘
 ```
 
@@ -409,11 +409,11 @@ Este proyecto me ha permitido en general desarrollar habilidades de manejo de er
 
 - **Iteración y refinamiento**: Desarrollé el proyecto de forma incremental: primero una versión básica que funcionaba, luego añadí restricciones, después la búsqueda de huecos, y finalmente estoy puliendo la interfaz y corrigiendo errores. Esto me enseñó a no buscar la perfección desde el principio, sino a construir sobre una base sólida y mejorar paso a paso.
 
-- **Importancia de la documentación**: Escribir docstrings (para algunas funciones), comentarios y el propio informe me ayudó a esclarecer mi pensamiento y entender mejor lo que estaba haciendo y lo que no debía. Comprendí que un código bien documentado es más fácil de mantener, leer y de compartir. Tanto así que he tratado de escribir código autodocumento (self-documenting code) en todo el proyecto desde que descubrí qué era, aunque no conociendo del todo todavía las prácticas estándar al respecto.
+- **Importancia de la documentación**: Escribir docstrings, comentarios y el propio informe me ayudó a esclarecer mi pensamiento y entender mejor lo que estaba haciendo en el proyecto, además de formalizar en palabras mis conocimientos, lo cual ayuda a consolidarlos. Comprendí que un código bien documentado es más fácil de mantener, leer y de compartir. Tanto así que he tratado de escribir código autodocumentado (self-documenting code) en todo el proyecto desde que descubrí qué era, aunque no conociendo del todo todavía las prácticas estándar al respecto. En general, el acto de escribir sobre algo que uno está aprendiendo es en sí mismo un método muy potente de aprendizaje, por alguna razón.
 
 - **Pensamiento crítico y resolución de problemas**: Enfrentarme a errores como typos en nombres de claves, indentaciones incorrectas o funciones que no retornaban lo esperado, me obligó a depurar meticulosamente y a desarrollar una actitud de análisis sistemático. Aprendí a usar el depurador y a leer los mensajes de error de Python para localizar problemas rápidamente.
 
-- **Trabajo con Git y control de versiones**: Utilicé Git para gestionar los cambios, lo que me permitió experimentar con seguridad y volver atrás si algo salía mal. Aprendí varios comandos al enfrentar diversas situaciones en el control de versiones de mi proyecto y entendí la necesidad del uso de sistemas de control de versiones en reemplazo de carpetas con nombre "proyecto final final - ahora si".
+- **Trabajo con Git y control de versiones**: Utilicé Git para gestionar los cambios, lo que me permitió experimentar con seguridad y volver atrás si algo salía mal. Aprendí varios comandos al enfrentar diversas situaciones en el control de versiones de mi proyecto y entendí la necesidad del uso de sistemas de control de versiones en reemplazo de carpetas con nombre "proyecto final final (ahora si)".
 
 - **Interacción con el usuario**: Diseñar una CLI amigable con `rich` me ha mostrado que incluso una consola puede ofrecer una experiencia atractiva. Los colores y tablas mejoran la legibilidad. También aprendí a usar bucles para validar entradas y a ofrecer opciones claras al usuario.
 

@@ -950,6 +950,21 @@
             ]
         }
     },
-    "events": [],
-    "next_event_id": 1
+    "events": [
+        {
+            "id": 1,
+            "name": "event",
+            "description": null,
+            "start": "0400-03-03T00:00:00",
+            "end": "0400-04-04T00:00:00",
+            "event_type": "Misión diplomática",
+            "location": null,
+            "resources_ids": [
+                128
+            ],
+            "status": "planned",
+            "era": "DC"
+        }
+    ],
+    "next_event_id": 2
 }

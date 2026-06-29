@@ -18,7 +18,7 @@ class Resource:
         return cls(
             id=data["id"],
             name=data["name"],
-            resource_type=data.get("type"),
+            resource_type=data.get("resource_type"),
             house=data.get("house")
         )
         

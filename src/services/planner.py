@@ -130,76 +130,92 @@ def validate_houses_exclusion_restrictions(new_event, resources, houses_exclusio
                     return False, f"error: la casa {house} no puede aliarse con la casa {enemy_house}"
     return True, ""
 
-def get_event_start(event):
-    return event.start
 
-def is_slot_valid(start_time, end_time, resources_ids, sorted_events):
-    """comprueba que ningún recurso esté ocupado en el intervalo"""
-    for event in sorted_events:
-        if max(start_time, event.start) < min(end_time, event.end):
-            for resource_id in resources_ids:
-                if resource_id in event.resources_ids:
-                    return False
-    return True
-
-#ARREGLAR PROBLEMAS FUNCIONALES
 def find_next_available_time_slot(resources_ids, duration_hours, start_from, max_days=30, existing_events=None, resources=None, restrictions=None, event_type=None):
     if existing_events is None:
         existing_events = []
     if start_from is None:
         start_from = DEFAULT_START_DATE
-
-    sorted_events = sorted(existing_events, key=get_event_start)
+    
+    resources_ids = list(set(resources_ids))
+    
+    sorted_events = sorted(existing_events, key=lambda e: e.start)
+    
     end_limit = start_from + timedelta(days=max_days)
+    
     current_time = start_from
-
-
+    
+    def check_resource_conflict(start_time, end_time, resources_ids, events):
+        for event in events:
+            if max(start_time, event.start) < min(end_time, event.end):
+                for resource_id in resources_ids:
+                    if resource_id in event.resources_ids:
+                        return False
+        return True
+    
+    def check_restrictions(start_time, end_time, resources_ids, event_type, resources, restrictions):
+        if resources is None or restrictions is None or event_type is None:
+            return True
+        
+        temp_event = Event(
+            id=-1,
+            name="temp",
+            start=start_time,
+            end=end_time,
+            event_type=event_type,
+            resources_ids=resources_ids
+        )
+        
+        valid, _ = validate_restrictions(temp_event, resources, restrictions)
+        return valid
+    
+    def is_valid_slot(start_time, end_time, resources_ids, events, resources, restrictions, event_type):
+        if not check_resource_conflict(start_time, end_time, resources_ids, events):
+            return False
+        
+        if not check_restrictions(start_time, end_time, resources_ids, event_type, resources, restrictions):
+            return False
+        
+        return True
+    
+    if not sorted_events:
+        candidate_end = current_time + timedelta(hours=duration_hours)
+        
+        if candidate_end > end_limit:
+            return None, None
+        
+        if is_valid_slot(current_time, candidate_end, resources_ids, sorted_events, resources, restrictions, event_type):
+            return current_time, candidate_end
+        else:
+            return None, None
+    
     for event in sorted_events:
         if event.end <= current_time:
             continue
+        
         if event.start > current_time:
-            gap_hours = (event.start - current_time).total_seconds() / 3600.0
-            if gap_hours >= duration_hours:
+            gap_duration = (event.start - current_time).total_seconds() / 3600.0
+            
+            if gap_duration >= duration_hours:
                 candidate_end = current_time + timedelta(hours=duration_hours)
+                
                 if candidate_end <= event.start:
-                    if is_slot_valid(current_time, candidate_end, resources_ids, sorted_events):
-                        if resources is not None and restrictions is not None and event_type is not None:
-                            temporal_event = Event(
-                                id=-1,
-                                name="temp",
-                                start=current_time,
-                                end=candidate_end,
-                                event_type=event_type,
-                                resources_ids=resources_ids
-                            )
-                            valid, mesage = validate_restrictions(temporal_event, resources, restrictions)
-                            if valid:
-                                return current_time, candidate_end
-                            else:
-                                return current_time, candidate_end  
-        for rid in resources_ids:
-            if rid in event.resources_ids:
-                current_time = max(current_time, event.end)
-                break
-
-    if (end_limit - current_time).total_seconds() / 3600.0 >= duration_hours:
-        candidate_end = current_time + timedelta(hours=duration_hours)
-        if candidate_end <= end_limit:
-            if is_slot_valid(current_time, candidate_end, resources_ids, sorted_events):
-                if resources is not None and restrictions is not None and event_type is not None:
-                    temporal_event = Event(
-                        id=0,
-                        name="temp",
-                        start=current_time,
-                        end=candidate_end,
-                        event_type=event_type,
-                        resources_ids=resources_ids
-                    )
-                    valid, mesage = validate_restrictions(temporal_event, resources, restrictions)
-                    if valid:
+                    if is_valid_slot(current_time, candidate_end, resources_ids, sorted_events, resources, restrictions, event_type):
                         return current_time, candidate_end
-                else:
-                    return current_time, candidate_end
+        
+        uses_resources = any(res_id in event.resources_ids for res_id in resources_ids)
+        if uses_resources:
+            current_time = max(current_time, event.end)
+    
+    remaining_hours = (end_limit - current_time).total_seconds() / 3600.0
+    
+    if remaining_hours >= duration_hours:
+        candidate_end = current_time + timedelta(hours=duration_hours)
+        
+        if candidate_end <= end_limit:
+            if is_valid_slot(current_time, candidate_end, resources_ids, sorted_events, resources, restrictions, event_type):
+                return current_time, candidate_end
+
     return None, None
 
 def overlap(event1, event2):
