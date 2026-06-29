@@ -4,6 +4,7 @@
 **Curso:** MatCom, 2025–2026  
 
 ---
+
 ## Tabla de Contenidos
 
 - [1. ¿Qué hace el programa?](#1-qué-hace-el-programa)
@@ -13,6 +14,7 @@
 - [5. Dificultades encontradas y cómo las resolví](#5-dificultades-encontradas-y-cómo-las-resolví)
 - [6. Aprendizajes durante el desarrollo](#6-aprendizajes-durante-el-desarrollo)
 - [7. Conclusión](#7-conclusión)
+
 ---
 
 ## 1. ¿Qué hace el programa?
@@ -41,13 +43,13 @@ El programa está diseñado para ser usado desde la línea de comandos, con una 
 
 He organizado el código en tres capas bien diferenciadas, siguiendo el principio de separación de responsabilidades:
 
-- **Capa de modelos** (`src/models/`): contiene las clases `Event` y `Resource`, que representan las entidades del dominio. Estas clases solo definen la estructura y métodos de conversión a/desde diccionarios, sin lógica de negocio. Esto sigue el principio de *responsabilidad única* y facilita la serialización. Cada clase implementa métodos `to_dict` y `from_dict` para la persistencia en JSON, manejando correctamente objetos `datetime` mediante `isoformat()` y `fromisoformat()`.
+- **Capa de modelos** (`src/models/`): contiene las clases `Event` y `Resource`, que representan las entidades del dominio. Estas clases solo definen la estructura y métodos de conversión a/desde diccionarios, sin lógica de negocio. Esto sigue el principio de *responsabilidad única* y facilita la serialización. Cada clase implementa métodos `to_dict` y `from_dict` para la persistencia en JSON, manejando correctamente objetos `datetime` mediante `isoformat()` y `fromisoformat()`. En la clase `Resource`, los métodos `robject_to_dict` y `create_robject_from_dict` utilizan consistentemente la clave `"resource_type"` para el tipo del recurso, lo que garantiza una correcta serialización y deserialización desde/hacia el archivo JSON. Esta consistencia es fundamental para que las restricciones basadas en tipos de recurso funcionen correctamente.
 
 - **Capa de servicios** (`src/services/`): contiene la lógica de negocio.  
-  - `data_manager.py` gestiona el estado global (carga/guardado de datos, operaciones CRUD). Es el punto de acceso a los datos. Mantiene listas y diccionarios en memoria (EVENTS, RESOURCES, RESTRICTIONS, NEXT_EVENT_ID) y se encarga de sincronizar con el archivo JSON. Todas las funciones de modificación (add, delete) llaman a `save_data()` para persistir los cambios inmediatamente.  
+  - `data_manager.py` gestiona el estado global (carga/guardado de datos, operaciones CRUD). Es el punto de acceso a los datos. Mantiene listas y diccionarios en memoria (EVENTS, RESOURCES, RESTRICTIONS, NEXT_EVENT_ID) y se encarga de sincronizar con el archivo JSON. Todas las funciones de modificación (add, delete) llaman a `save_data()` para persistir los cambios inmediatamente. Incluye funciones auxiliares como `get_event_by_type()` y `get_events_in_range()` para facilitar futuras extensiones.
   - `planner.py` alberga el motor de validación de restricciones y el algoritmo de búsqueda de huecos. Separa la lógica de validación en funciones específicas para cada tipo de restricción, lo que facilita su mantenimiento y extensión. La función `find_next_available_time_slot` es el núcleo del planificador inteligente y ha sido diseñada para ser robusta, manejando correctamente casos sin eventos, eventos que no usan los recursos solicitados, y validando tanto conflictos de recursos como restricciones del dominio.
 
-- **Capa de interfaz** (`src/interface/`): contiene los comandos CLI y el menú principal. Cada comando (`add`, `list`, `view`, `delete`) está en un archivo independiente, lo que facilita el mantenimiento y la extensión. Utiliza la librería `rich` para mostrar tablas, paneles y prompts interactivos, mejorando la usabilidad.
+- **Capa de interfaz** (`src/interface/`): contiene los comandos CLI y el menú principal. Cada comando (`add`, `list`, `view`, `delete`) está en un archivo independiente, lo que facilita el mantenimiento y la extensión. Utiliza la librería `rich` para mostrar tablas, paneles y prompts interactivos, mejorando la usabilidad. La interfaz ha sido diseñada con colores semánticos (verde para éxito, rojo para errores, amarillo para advertencias) y paneles visuales para una experiencia de usuario más agradable.
 
 Esta separación de responsabilidades hace que el código sea más comprensible, mantenible y escalable. Además, permite probar la lógica de negocio de forma aislada sin depender de la interfaz.
 
@@ -63,9 +65,9 @@ Elegí el universo de *A Song of Ice and Fire* porque ofrece un trasfondo rico e
 
 - **Mantenimiento de orden cronológico**: la lista de eventos se mantiene ordenada por fecha de inicio mediante `bisect.insort`. Esto acelera la búsqueda de huecos y la detección de conflictos, ya que se recorren los eventos en orden temporal. Para ello, la clase `Event` implementa el método mágico `__lt__` que compara los inicios, lo que permite a `bisect` y `sort` ordenar sin necesidad de una función `key` explícita.
 
-- **Persistencia automática**: cada cambio en el estado (agregar o eliminar evento) se guarda inmediatamente en el archivo JSON. Esto evita pérdidas de datos y permite retomar la planificación en cualquier momento. El archivo se almacena en `data/war_planner.json`, y si no existe al inicio, se carga `default_data.json` para tener un conjunto de recursos y restricciones predefinidos.
+- **Persistencia automática**: cada cambio en el estado (agregar o eliminar evento) se guarda inmediatamente en el archivo JSON. Esto evita pérdidas de datos y permite retomar la planificación en cualquier momento. El archivo se almacena en `data/war_planner.json`, y si no existe al inicio, se carga `default_data.json` para tener un conjunto de recursos y restricciones predefinidos. La función `save_data()` utiliza `default=str` para manejar correctamente la serialización de objetos `datetime`.
 
-- **Interfaz de consola enriquecida**: elegí la librería `rich` porque ofrece tablas, colores y paneles sin la complejidad de una GUI. Los mensajes de error en rojo y los textos en verde para indicar éxito mejoran la usabilidad. Además, los prompts interactivos guían al usuario paso a paso, con validación de entrada para evitar errores de formato.
+- **Interfaz de consola enriquecida**: elegí la librería `rich` porque ofrece tablas, colores y paneles sin la complejidad de una GUI. Los mensajes de error en rojo y los textos en verde para indicar éxito mejoran la usabilidad. Además, los prompts interactivos guían al usuario paso a paso, con validación de entrada para evitar errores de formato. El menú principal utiliza `rich.panel.Panel` para mostrar un título estilizado.
 
 - **Manejo de errores robusto**: toda entrada del usuario se valida con bucles `while True` y `try-except`, asegurando que el programa nunca falle por datos incorrectos. Las fechas se piden por separado (año, mes, día, hora, minuto) para simplificar la entrada y evitar problemas con formatos.
 
@@ -109,22 +111,25 @@ Todas estas restricciones se aplican de forma genérica usando los tipos de recu
 
 ### 2.4 Diseño de la búsqueda de huecos
 
-La función `find_next_available_time_slot` ha sido diseñada siguiendo un enfoque sistemático y robusto. Su implementación actual es el resultado de un proceso de refinamiento para garantizar que maneje correctamente todos los casos posibles:
+La función `find_next_available_time_slot` implementa un algoritmo de búsqueda de intervalos disponibles que ha sido refinado para manejar correctamente todos los casos posibles:
 
-1. **Ordenamiento cronológico**: los eventos se ordenan por fecha de inicio, lo que permite recorrer el calendario de manera secuencial.
+1. **Ordenamiento cronológico**: los eventos se ordenan por fecha de inicio para recorrer el calendario secuencialmente.
 
-2. **Búsqueda progresiva**: la función mantiene un `current_time` que avanza a través del calendario. Para cada evento, verifica:
-   - Si hay un hueco entre `current_time` y el inicio del evento
-   - Si ese hueco es suficiente para la duración requerida
-   - Si el slot cumple con todas las restricciones
+2. **Búsqueda progresiva**: la función mantiene un `current_time` que avanza a través del calendario. Para cada evento, verifica si hay un hueco suficiente entre `current_time` y el inicio del evento.
 
-3. **Manejo de eventos que bloquean recursos**: cuando un evento usa alguno de los recursos solicitados, `current_time` avanza al final de ese evento, asegurando que no se consideren slots que solapen con recursos ocupados.
+3. **Manejo del caso sin eventos**: si no hay eventos existentes, la función verifica el slot inmediato desde `start_from` con la duración solicitada, validando que cumpla con todas las restricciones. Esto permite que el usuario pueda planificar eventos sin necesidad de tener eventos existentes.
 
-4. **Validación dual**: cada slot candidato es validado tanto por `check_resource_conflict` (que verifica que ningún recurso esté ocupado) como por `check_restrictions` (que valida todas las reglas del dominio mediante la creación de un evento temporal).
+4. **Avance inteligente de `current_time`**: la función solo avanza `current_time` al final de un evento si ese evento usa alguno de los recursos solicitados. Si el evento no usa los recursos, no bloquea la disponibilidad y el `current_time` no se modifica. Esto es crucial para no perder huecos disponibles entre eventos que no comparten recursos.
 
-5. **Caso sin eventos**: si no hay eventos existentes, la función devuelve el slot inmediato desde `start_from` con la duración solicitada, siempre que se cumplan las restricciones.
+5. **Validación dual en cada slot candidato**: cada slot es validado por:
+   - `check_resource_conflict`: verifica que ningún recurso esté ocupado en el intervalo.
+   - `check_restrictions`: crea un evento temporal y llama a `validate_restrictions` para verificar todas las reglas del dominio (co-requisitos, exclusiones, restricciones por tipo de evento y enemistades entre casas).
 
-6. **Límite de búsqueda**: la función respeta el límite de `max_days` días hacia adelante, evitando búsquedas infinitas.
+6. **Límite de búsqueda**: la función respeta el límite de `max_days` días hacia adelante, evitando búsquedas infinitas y garantizando que el algoritmo termine en tiempo razonable.
+
+7. **Búsqueda granular**: en lugar de saltar directamente al final del hueco, la función prueba cada hora dentro del intervalo disponible para encontrar el slot más temprano posible. Esto asegura que se encuentra el primer hueco disponible, no solo uno cualquiera.
+
+8. **Manejo de restricciones durante la búsqueda**: la función `check_restrictions` es clave porque asegura que el hueco sugerido no solo esté libre de conflictos de recursos, sino que también cumpla con todas las reglas del dominio. Sin esta validación, el sistema podría sugerir un hueco donde, por ejemplo, se mezclen casas enemigas.
 
 [Volver al inicio](#tabla-de-contenidos)
 
@@ -139,9 +144,9 @@ El programa comienza en `main.py`, que llama a `main_menu.py`, donde se muestra 
 Al ejecutar `main.py`, el módulo `data_manager.py` se importa y ejecuta su función `load_data()` al final del archivo. Esta función:
 
 - Verifica si existe el archivo `data/war_planner.json`.
-- Si existe, lo carga y convierte los diccionarios de recursos en objetos `Resource` (usando `Resource.create_robject_from_dict`), y los eventos en objetos `Event` (con `Event.create_event_from_dict`). La lista de eventos se ordena cronológicamente.
+- Si existe, lo carga y convierte los diccionarios de recursos en objetos `Resource` (usando `Resource.create_robject_from_dict`), y los eventos en objetos `Event` (con `Event.create_event_from_dict`). La lista de eventos se ordena cronológicamente. En la conversión de recursos, se utiliza la clave `"resource_type"` para asignar correctamente el tipo del recurso.
 - Si no existe, carga `default_data.json` (que contiene los recursos y restricciones por defecto), inicializa la lista de eventos vacía y guarda ese estado como `war_planner.json`.
-- En caso de error (archivo corrupto o ausencia de default_data), se crean estructuras vacías y se guarda un archivo de datos por defecto.
+- En caso de error (archivo corrupto o ausencia de default_data), llama a `load_default_data()` que crea estructuras vacías y guarda un archivo de datos por defecto.
 
 Los datos se almacenan en variables globales: `RESOURCES` (diccionario id->Resource), `RESTRICTIONS` (diccionario anidado), `EVENTS` (lista de Event ordenada) y `NEXT_EVENT_ID` (entero). Cualquier operación que modifique el estado llama a `save_data()` para persistir.
 
@@ -151,24 +156,26 @@ Este comando es el más complejo y sigue estos pasos:
 
 1. **Recolección de datos básicos**: se pide nombre, descripción (opcional), tipo de evento (de una lista predefinida) y ubicación (opcional). La entrada se hace con `Prompt.ask` y `Confirm.ask` de `rich` para validar respuestas.
 
-2. **Selección de recursos**: se listan todos los recursos disponibles con sus IDs, tipos y casas. El usuario introduce los IDs separados por comas. Se valida que cada ID exista en `RESOURCES`; si hay IDs inválidos, se muestra un mensaje y se repite la pregunta. También se eliminan duplicados.
+2. **Visualización de restricciones**: antes de pedir los recursos, se muestran las restricciones de inclusión y exclusión por tipo de evento, para que el usuario sepa qué recursos necesita y cuáles no puede combinar.
 
-3. **Fechas**: se piden año, mes, día, hora y minuto por separado para inicio y fin. Cada entrada se valida con `try-except` para asegurar que son números dentro de rangos válidos. Se comprueba que la fecha final sea posterior a la inicial.
+3. **Selección de recursos**: se listan todos los recursos disponibles con sus IDs, tipos y casas. El usuario introduce los IDs separados por comas. Se valida que cada ID exista en `RESOURCES`; si hay IDs inválidos, se muestra un mensaje y se repite la pregunta. También se eliminan duplicados.
 
-4. **Búsqueda de hueco (opcional)**: si el usuario lo solicita, se calcula la duración en horas del evento propuesto y se llama a `find_next_available_time_slot`. Esta función analiza el calendario existente y sugiere el próximo intervalo disponible que cumpla con todas las restricciones. Si se encuentra un hueco, se muestra y se pregunta si se desea usar; si no, se notifica y se puede volver a intentar.
+4. **Fechas**: se piden año, mes, día, hora y minuto por separado para inicio y fin. Cada entrada se valida con `try-except` para asegurar que son números dentro de rangos válidos. Se comprueba que la fecha final sea posterior a la inicial.
 
-5. **Validación y guardado**: se invoca `add_event` en `data_manager.py`, que:
+5. **Búsqueda de hueco (opcional)**: si el usuario lo solicita, se calcula la duración en horas del evento propuesto y se llama a `find_next_available_time_slot`. Esta función analiza el calendario existente y sugiere el próximo intervalo disponible que cumpla con todas las restricciones. Si se encuentra un hueco, se muestra y se pregunta si se desea usar; si no, se notifica y se puede volver a intentar.
+
+6. **Validación y guardado**: se invoca `add_event` en `data_manager.py`, que:
    - Crea un objeto `Event` con los datos (el ID se toma de `NEXT_EVENT_ID`).
    - Llama a `validate_restrictions` (que a su vez llama a las cinco funciones de validación descritas en la sección 2.3).
    - Llama a `resources_conflict_check` (que usa `overlap` para detectar solapamientos y comprueba que ningún recurso del nuevo evento esté ya en algún evento que solape).
    - Si ambas validaciones son exitosas, inserta el evento en `EVENTS` usando `bisect.insort` (para mantener el orden), incrementa `NEXT_EVENT_ID` y guarda en JSON.
    - Devuelve `(True, id)` o `(False, mensaje_error)`.
 
-6. **Resultado**: se muestra un mensaje de éxito o error.
+7. **Resultado**: se muestra un mensaje de éxito o error.
 
 ### 3.3 Búsqueda de huecos (`find_next_available_time_slot`)
 
-Esta función, definida en `planner.py`, es el motor de sugerencia de horarios. Su implementación es robusta y maneja todos los casos posibles:
+Esta función, definida en `planner.py`, es el motor de sugerencia de horarios. Su implementación actual es robusta y maneja todos los casos posibles:
 
 - **Entrada**: lista de IDs de recursos, duración en horas, fecha de inicio desde la que buscar (start_from), número máximo de días a mirar hacia adelante (max_days), lista de eventos existentes, diccionario de recursos, restricciones y tipo de evento (para validar restricciones).
 
@@ -176,12 +183,13 @@ Esta función, definida en `planner.py`, es el motor de sugerencia de horarios. 
   1. Ordena los eventos por fecha de inicio.
   2. Define un límite `end_limit = start_from + timedelta(days=max_days)`.
   3. Inicializa `current_time = start_from`.
-  4. **Caso especial**: si no hay eventos, verifica el slot inmediato.
+  4. **Caso especial**: si no hay eventos, verifica el slot inmediato desde `start_from` con la duración solicitada.
   5. Itera sobre los eventos ordenados:
      - Si el evento termina antes o igual que `current_time`, lo salta.
      - Si hay un hueco entre `current_time` y el inicio del evento, calcula su duración.
      - Si el hueco es suficiente, crea un candidato y verifica conflictos de recursos y restricciones.
      - Si el evento usa alguno de los recursos solicitados, avanza `current_time` al final del evento.
+     - Si el evento no usa los recursos, no bloquea la disponibilidad y `current_time` no se modifica.
   6. Después del bucle, verifica si hay suficiente tiempo desde `current_time` hasta `end_limit`.
   7. Si se encuentra un slot válido, lo devuelve; si no, retorna `(None, None)`.
 
@@ -191,12 +199,12 @@ Esta función, definida en `planner.py`, es el motor de sugerencia de horarios. 
 
 ### 3.4 Listar eventos (`command_list_planned_events`)
 
-Obtiene la lista de eventos con `list_events()` (que devuelve una copia de `EVENTS`) y la muestra en una tabla con columnas: ID, Nombre, Tipo, Era, Descripción, Estado, Inicio, Fin, Recursos (mostrando los IDs). La tabla se genera con `rich.table.Table`.
+Obtiene la lista de eventos con `list_events()` (que devuelve una copia de `EVENTS`) y la muestra en una tabla con columnas: ID, Nombre, Tipo, Era, Descripción, Estado, Inicio, Fin, Recursos (mostrando los IDs). La tabla se genera con `rich.table.Table` y utiliza colores para cada columna (cian para ID, blanco para nombre, magenta para tipo, amarillo para era, verde para fechas, etc.). Los recursos se muestran como una cadena de IDs separados por comas.
 
 ### 3.5 Ver detalles (`command_view_details`)
 
 Ofrece dos subopciones:
-- Ver detalles de un evento: pide un ID, busca el evento con `get_event_by_id` y muestra todos sus atributos en una tabla.
+- Ver detalles de un evento: pide un ID, busca el evento con `get_event_by_id` y muestra todos sus atributos en una tabla de dos columnas (Campo y Valor). La tabla incluye nombre, descripción, tipo, era, ubicación, inicio, fin, duración, recursos y estado.
 - Ver agenda de un recurso: pide un ID de recurso, comprueba que exista en `RESOURCES`, obtiene los eventos que lo usan con `get_event_by_resource` (que filtra `EVENTS` por `resource_id in event.resources_ids`) y muestra una tabla con los eventos, sus fechas y estado.
 
 ### 3.6 Eliminar evento (`command_delete_event`)
@@ -244,6 +252,24 @@ Tipo de evento: Defensa
 ¿Desea especificar una locación para el evento? Sí
 Ubicación: Invernalia
 
+Restricciones de inclusión de recursos por tipo de evento:
+- Asedio requiere Maquinaria de asedio, Ingeniero de asedio, Arqueros e Infantería pesada
+- Batalla naval requiere Almirante, Flota y Fuego valyrio
+- Batalla campal requiere Infantería pesada, Caballería pesada y Arqueros
+- Asalto requiere Infantería pesada y Caballería pesada
+- Defensa requiere Infantería pesada y Arqueros
+- Emboscada requiere Infantería ligera y Arqueros
+- Misión diplomática requiere Embajador
+
+Restricciones de exclusión de recursos por tipo de evento:
+- Emboscada es excluyente de Maquinaria de asedio
+- Batalla naval es excluyente de Caballería pesada y Caballería ligera
+- Batalla campal es excluyente de Maestro de espías y Flota
+- Asedio es excluyente de Caballería pesada y Caballería ligera
+- Defensa es excluyente de Caballería pesada y Caballería ligera
+- Asalto es excluyente de Maquinaria de asedio
+- Misión diplomática es excluyente de Maquinaria de asedio
+
 Recursos disponibles:
 89: Infantería pesada Stark (tipo: Infantería pesada, casa: Stark)
 90: Infantería ligera Stark (tipo: Infantería ligera, casa: Stark)
@@ -273,24 +299,25 @@ Evento 'Defensa de Invernalia' agregado con ID: 1
 Supongamos que queremos planificar un asedio pero no sabemos cuándo hay disponibilidad. Tras elegir `a`, introducimos los datos del evento, seleccionamos recursos (por ejemplo, maquinaria de asedio e ingeniero) y fechas de inicio y fin. Luego respondemos "Sí" a la pregunta de buscar hueco. El sistema analizará el calendario y sugerirá, por ejemplo:
 
 ```
+Buscando hueco en los próximos 30 días...
 Hueco encontrado: 302-01-20 08:00 - 302-01-20 18:00
 ¿Desea usar este hueco? Sí
 Evento 'Asedio a Harrenhal' agregado con ID: 2
 ```
 
-Si no encuentra hueco, muestra: `No se encontró un hueco disponible en los próximos días`.
+Si no encuentra hueco, muestra: `No se encontró un hueco disponible en los próximos días sin conflicto de recursos o restricciones`.
 
 ### Ejemplo 3: Listar eventos
 
 ```
 ¿Qué acción desea realizar Juan? l
 Lista de Eventos
-┌────┬─────────────────────┬──────────┬─────────────────────┬─────────────────────┬──────────┐
-│ ID │ Nombre              │ Tipo     │ Inicio              │ Fin                 │ Recursos │
-├────┼─────────────────────┼──────────┼─────────────────────┼─────────────────────┼──────────┤
-│ 1  │ Defensa de Invernalia│ Defensa  │ 302-01-15 08:00     │ 302-01-15 20:00     │ 89,93,101│
-│ 2  │ Asedio a Harrenhal  │ Asedio   │ 302-01-20 08:00     │ 302-01-20 18:00     │ 7,8      │
-└────┴─────────────────────┴──────────┴─────────────────────┴─────────────────────┴──────────┘
+┌────┬─────────────────────┬──────────┬──────┬─────────────────────┬─────────────────────┬──────────┐
+│ ID │ Nombre              │ Tipo     │ Era  │ Inicio              │ Fin                 │ Recursos │
+├────┼─────────────────────┼──────────┼──────┼─────────────────────┼─────────────────────┼──────────┤
+│ 1  │Defensa de Invernalia│ Defensa  │ DC   │ 302-01-15 08:00     │ 302-01-15 20:00     │ 89,93,101│
+│ 2  │ Asedio a Harrenhal  │ Asedio   │ DC   │ 302-01-20 08:00     │ 302-01-20 18:00     │ 7,8      │
+└────┴─────────────────────┴──────────┴──────┴─────────────────────┴─────────────────────┴──────────┘
 ```
 
 ### Ejemplo 4: Ver detalles de un evento
@@ -329,7 +356,7 @@ Agenda del recurso: Infantería pesada Stark (ID: 89)
 ┌───────────┬─────────────────────┬──────────┬──────┬─────────────────────┬─────────────────────┬─────────┐
 │ Evento ID │ Nombre              │ Tipo     │ Era  │ Inicio              │ Fin                 │ Estado  │
 ├───────────┼─────────────────────┼──────────┼──────┼─────────────────────┼─────────────────────┼─────────┤
-│ 1         │ Defensa de Invernalia│ Defensa  │ DC   │ 302-01-15 08:00     │ 302-01-15 20:00     │ planned │
+│ 1         │Defensa de Invernalia│ Defensa  │ DC   │ 302-01-15 08:00     │ 302-01-15 20:00     │ planned │
 └───────────┴─────────────────────┴──────────┴──────┴─────────────────────┴─────────────────────┴─────────┘
 ```
 
@@ -372,7 +399,7 @@ Al principio, si no existía `war_planner.json`, el programa intentaba cargar `d
 Para mantener la lista de eventos ordenada, usé `bisect.insort`. Pero necesitaba que los objetos `Event` fueran comparables. Implementé el método `__lt__` que compara `start`. Esto me permitió usar `bisect` sin una función `key`, y también usar `sort()` en `load_data` para ordenar los eventos cargados. Aprendí que el método `__lt__` debe ser consistente con otros operadores de comparación, pero para este caso es suficiente.
 
 ### 5.8 Interfaz de usuario con `rich`
-Aprender a usar `rich` (tablas, prompts, colores) llevó algo de tiempo, pero valió la pena porque la interfaz quedó mucho más atractiva y clara. Los mensajes de error en rojo y los textos en verde para éxito mejoran la usabilidad. Además, los paneles y tablas hacen que la información sea más legible. También manejé correctamente la entrada con `Prompt.ask` y `Confirm.ask`, que simplifican la validación de opciones.
+Aprender a usar `rich` (tablas, prompts, colores) llevó algo de tiempo, pero valió la pena porque la interfaz quedó mucho más atractiva y clara. Los mensajes de error en rojo y los textos en verde para éxito mejoran la usabilidad. Además, los paneles y tablas hacen que la información sea más legible. También manejé correctamente la entrada con `Prompt.ask` y `Confirm.ask`, que simplifican la validación de opciones. El menú principal ahora usa `rich.panel.Panel` para mostrar un título estilizado con el mensaje "¡War is Coming!".
 
 ### 5.9 Problema crítico: carga incorrecta de tipos de recursos
 Durante las pruebas, descubrí que la función de búsqueda de huecos siempre fallaba, incluso cuando no había eventos y los recursos seleccionados cumplían con todas las restricciones. El problema era que en `resource.py`, la función `create_robject_from_dict` estaba buscando la clave `"type"` en el diccionario, pero el archivo JSON usaba `"resource_type"`. Esto hacía que todos los recursos se cargaran con `resource_type = None`, lo que provocaba que las validaciones de restricciones por tipo de evento fallaran siempre. Corregí el problema cambiando `data.get("type")` por `data.get("resource_type")` en el método `create_robject_from_dict`, y también actualicé `robject_to_dict` para que use la misma clave al guardar. Después de este cambio, los recursos mostraban correctamente sus tipos y la búsqueda de huecos empezó a funcionar como se esperaba.
@@ -383,6 +410,11 @@ La función `find_next_available_time_slot` pasó por varias iteraciones de mejo
 - Avance `current_time` solo cuando un evento usa los recursos solicitados.
 - Valide tanto conflictos de recursos como restricciones en cada slot candidato.
 - Respete el límite de `max_days` días de búsqueda.
+- Pruebe cada hora dentro del intervalo disponible para encontrar el slot más temprano posible.
+- Maneje correctamente eventos que no usan los recursos solicitados, evitando que bloqueen la búsqueda innecesariamente.
+
+### 5.11 Visualización de restricciones en la interfaz
+Inicialmente, la interfaz no mostraba las restricciones al usuario, lo que podía llevar a confusiones al seleccionar recursos. Añadí en `command_add_event.py` la visualización de todas las restricciones de inclusión y exclusión por tipo de evento antes de pedir los recursos. Esto ayuda al usuario a saber qué recursos necesita y cuáles no puede combinar, mejorando la experiencia de usuario y reduciendo errores.
 
 [Volver al inicio](#tabla-de-contenidos)
 
@@ -404,7 +436,7 @@ Este proyecto me ha permitido en general desarrollar habilidades de manejo de er
 
 - **`isinstance`**: Aprendí a comprobar el tipo de una variable en tiempo de ejecución, lo que me ayudó a manejar entradas del usuario que podían ser cadenas o fechas, y a convertirlas adecuadamente para evitar potenciales errores. Esta función la conocí por recomendación de una Inteligencia Artificial.
 
-- **`rich`**: Esta librería me permitió crear una interfaz de consola atractiva y funcional, con tablas, colores, paneles y prompts interactivos. Aprender a usarla mejoró notablemente la experiencia de usuario de mi programa. Esta librería se usó en la cp08 de programación, de donde pude conocerla y empezar a aprender a usarla.
+- **`rich`**: Esta librería me permitió crear una interfaz de consola atractiva y funcional, con tablas, colores, paneles y prompts interactivos. Aprender a usarla mejoró notablemente la experiencia de usuario de mi programa. Esta librería se usó en la cp08 de programación, de donde pude conocerla y empezar a aprender a usarla. En particular, aprendí a usar `Panel` para el título, `Table` para mostrar datos estructurados, y `Prompt.ask` y `Confirm.ask` para entrada interactiva.
 
 - **`datetime.fromisoformat` y `datetime.isoformat`**: Utilicé estos métodos para convertir cadenas con formato ISO en objetos `datetime` y viceversa, lo que facilitó la carga y guardado de fechas desde/hacia el archivo JSON, y la validación de fechas introducidas por el usuario. Este recurso también lo descubrí por recomendación de una Inteligencia Artificial.
 
@@ -442,7 +474,7 @@ Este proyecto me ha permitido en general desarrollar habilidades de manejo de er
 
 - **Trabajo con Git y control de versiones**: Utilicé Git para gestionar los cambios, lo que me permitió experimentar con seguridad y volver atrás si algo salía mal. Aprendí varios comandos al enfrentar diversas situaciones en el control de versiones de mi proyecto y entendí la necesidad del uso de sistemas de control de versiones en reemplazo de carpetas con nombre "proyecto final final - ahora si".
 
-- **Interacción con el usuario**: Diseñar una CLI amigable con `rich` me ha mostrado que incluso una consola puede ofrecer una experiencia atractiva. Los colores y tablas mejoran la legibilidad. También aprendí a usar bucles para validar entradas y a ofrecer opciones claras al usuario.
+- **Interacción con el usuario**: Diseñar una CLI amigable con `rich` me ha mostrado que incluso una consola puede ofrecer una experiencia atractiva. Los colores y tablas mejoran la legibilidad. También aprendí a usar bucles para validar entradas y a ofrecer opciones claras al usuario. La visualización de restricciones antes de pedir recursos fue una mejora significativa en la usabilidad.
 
 - **Uso de constantes y valores por defecto**: Definí `DEFAULT_DATA` y `FILEPATH` como constantes al inicio de `data_manager.py`, lo que facilita cambiar la ubicación de los archivos sin modificar la lógica. También usé valores por defecto en funciones como `find_next_available_time_slot` para hacerlas más flexibles.
 
@@ -460,15 +492,17 @@ Este proyecto me ha permitido en general desarrollar habilidades de manejo de er
 
 - **Planificación de eventos** con recursos limitados.
 - **Validación de restricciones** (co‑requisitos, exclusiones, por tipo de evento y por casas).
-- **Búsqueda automática de huecos** que respeta conflictos y restricciones.
-- **Interfaz de consola** completa y usable.
-- **Persistencia** en JSON para guardar y cargar el estado.
+- **Búsqueda automática de huecos** que respeta conflictos y restricciones, con un algoritmo refinado que maneja correctamente todos los casos.
+- **Interfaz de consola** completa y usable, con colores, tablas y paneles que mejoran la experiencia de usuario.
+- **Persistencia** en JSON para guardar y cargar el estado, con manejo robusto de errores de archivo.
 
 El sistema es extensible: se pueden añadir nuevos recursos, nuevas casas, nuevas restricciones sin modificar el núcleo de la lógica. El uso de tipos en lugar de IDs hace que las reglas sean genéricas y escalables. La arquitectura en capas facilita el mantenimiento y la adición de nuevas funcionalidades.
 
 La implementación de la búsqueda de huecos ha sido refinada para manejar correctamente todos los casos, incluyendo el escenario sin eventos existentes y la validación completa de restricciones en cada slot candidato. La corrección del problema de carga de tipos de recursos fue crucial para que esta funcionalidad operara correctamente.
 
-En el futuro, me gustaría implementar funcionalidades opcionales como **recursos con cantidad** (ej. tener 5 unidades de Infantería pesada) o **eventos recurrentes** (planificar misiones diplomáticas con cierta regularidad). También podría añadir la función `update_event_status` para cambiar el estado de los eventos (ej. de "planned" a "completed") y permitir filtrar por estado. Otra mejora sería generar reportes estadísticos de uso de recursos.
+La interfaz de usuario ha sido mejorada significativamente con la visualización de restricciones antes de pedir recursos, el uso de paneles y colores, y la inclusión de tablas enriquecidas para listar eventos y detalles. El menú principal ahora es más atractivo visualmente con el título estilizado.
+
+En el futuro, me gustaría implementar funcionalidades opcionales como **recursos con cantidad** (ej. tener 5 unidades de Infantería pesada) o **eventos recurrentes** (planificar misiones diplomáticas con cierta regularidad). También podría añadir la función `update_event_status` para cambiar el estado de los eventos (ej. de "planned" a "completed") y permitir filtrar por estado. Otra mejora sería generar reportes estadísticos de uso de recursos, así como implementar la visualización de recursos por casa como se sugiere en el archivo `ToDo.md`.
 
 En definitiva, este proyecto me ha permitido poner en práctica todos los conocimientos adquiridos durante el curso, vía clase o internet, y me ha dado la confianza para abordar sistemas más complejos en el futuro. La combinación de diseño, lógica de negocio, interfaz de usuario y persistencia ha sido un desafío completo que me ha enseñado mucho sobre el desarrollo de software.
 

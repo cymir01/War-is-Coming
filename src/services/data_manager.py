@@ -117,13 +117,14 @@ def add_event(name, description, start, end, event_type, location, resources_ids
     if not bool_restrictions:
         return False, mesage
     
-    #ESPECIFICAR EL RECURSO OCUPADO
-    if resources_conflict_check(new_event, EVENTS):
-        return False, "Conflicto de recursos: algún recurso ya está ocupado en ese horario"
+    bool_resources_conflict, mesage_r_conflict = resources_conflict_check(new_event, EVENTS)
+    if bool_resources_conflict:
+        return False, mesage_r_conflict
 
     bisect.insort(EVENTS, new_event) #usa internamente el metodo __lt__ de la clase Event
     NEXT_EVENT_ID += 1
     save_data()
+
     return True, new_event.id
     
 def list_events():
@@ -134,7 +135,7 @@ def delete_event(event_id):
     global EVENTS
     for index, event in enumerate(EVENTS):
         if event.id == event_id:
-            del EVENTS[index] #INVESTIGAR SOBRE POP PARA USARLO SI ES MEJOR
+            del EVENTS[index]
             save_data()
             return True
     return False

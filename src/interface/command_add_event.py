@@ -4,7 +4,6 @@ from datetime import datetime
 from src.services.data_manager import add_event, RESOURCES, RESTRICTIONS, list_events
 from src.services.planner import find_next_available_time_slot
 
-#MEJORAR LA VISUALIZACION DE RECURSOS, EN LUGAR DE LISTARLOS TODOS, PEDIR CASA Y LISTAR LOS RECURSOS POR CASA, ETC
 
 def command_add():
     console = Console()
@@ -55,7 +54,7 @@ def command_add():
         "- Asalto es excluyente de Maquinaria de asedio\n"
         "- Misión diplomática es excluyente de Maquinaria de asedio"
     )
-    
+
     while True:
         resources_input = Prompt.ask("\nIngrese los ids de los recursos que desea agregar (separados por comas)")
         resources_ids = []

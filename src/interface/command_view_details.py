@@ -48,7 +48,7 @@ def command_view_details():
             table.add_row("Inicio", event.start.strftime("%Y-%m-%d %H:%M"))
             table.add_row("Fin", event.end.strftime("%Y-%m-%d %H:%M"))
             table.add_row("Duración", str(event.get_duration()))
-            table.add_row("Recursos", resources_str)
+            table.add_row("IDs de recursos", resources_str)
             table.add_row("Estado", event.status)
             
             console.print(table)
