@@ -1,8 +1,6 @@
 from rich.console import Console
 from src.services.data_manager import list_events, delete_event
 
-#!agregar la funcion de liberar los recursos que usa el evento
-#!usar lower y strip para estandarizar los nombres y evitar potenviales errores al comparar
 def command_delete_event():
     console = Console()
     events = list_events()

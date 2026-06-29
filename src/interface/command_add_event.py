@@ -4,9 +4,7 @@ from datetime import datetime
 from src.services.data_manager import add_event, RESOURCES, RESTRICTIONS, list_events
 from src.services.planner import find_next_available_time_slot
 
-#AGREGAR DESPUES DEL TIPO DE EVENTO LA LISTA DE RECURSOS QUE REQUIERE
 #MEJORAR LA VISUALIZACION DE RECURSOS, EN LUGAR DE LISTARLOS TODOS, PEDIR CASA Y LISTAR LOS RECURSOS POR CASA, ETC
-
 
 def command_add():
     console = Console()
@@ -17,9 +15,10 @@ def command_add():
     if Confirm.ask("\nDesea agregar descripción al evento? \n"):
         desc = console.input("Descripción del evento: \n")
     
+    
     event_types = ["Asedio", "Batalla naval", "Asalto", "Defensa", "Emboscada", "Batalla campal", "Misión diplomática"]
     console.print("\nTipos de evento disponibles: Asedio, Batalla naval, Asalto, Defensa, Emboscada, Batalla campal y Misión diplomática")
-    event_type = Prompt.ask("Tipo de evento:", choices=event_types)
+    event_type = Prompt.ask("\nTipo del evento que desea agregar", choices=event_types)
     
     location = None
     if Confirm.ask("\n¿Desea especificar una locación para el evento?"):
@@ -35,6 +34,27 @@ def command_add():
         type = resource_data.resource_type if resource_data.resource_type is not None else "sin tipo"
         house = resource_data.house if resource_data.house is not None else "sin casa"
         console.print(f"{resource_id}: {resource_data.name} (tipo: {type}, casa: {house})")
+    
+    console.print("[bold]\nRestricciones de inclusión de recursos por tipo de evento:[/bold]")
+    console.print(
+        "- Asedio requiere Maquinaria de asedio, Ingeniero de asedio, Arqueros e Infantería pesada\n"
+        "- Batalla naval requiere Almirante, Flota y Fuego valyrio\n"
+        "- Batalla campal requiere Infantería pesada, Caballería pesada y Arqueros\n"
+        "- Asalto requiere Infantería pesada y Caballería pesada\n"
+        "- Defensa requiere Infantería pesada y Arqueros\n"
+        "- Emboscada requiere Infantería ligera y Arqueros\n"
+        "- Misión diplomática requiere Embajador"
+    )
+    console.print("[bold]\nRestricciones de exclusión de recursos por tipo de evento:[/bold]")
+    console.print(
+        "- Emboscada es excluyente de Maquinaria de asedio\n"
+        "- Batalla naval es excluyente de Caballería pesada y Caballería ligera\n"
+        "- Batalla campal es excluyente de Maestro de espías y Flota\n"
+        "- Asedio es excluyente de Caballería pesada y Caballería ligera\n"
+        "- Defensa es excluyente de Caballería pesada y Caballería ligera\n"
+        "- Asalto es excluyente de Maquinaria de asedio\n"
+        "- Misión diplomática es excluyente de Maquinaria de asedio"
+    )
     
     while True:
         resources_input = Prompt.ask("\nIngrese los ids de los recursos que desea agregar (separados por comas)")

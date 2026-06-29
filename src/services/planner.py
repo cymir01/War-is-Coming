@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 from src.models.event import Event
 DEFAULT_START_DATE = datetime(301, 1, 1, 0, 0)
-#qgestionar en add_event() cuando el usuario pide un recurso (id) que no existe (lanza error)
 
 def resources_conflict_check(new_event, existing_events):
     """funcion que devuelve False si no hay conflicto y True de haber"""
@@ -74,7 +73,6 @@ def validate_resource_type_exclusion_restrictions(new_event, resources, resource
                     return False, f"Error: los tipos '{type_a}' y '{type_b}' son excluyentes"
     return True, ''
 
-#DA PROBLEMAS
 def validate_event_type_inclusion_restriction(new_event, resources, event_type_inclusion_restrictions):
     event_type = new_event.event_type
     resources_ids_new_event = set(new_event.resources_ids)
