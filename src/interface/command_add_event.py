@@ -6,6 +6,7 @@ from src.services.planner import find_next_available_time_slot
 
 
 def command_add():
+    """"""
     console = Console()
     console.print("\n[bold cyan]Agregar nuevo evento[/bold cyan]")
     

@@ -40,3 +40,6 @@ muestren un progreso incremental. (descriptivos)
 concepts over memorization
 searching errors online
 snippet database (code to reuse..functions, layouts, utilities)
+
+Comments should describe purpose and usage:
+add comments to functions that clarify what they do, what inputs they expect and what output they provide
